@@ -4,9 +4,13 @@ import pytest
 from pydantic import ValidationError
 
 from housing_policy_agents.models import (
+    BranchName,
+    BranchStatus,
     DecisionCriterion,
     DecisionMatrix,
     EvidenceStrength,
+    ManagerName,
+    ManagerSynthesis,
     PolicyOption,
     SourceRecord,
     SourceTier,
@@ -44,3 +48,26 @@ def test_decision_matrix_requires_every_option_and_criterion() -> None:
             options=[option("O1"), option("O2")],
             scores={"O1": {"benefit": 4}},
         )
+
+
+def test_decision_matrix_normalizes_qualitative_scores() -> None:
+    criterion = DecisionCriterion(criterion_id="benefit", name="Benefit", description="Benefit")
+    matrix = DecisionMatrix(
+        criteria=[criterion],
+        options=[option("O1")],
+        scores={"O1": {"benefit": "high"}},
+    )
+
+    assert matrix.scores == {"O1": {"benefit": 5}}
+
+
+def test_manager_synthesis_accepts_source_ids() -> None:
+    synthesis = ManagerSynthesis(
+        manager=ManagerName.POLICY,
+        status=BranchStatus.COMPLETED,
+        specialist_branches=[BranchName.GOVERNMENT],
+        branch_statuses={BranchName.GOVERNMENT: BranchStatus.COMPLETED},
+        source_ids=["src-example"],
+    )
+
+    assert synthesis.source_ids == ["src-example"]

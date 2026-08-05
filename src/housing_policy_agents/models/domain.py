@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import UTC, date, datetime
 from enum import IntEnum, StrEnum
-from typing import Any
+from typing import Any, Literal
 from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
@@ -296,6 +296,7 @@ class ManagerSynthesis(StrictModel):
     disagreements: list[str] = Field(default_factory=list)
     incentive_driven_claims: list[str] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
+    source_ids: list[str] = Field(default_factory=list)
 
 
 class PolicyOption(StrictModel):
@@ -319,11 +320,34 @@ class DecisionCriterion(StrictModel):
     scale: str = "1=low / 5=high"
 
 
+DecisionScore = int | Literal["low", "medium", "high"]
+
+
 class DecisionMatrix(StrictModel):
     criteria: list[DecisionCriterion]
     options: list[PolicyOption]
-    scores: dict[str, dict[str, int]]
+    scores: dict[str, dict[str, DecisionScore]]
     caveats: list[str] = Field(default_factory=list)
+
+    @field_validator("scores", mode="before")
+    @classmethod
+    def normalize_score_labels(cls, value: Any) -> Any:
+        """Normalize common qualitative model output to the canonical 1-5 scale."""
+        if not isinstance(value, dict):
+            return value
+        labels = {"low": 1, "medium": 3, "high": 5}
+        normalized: dict[Any, Any] = {}
+        for option_id, criteria in value.items():
+            if not isinstance(criteria, dict):
+                normalized[option_id] = criteria
+                continue
+            normalized[option_id] = {
+                criterion_id: labels.get(score.strip().lower(), score)
+                if isinstance(score, str)
+                else score
+                for criterion_id, score in criteria.items()
+            }
+        return normalized
 
     @model_validator(mode="after")
     def every_option_has_scores(self) -> DecisionMatrix:
@@ -338,7 +362,7 @@ class DecisionMatrix(StrictModel):
             invalid = {
                 criterion_id: score
                 for criterion_id, score in values.items()
-                if score < 1 or score > 5
+                if not isinstance(score, int) or score < 1 or score > 5
             }
             if invalid:
                 raise ValueError(f"option {option_id} has scores outside 1-5: {invalid}")
