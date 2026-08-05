@@ -5,9 +5,8 @@ from __future__ import annotations
 import hashlib
 import re
 from dataclasses import dataclass
-from pathlib import Path
 
-from ..models import EvidenceClaim, SourceRecord
+from ..models import CountryComparison, DraftReport, EvidenceClaim, SourceRecord
 
 
 def normalize_url(url: str | None) -> str | None:
@@ -67,7 +66,12 @@ class SourceLedger:
         return list(self.records.values())
 
     def markdown(self) -> str:
-        lines = ["# Source ledger", "", "Sources are normalized research records. Synthetic fixtures are not verified live sources.", ""]
+        lines = [
+            "# Source ledger",
+            "",
+            "Sources are normalized research records. Synthetic fixtures are not verified live sources.",
+            "",
+        ]
         for record in sorted(self.records.values(), key=lambda item: item.source_id):
             anchor = record.source_id.lower().replace("_", "-")
             lines.extend([f"### {record.source_id} — {record.title} {{#{anchor}}}", ""])
@@ -115,7 +119,9 @@ REQUIRED_SECTION_IDS = [
 ]
 
 
-def validate_claim_references(claims: list[EvidenceClaim], ledger: SourceLedger) -> ValidationReport:
+def validate_claim_references(
+    claims: list[EvidenceClaim], ledger: SourceLedger
+) -> ValidationReport:
     errors: list[str] = []
     warnings: list[str] = []
     known = ledger.ids()
@@ -131,7 +137,28 @@ def validate_claim_references(claims: list[EvidenceClaim], ledger: SourceLedger)
     return ValidationReport(errors, warnings)
 
 
-def validate_report(report: object, ledger: SourceLedger) -> ValidationReport:
+def validate_country_comparisons(
+    comparisons: list[CountryComparison], ledger: SourceLedger
+) -> ValidationReport:
+    errors: list[str] = []
+    warnings: list[str] = []
+    known = ledger.ids()
+    for comparison in comparisons:
+        missing = set(comparison.source_ids) - known
+        if missing:
+            errors.append(
+                f"country comparison {comparison.country} cites nonexistent sources: {sorted(missing)}"
+            )
+        if not comparison.institutional_differences:
+            errors.append(
+                f"country comparison {comparison.country} must identify institutional differences"
+            )
+        if comparison.transferability.strip() == "":
+            warnings.append(f"country comparison {comparison.country} has no transferability caveat")
+    return ValidationReport(errors, warnings)
+
+
+def validate_report(report: DraftReport, ledger: SourceLedger) -> ValidationReport:
     errors: list[str] = []
     warnings: list[str] = []
     sections = getattr(report, "sections", [])
@@ -147,13 +174,15 @@ def validate_report(report: object, ledger: SourceLedger) -> ValidationReport:
                 errors.append(f"substantive paragraph {paragraph.paragraph_id} has no citation")
             missing = set(paragraph.citation_ids) - ledger.ids()
             if missing:
-                errors.append(f"paragraph {paragraph.paragraph_id} cites nonexistent sources: {sorted(missing)}")
+                errors.append(
+                    f"paragraph {paragraph.paragraph_id} cites nonexistent sources: {sorted(missing)}"
+                )
     if len(cited) != len(set(cited)) and len(cited) > 0:
         warnings.append("some sources are cited repeatedly; this is not itself an error")
     unused = ledger.ids() - set(cited)
     if unused:
         warnings.append(f"sources listed but never cited: {sorted(unused)}")
-    source_urls = [normalize_url(record.url) for record in ledger.values() if record.url]
+    source_urls = [record.url.rstrip("/").lower() for record in ledger.values() if record.url]
     duplicates = {url for url in source_urls if source_urls.count(url) > 1}
     if duplicates:
         errors.append(f"duplicate source URLs: {sorted(duplicates)}")

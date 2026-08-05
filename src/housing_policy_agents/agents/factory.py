@@ -8,7 +8,6 @@ from typing import Any
 from ..config import AppConfig
 from ..models import DraftReport, ManagerSynthesis, ResearchPlan, SpecialistFinding
 
-
 PROMPT_ROOT = Path(__file__).parents[1] / "prompts"
 
 
@@ -39,7 +38,9 @@ def build_specialist_agent(branch: str, config: AppConfig, tools: list[Any]) -> 
     )
 
 
-def build_manager_agent(manager: str, config: AppConfig, specialist_tools: list[Any] | None = None) -> Any:
+def build_manager_agent(
+    manager: str, config: AppConfig, specialist_tools: list[Any] | None = None
+) -> Any:
     from agents import Agent
 
     return Agent(
@@ -67,6 +68,7 @@ def build_writer_agent(config: AppConfig) -> Any:
 
 def build_reviewer_agent(config: AppConfig) -> Any:
     from agents import Agent
+
     from ..models import AdversarialReview
 
     return Agent(
@@ -82,18 +84,38 @@ def build_agent_graph(config: AppConfig) -> dict[str, Any]:
 
     specialists: dict[str, Any] = {}
     for branch in (
-        "government_sources", "legal_regulatory", "think_tank_academic", "consumer",
-        "loan_originator", "servicing", "secondary_market_risk_transfer",
-        "general_consumer_advocacy", "disadvantaged_communities", "financial_sustainability",
+        "government_sources",
+        "legal_regulatory",
+        "think_tank_academic",
+        "consumer",
+        "loan_originator",
+        "servicing",
+        "secondary_market_risk_transfer",
+        "general_consumer_advocacy",
+        "disadvantaged_communities",
+        "financial_sustainability",
         "global_research",
     ):
         specialists[branch] = build_specialist_agent(branch, config, [])
 
     managers: dict[str, Any] = {}
     for manager, branches in {
-        "policy_research_manager": ["government_sources", "legal_regulatory", "think_tank_academic"],
-        "industry_research_manager": ["consumer", "loan_originator", "servicing", "secondary_market_risk_transfer"],
-        "advocacy_research_manager": ["general_consumer_advocacy", "disadvantaged_communities", "financial_sustainability"],
+        "policy_research_manager": [
+            "government_sources",
+            "legal_regulatory",
+            "think_tank_academic",
+        ],
+        "industry_research_manager": [
+            "consumer",
+            "loan_originator",
+            "servicing",
+            "secondary_market_risk_transfer",
+        ],
+        "advocacy_research_manager": [
+            "general_consumer_advocacy",
+            "disadvantaged_communities",
+            "financial_sustainability",
+        ],
         "global_research_manager": ["global_research"],
     }.items():
         tools = [

@@ -7,10 +7,20 @@ from dataclasses import dataclass, field
 
 from ..models import UserResearchRequest
 
-
 HOUSING_TERMS = {
-    "housing", "mortgage", "homebuyer", "homeowner", "rent", "rental", "zoning",
-    "foreclosure", "servicing", "underwriting", "insurance", "property tax", "land use",
+    "housing",
+    "mortgage",
+    "homebuyer",
+    "homeowner",
+    "rent",
+    "rental",
+    "zoning",
+    "foreclosure",
+    "servicing",
+    "underwriting",
+    "insurance",
+    "property tax",
+    "land use",
 }
 INJECTION_PATTERNS = [
     r"ignore\s+(all\s+)?previous",
@@ -25,7 +35,10 @@ DISCRIMINATION_PATTERNS = [
     r"exclude\s+.*\b(race|ethnicity|religion|nationality|disability)\b",
     r"target\s+.*\b(race|ethnicity|religion|nationality|disability)\b",
 ]
-PII_PATTERNS = [r"\b\d{3}-\d{2}-\d{4}\b", r"\b(?:account|routing)\s*(?:number|#)\s*[:=]?\s*\d{6,}\b"]
+PII_PATTERNS = [
+    r"\b\d{3}-\d{2}-\d{4}\b",
+    r"\b(?:account|routing)\s*(?:number|#)\s*[:=]?\s*\d{6,}\b",
+]
 
 
 @dataclass

@@ -1,0 +1,47 @@
+description: Ablation comparisons for the housing-policy research network
+prompts:
+  - file://prompts/research_request.txt
+providers:
+  - id: file://providers/hierarchical_provider.py
+    label: full-hierarchy
+    config:
+      pythonExecutable: python
+  - id: file://providers/hierarchical_provider.py
+    label: no-legal-branch
+    config:
+      pythonExecutable: python
+      disabled_branches: [legal_regulatory]
+  - id: file://providers/hierarchical_provider.py
+    label: no-global-branch
+    config:
+      pythonExecutable: python
+      disabled_branches: [global_research]
+  - id: file://providers/hierarchical_provider.py
+    label: no-advocacy-branch
+    config:
+      pythonExecutable: python
+      disabled_branches: [general_consumer_advocacy, disadvantaged_communities, financial_sustainability]
+  - id: file://providers/hierarchical_provider.py
+    label: no-manager-reconciliation
+    config:
+      pythonExecutable: python
+      enable_manager_reconciliation: false
+  - id: file://providers/hierarchical_provider.py
+    label: no-clarification
+    config:
+      pythonExecutable: python
+      enable_clarification: false
+  - id: file://providers/hierarchical_provider.py
+    label: no-adversarial-review
+    config:
+      pythonExecutable: python
+      enable_adversarial_review: false
+  - id: file://providers/baseline_provider.py
+    label: shallow-baseline
+    config:
+      pythonExecutable: python
+tests: file://datasets/offline.yaml
+defaultTest:
+  assert:
+    - type: python
+      value: file://assertions/quality.py

@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import asyncio
 import json
-import os
+from collections.abc import Sequence
 from pathlib import Path
+from typing import Annotated
 
 import typer
 from rich.console import Console
@@ -13,7 +14,13 @@ from rich.console import Console
 from .agents.factory import mermaid_graph
 from .agents.orchestrator import decide_clarifications
 from .config import AppConfig
-from .models import ResearchProviderName, RunMode, UserResearchRequest
+from .models import (
+    ClarificationQuestion,
+    FinalResearchPackage,
+    ResearchProviderName,
+    RunMode,
+    UserResearchRequest,
+)
 from .reporting.render import render_markdown
 from .tools.source_store import SourceLedger, validate_report
 from .workflows.research_workflow import ResearchWorkflow, WorkflowError
@@ -44,7 +51,7 @@ def _config(provider: ResearchProviderName) -> AppConfig:
     )
 
 
-def _answers(questions: list[object], fast: bool) -> dict[str, str]:
+def _answers(questions: Sequence[ClarificationQuestion], fast: bool) -> dict[str, str]:
     if fast:
         return {}
     answers: dict[str, str] = {}
@@ -58,21 +65,31 @@ def _answers(questions: list[object], fast: bool) -> dict[str, str]:
     return answers
 
 
-async def _run_request(request: UserResearchRequest, provider: ResearchProviderName, answers: dict[str, str]) -> object:
+async def _run_request(
+    request: UserResearchRequest, provider: ResearchProviderName, answers: dict[str, str]
+) -> FinalResearchPackage:
     workflow = ResearchWorkflow(_config(provider))
     return await workflow.run(request, answers)
 
 
 @app.command()
 def ask(
-    question: str = typer.Argument(..., help="Housing-policy research question."),
-    fast: bool = typer.Option(False, "--fast", help="Use transparent defaults without clarification."),
-    provider: ResearchProviderName = typer.Option(ResearchProviderName.OFFLINE, "--provider"),
-    output_format: str = typer.Option("both", "--format", help="markdown, json, or both"),
+    question: Annotated[str, typer.Argument(help="Housing-policy research question.")],
+    fast: Annotated[
+        bool, typer.Option("--fast", help="Use transparent defaults without clarification.")
+    ] = False,
+    provider: Annotated[
+        ResearchProviderName, typer.Option("--provider")
+    ] = ResearchProviderName.OFFLINE,
+    output_format: Annotated[
+        str, typer.Option("--format", help="markdown, json, or both")
+    ] = "both",
 ) -> None:
     """Run an interactive or fast research request."""
     mode = RunMode.FAST if fast else RunMode.INTERACTIVE
-    request = UserResearchRequest(question=question, mode=mode, provider=provider, accept_defaults=fast)
+    request = UserResearchRequest(
+        question=question, mode=mode, provider=provider, accept_defaults=fast
+    )
     questions = decide_clarifications(request).questions
     answers = _answers(questions, fast)
     try:
@@ -80,7 +97,7 @@ def ask(
     except WorkflowError as exc:
         raise typer.BadParameter(str(exc)) from exc
     console.print(f"\n[green]Run complete:[/green] {package.run_id}")
-    console.print(f"Artifacts: {Path(package.metrics.run_id).as_posix()}")
+    console.print(f"Artifacts: {(Path('artifacts') / package.metrics.run_id).as_posix()}")
     if output_format in {"json", "both"}:
         console.print(json.dumps(package.model_dump(mode="json"), indent=2))
     if output_format in {"markdown", "both"}:
@@ -89,12 +106,16 @@ def ask(
 
 @app.command()
 def demo(
-    offline: bool = typer.Option(True, "--offline/--live", help="Run the deterministic fixture demo."),
+    offline: bool = typer.Option(
+        True, "--offline/--live", help="Run the deterministic fixture demo."
+    ),
     output_format: str = typer.Option("both", "--format"),
 ) -> None:
     """Run the required mortgage-portability demonstration."""
     provider = ResearchProviderName.OFFLINE if offline else ResearchProviderName.WEB
-    request = UserResearchRequest(question=DEMO_QUESTION, mode=RunMode.FAST, provider=provider, accept_defaults=True)
+    request = UserResearchRequest(
+        question=DEMO_QUESTION, mode=RunMode.FAST, provider=provider, accept_defaults=True
+    )
     try:
         package = asyncio.run(_run_request(request, provider, {}))
     except WorkflowError as exc:
@@ -114,18 +135,22 @@ def graph(format: str = typer.Option("mermaid", "--format", help="mermaid or asc
     if format == "mermaid":
         typer.echo(mermaid_graph())
         return
-    typer.echo("Orchestrator -> Policy | Industry | Advocacy | Global -> Specialists -> Writer -> Validator -> Reviewer -> Revision -> Artifacts")
+    typer.echo(
+        "Orchestrator -> Policy | Industry | Advocacy | Global -> Specialists -> Writer -> Validator -> Reviewer -> Revision -> Artifacts"
+    )
 
 
 @app.command()
-def validate(package_path: Path = typer.Argument(..., exists=True, readable=True)) -> None:
+def validate(package_path: Annotated[Path, typer.Argument(exists=True, readable=True)]) -> None:
     """Validate a saved FinalResearchPackage JSON artifact."""
     from .models import FinalResearchPackage
 
     package = FinalResearchPackage.model_validate_json(package_path.read_text(encoding="utf-8"))
     report = validate_report(package.final_report, SourceLedger(package.source_ledger))
     if report.errors:
-        console.print_json(json.dumps({"ok": False, "errors": report.errors, "warnings": report.warnings}))
+        console.print_json(
+            json.dumps({"ok": False, "errors": report.errors, "warnings": report.warnings})
+        )
         raise typer.Exit(code=1)
     console.print_json(json.dumps({"ok": True, "errors": [], "warnings": report.warnings}))
 

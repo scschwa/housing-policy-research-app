@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from ..models import RunMetrics
 
@@ -15,7 +15,7 @@ class EventRecorder:
     events: list[dict[str, object]] = field(default_factory=list)
 
     def record(self, event: str, **metadata: object) -> None:
-        self.events.append({"timestamp": datetime.now(timezone.utc).isoformat(), "event": event, **metadata})
+        self.events.append({"timestamp": datetime.now(UTC).isoformat(), "event": event, **metadata})
 
 
 @dataclass
@@ -28,6 +28,6 @@ class Stopwatch:
 
 
 def finish_metrics(metrics: RunMetrics, stopwatch: Stopwatch) -> RunMetrics:
-    metrics.finished_at = datetime.now(timezone.utc)
+    metrics.finished_at = datetime.now(UTC)
     metrics.latency_ms = stopwatch.elapsed_ms
     return metrics

@@ -13,11 +13,11 @@ from ..models import ResearchAssignment, SearchQuery, SourceRecord
 class ResearchBackend(Protocol):
     name: str
 
-    async def search(self, query: SearchQuery, assignment: ResearchAssignment) -> list[SourceRecord]:
-        ...
+    async def search(
+        self, query: SearchQuery, assignment: ResearchAssignment
+    ) -> list[SourceRecord]: ...
 
-    def agent_tools(self) -> list[Any]:
-        ...
+    def agent_tools(self) -> list[Any]: ...
 
 
 class FixtureResearchBackend:
@@ -29,8 +29,12 @@ class FixtureResearchBackend:
         self.sources = [SourceRecord.model_validate(item) for item in payload["sources"]]
         self.branch_sources: dict[str, list[str]] = payload.get("branch_sources", {})
 
-    async def search(self, query: SearchQuery, assignment: ResearchAssignment) -> list[SourceRecord]:
-        ids = self.branch_sources.get(assignment.branch.value, [item.source_id for item in self.sources])
+    async def search(
+        self, query: SearchQuery, assignment: ResearchAssignment
+    ) -> list[SourceRecord]:
+        ids = self.branch_sources.get(
+            assignment.branch.value, [item.source_id for item in self.sources]
+        )
         selected = [item for item in self.sources if item.source_id in ids]
         return selected[: assignment.max_sources]
 
@@ -41,13 +45,20 @@ class FixtureResearchBackend:
 class LiveResearchBackend:
     name = "openai_web_search"
 
-    def __init__(self, max_results: int = 5) -> None:
+    def __init__(self, max_results: int = 5, cache_root: Path | None = None) -> None:
         self.max_results = max_results
+        self.cache = ResearchCache(cache_root or Path("artifacts/cache"))
 
-    async def search(self, query: SearchQuery, assignment: ResearchAssignment) -> list[SourceRecord]:
+    async def search(
+        self, query: SearchQuery, assignment: ResearchAssignment
+    ) -> list[SourceRecord]:
         # Live research is performed by the specialist Agent through WebSearchTool.
-        # This method remains part of the provider contract for cache and test adapters.
-        return []
+        # Cached records are made available to the specialist before a new search.
+        return (self.cache.load(query) or [])[: self.max_results]
+
+    def cache_results(self, query: SearchQuery, records: list[SourceRecord]) -> None:
+        if records:
+            self.cache.save(query, records[: self.max_results])
 
     def agent_tools(self) -> list[Any]:
         try:
@@ -77,4 +88,7 @@ class ResearchCache:
 
     def save(self, query: SearchQuery, records: list[SourceRecord]) -> None:
         path = self.root / f"{self.key(query)}.json"
-        path.write_text(json.dumps([item.model_dump(mode="json") for item in records], indent=2), encoding="utf-8")
+        path.write_text(
+            json.dumps([item.model_dump(mode="json") for item in records], indent=2),
+            encoding="utf-8",
+        )

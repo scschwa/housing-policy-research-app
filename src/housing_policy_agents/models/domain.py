@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from enum import IntEnum, StrEnum
 from typing import Any
 from uuid import uuid4
@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 
 def utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class StrictModel(BaseModel):
@@ -191,8 +191,26 @@ class ResearchPlan(StrictModel):
         assignment_branches = {item.branch for item in self.assignments}
         missing = set(self.selected_branches) - assignment_branches
         if missing:
-            raise ValueError(f"selected branches missing assignments: {sorted(m.value for m in missing)}")
+            raise ValueError(
+                f"selected branches missing assignments: {sorted(m.value for m in missing)}"
+            )
         return self
+
+
+class CountryComparison(StrictModel):
+    country: str
+    comparator_reason: str
+    government_level: str
+    policy_design: str
+    eligibility: str
+    funding: str
+    risk_allocation: str
+    administration: str
+    outcomes: str
+    institutional_differences: list[str]
+    transferability: str
+    evidence_quality: EvidenceStrength
+    source_ids: list[str] = Field(default_factory=list)
 
 
 class SourceRecord(StrictModel):
@@ -254,6 +272,7 @@ class SpecialistFinding(StrictModel):
     summary: str
     claims: list[EvidenceClaim] = Field(default_factory=list)
     discovered_sources: list[SourceRecord] = Field(default_factory=list)
+    country_comparisons: list[CountryComparison] = Field(default_factory=list)
     contradictions: list[Contradiction] = Field(default_factory=list)
     source_ids: list[str] = Field(default_factory=list)
     missing_perspectives: list[str] = Field(default_factory=list)
@@ -270,28 +289,13 @@ class ManagerSynthesis(StrictModel):
     specialist_branches: list[BranchName]
     branch_statuses: dict[BranchName, BranchStatus]
     findings: list[SpecialistFinding] = Field(default_factory=list)
+    country_comparisons: list[CountryComparison] = Field(default_factory=list)
     reconciled_claims: list[EvidenceClaim] = Field(default_factory=list)
     contradictions: list[Contradiction] = Field(default_factory=list)
     agreements: list[str] = Field(default_factory=list)
     disagreements: list[str] = Field(default_factory=list)
     incentive_driven_claims: list[str] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
-
-
-class CountryComparison(StrictModel):
-    country: str
-    comparator_reason: str
-    government_level: str
-    policy_design: str
-    eligibility: str
-    funding: str
-    risk_allocation: str
-    administration: str
-    outcomes: str
-    institutional_differences: list[str]
-    transferability: str
-    evidence_quality: EvidenceStrength
-    source_ids: list[str] = Field(default_factory=list)
 
 
 class PolicyOption(StrictModel):
@@ -352,7 +356,9 @@ class ReportSection(StrictModel):
         # Small convenience for the report builder's compact section literals.
         if args:
             if len(args) != 3 or kwargs:
-                raise TypeError("ReportSection positional form requires section_id, title, paragraphs")
+                raise TypeError(
+                    "ReportSection positional form requires section_id, title, paragraphs"
+                )
             kwargs = {"section_id": args[0], "title": args[1], "paragraphs": args[2]}
         super().__init__(**kwargs)
 
@@ -366,11 +372,13 @@ class DraftReport(StrictModel):
     source_ids_used: list[str] = Field(default_factory=list)
     evidence_gaps: list[str] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
-    disclosures: list[str] = Field(default_factory=lambda: [
-        "This report is research assistance, not legal advice.",
-        "Sources must be verified before formal reliance.",
-        "Forecasts and policy conclusions are uncertain.",
-    ])
+    disclosures: list[str] = Field(
+        default_factory=lambda: [
+            "This report is research assistance, not legal advice.",
+            "Sources must be verified before formal reliance.",
+            "Forecasts and policy conclusions are uncertain.",
+        ]
+    )
     revised: bool = False
     revision_count: int = 0
 

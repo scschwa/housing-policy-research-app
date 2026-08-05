@@ -12,4 +12,5 @@ htmlcov/
 node_modules/
 artifacts/*
 !artifacts/.gitkeep
+work/
 *.log

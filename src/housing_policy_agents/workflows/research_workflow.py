@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import uuid
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from ..agents.factory import build_agent_graph
@@ -18,17 +18,28 @@ from ..config import AppConfig
 from ..context import RunContext
 from ..guardrails import assess_request
 from ..models import (
+    AdversarialReview,
+    BranchName,
     BranchStatus,
     FinalResearchPackage,
     ManagerName,
+    ManagerSynthesis,
+    ReleaseRecommendation,
+    ResearchAssignment,
+    ResearchPlan,
     RunMetrics,
     SpecialistFinding,
     UserResearchRequest,
 )
 from ..reporting.render import persist_package
 from ..telemetry.metrics import EventRecorder, Stopwatch, finish_metrics
-from ..tools.research import FixtureResearchBackend, LiveResearchBackend
-from ..tools.source_store import SourceLedger, validate_claim_references, validate_report
+from ..tools.research import FixtureResearchBackend, LiveResearchBackend, ResearchBackend
+from ..tools.source_store import (
+    SourceLedger,
+    validate_claim_references,
+    validate_country_comparisons,
+    validate_report,
+)
 
 
 class WorkflowError(RuntimeError):
@@ -40,7 +51,9 @@ class ResearchWorkflow:
         self.config = config or AppConfig()
         self.graph = build_agent_graph(self.config)
 
-    async def run(self, request: UserResearchRequest, answers: dict[str, str] | None = None) -> FinalResearchPackage:
+    async def run(
+        self, request: UserResearchRequest, answers: dict[str, str] | None = None
+    ) -> FinalResearchPackage:
         decision = assess_request(request)
         if not decision.allowed:
             raise WorkflowError("Request rejected by guardrails: " + "; ".join(decision.reasons))
@@ -50,51 +63,125 @@ class ResearchWorkflow:
         context = RunContext(config=self.config, run_id=run_id, trace_id=trace_id)
         events = EventRecorder(run_id)
         stopwatch = Stopwatch()
-        started_at = datetime.now(timezone.utc)
+        started_at = datetime.now(UTC)
         events.record("run_started", provider=self.config.research_provider)
 
-        brief = build_brief(request, answers)
-        plan = build_plan(brief)
+        brief = build_brief(
+            request,
+            answers,
+            clarification_enabled=self.config.enable_clarification,
+        )
+        plan = self._apply_ablation(build_plan(brief))
         events.record("plan_created", branches=[branch.value for branch in plan.selected_branches])
-        backend = FixtureResearchBackend(self.config.fixture_path) if self.config.research_provider == "offline" else LiveResearchBackend(self.config.max_sources)
+        backend = (
+            FixtureResearchBackend(self.config.fixture_path)
+            if self.config.research_provider == "offline"
+            else LiveResearchBackend(
+                self.config.max_sources,
+                cache_root=Path(self.config.artifacts_dir) / "cache",
+            )
+        )
 
         findings = await self._run_specialists(plan.assignments, backend, context, events)
         ledger = SourceLedger()
         for finding in findings:
             for source in finding.discovered_sources:
                 ledger.add(source)
-        claim_validation = validate_claim_references([claim for finding in findings for claim in finding.claims], ledger)
+        claim_validation = validate_claim_references(
+            [claim for finding in findings for claim in finding.claims], ledger
+        )
         context.validation_failures.extend(claim_validation.errors)
-        events.record("branches_validated", errors=len(claim_validation.errors), warnings=len(claim_validation.warnings))
+        comparison_validation = validate_country_comparisons(
+            [
+                comparison
+                for finding in findings
+                for comparison in finding.country_comparisons
+            ],
+            ledger,
+        )
+        context.validation_failures.extend(comparison_validation.errors)
+        events.record(
+            "branches_validated",
+            errors=len(claim_validation.errors),
+            warnings=len(claim_validation.warnings),
+        )
 
         grouped: dict[ManagerName, list[SpecialistFinding]] = defaultdict(list)
         for finding in findings:
             for manager, branch_names in {
-                ManagerName.POLICY: {"government_sources", "legal_regulatory", "think_tank_academic"},
-                ManagerName.INDUSTRY: {"consumer", "loan_originator", "servicing", "secondary_market_risk_transfer"},
-                ManagerName.ADVOCACY: {"general_consumer_advocacy", "disadvantaged_communities", "financial_sustainability"},
+                ManagerName.POLICY: {
+                    "government_sources",
+                    "legal_regulatory",
+                    "think_tank_academic",
+                },
+                ManagerName.INDUSTRY: {
+                    "consumer",
+                    "loan_originator",
+                    "servicing",
+                    "secondary_market_risk_transfer",
+                },
+                ManagerName.ADVOCACY: {
+                    "general_consumer_advocacy",
+                    "disadvantaged_communities",
+                    "financial_sustainability",
+                },
                 ManagerName.GLOBAL: {"global_research"},
             }.items():
                 if finding.branch.value in branch_names:
                     grouped[manager].append(finding)
-        manager_syntheses = await asyncio.gather(*[
-            reconcile_manager(manager, manager_findings, context)
-            for manager, manager_findings in grouped.items()
-        ])
+        if self.config.enable_manager_reconciliation:
+            manager_syntheses = await asyncio.gather(
+                *[
+                    reconcile_manager(manager, manager_findings, context)
+                    for manager, manager_findings in grouped.items()
+                ]
+            )
+        else:
+            manager_syntheses = [
+                self._pass_through_manager(manager, manager_findings)
+                for manager, manager_findings in grouped.items()
+            ]
         events.record("managers_reconciled", count=len(manager_syntheses))
 
         draft = await write_report(brief, list(manager_syntheses), ledger.ids(), context)
         pre_review = validate_report(draft, ledger)
         context.validation_failures.extend(pre_review.errors)
-        events.record("pre_review_validation", errors=len(pre_review.errors), warnings=len(pre_review.warnings))
-        review = await review_report(draft, ledger, [item.model_dump(mode="json") for item in manager_syntheses], context)
+        events.record(
+            "pre_review_validation",
+            errors=len(pre_review.errors),
+            warnings=len(pre_review.warnings),
+        )
+        review = (
+            await review_report(
+                draft,
+                ledger,
+                [item.model_dump(mode="json") for item in manager_syntheses],
+                context,
+            )
+            if self.config.enable_adversarial_review
+            else AdversarialReview(
+                citation_completeness=1.0,
+                grounding_score=0.0,
+                balance_score=0.0,
+                calibration_score=0.0,
+                security_score=0.0,
+                release_recommendation=ReleaseRecommendation.APPROVE_WITH_CAVEATS,
+                reviewer_notes=["Adversarial review disabled by ablation configuration."],
+            )
+        )
         final_report = draft
-        if review.release_recommendation.value == "revise" or any(item.mandatory_revision for item in review.findings):
+        if review.release_recommendation.value == "revise" or any(
+            item.mandatory_revision for item in review.findings
+        ):
             final_report = await revise_report(draft, review, context)
             events.record("bounded_revision", revision_count=final_report.revision_count)
         final_validation = validate_report(final_report, ledger)
         context.validation_failures.extend(final_validation.errors)
-        events.record("final_validation", errors=len(final_validation.errors), warnings=len(final_validation.warnings))
+        events.record(
+            "final_validation",
+            errors=len(final_validation.errors),
+            warnings=len(final_validation.warnings),
+        )
 
         branch_statuses = {finding.branch.value: finding.status for finding in findings}
         metrics = RunMetrics(
@@ -128,14 +215,71 @@ class ResearchWorkflow:
             metrics=metrics,
         )
         artifact_dir = persist_package(package, Path(self.config.artifacts_dir))
-        (artifact_dir / "events.json").write_text(__import__("json").dumps(events.events, indent=2), encoding="utf-8")
+        (artifact_dir / "events.json").write_text(
+            __import__("json").dumps(events.events, indent=2), encoding="utf-8"
+        )
         events.record("artifacts_persisted", path=str(artifact_dir))
         return package
 
-    async def _run_specialists(self, assignments: list, backend: object, context: RunContext, events: EventRecorder) -> list[SpecialistFinding]:
+    def _apply_ablation(self, plan: ResearchPlan) -> ResearchPlan:
+        disabled = {
+            BranchName(value) for value in self.config.disabled_branches
+        }
+        if not disabled:
+            return plan
+        assignments = [item for item in plan.assignments if item.branch not in disabled]
+        selected = [item for item in plan.selected_branches if item not in disabled]
+        rationale = {branch: value for branch, value in plan.branch_rationale.items() if branch in selected}
+        return plan.model_copy(
+            update={
+                "selected_branches": selected,
+                "assignments": assignments,
+                "branch_rationale": rationale,
+            }
+        )
+
+    @staticmethod
+    def _pass_through_manager(
+        manager: ManagerName, findings: list[SpecialistFinding]
+    ) -> ManagerSynthesis:
+        return ManagerSynthesis(
+            manager=manager,
+            status=(
+                BranchStatus.COMPLETED
+                if all(item.status == BranchStatus.COMPLETED for item in findings)
+                else BranchStatus.PARTIAL
+            ),
+            specialist_branches=[item.branch for item in findings],
+            branch_statuses={item.branch: item.status for item in findings},
+            findings=findings,
+            country_comparisons=[
+                comparison
+                for finding in findings
+                for comparison in finding.country_comparisons
+            ],
+            reconciled_claims=[claim for item in findings for claim in item.claims],
+            contradictions=[
+                contradiction
+                for item in findings
+                for contradiction in item.contradictions
+            ],
+            limitations=[
+                limitation
+                for item in findings
+                for limitation in item.limitations
+            ],
+        )
+
+    async def _run_specialists(
+        self,
+        assignments: list[ResearchAssignment],
+        backend: ResearchBackend,
+        context: RunContext,
+        events: EventRecorder,
+    ) -> list[SpecialistFinding]:
         semaphore = asyncio.Semaphore(self.config.max_concurrency)
 
-        async def run_one(assignment: object) -> SpecialistFinding:
+        async def run_one(assignment: ResearchAssignment) -> SpecialistFinding:
             async with semaphore:
                 events.record("branch_started", branch=assignment.branch.value)
                 attempts = 0
@@ -143,12 +287,20 @@ class ResearchWorkflow:
                 while attempts <= self.config.max_branch_retries:
                     attempts += 1
                     finding = await run_specialist(assignment, backend, context)
+                    if isinstance(backend, LiveResearchBackend):
+                        for query in assignment.search_queries:
+                            backend.cache_results(query, finding.discovered_sources)
                     if finding.status != BranchStatus.FAILED:
                         break
                 if attempts > 1:
                     context.retries[assignment.branch.value] = attempts - 1
                 assert finding is not None
-                events.record("branch_finished", branch=assignment.branch.value, status=finding.status.value, attempts=attempts)
+                events.record(
+                    "branch_finished",
+                    branch=assignment.branch.value,
+                    status=finding.status.value,
+                    attempts=attempts,
+                )
                 return finding
 
         return list(await asyncio.gather(*(run_one(assignment) for assignment in assignments)))

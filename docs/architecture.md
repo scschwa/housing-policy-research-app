@@ -1,0 +1,48 @@
+# Architecture
+
+Housing Policy Research Network is a CLI-first, application-controlled research workflow. Python owns state, concurrency, retries, validation, artifact persistence, and the bounded revision count. The OpenAI Agents SDK supplies typed agents, hosted web search for live mode, tracing configuration, and manager/specialist callable tools.
+
+## Runtime flow
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant CLI
+    participant Orchestrator
+    participant Specialists
+    participant Ledger
+    participant Writer
+    participant Reviewer
+    participant Artifacts
+    User->>CLI: question, mode, provider
+    CLI->>Orchestrator: typed UserResearchRequest
+    Orchestrator->>Orchestrator: intake, defaults, branch selection, plan
+    par independent branches
+        Orchestrator->>Specialists: bounded assignments
+    end
+    Specialists-->>Ledger: typed findings and sources
+    Ledger->>Ledger: normalize, deduplicate, validate references
+    Ledger->>Writer: brief, manager syntheses, source IDs
+    Writer-->>Reviewer: draft report
+    Reviewer->>Ledger: citation and source checks
+    Reviewer-->>Writer: typed actionable findings
+    alt mandatory defect
+        Writer-->>Reviewer: one bounded revision
+    end
+    Reviewer-->>Artifacts: final package and metrics
+    Artifacts-->>CLI: Markdown and JSON paths
+```
+
+## Agent topology
+
+The orchestrator exposes four manager agents as bounded `Agent.as_tool` tools. Each manager exposes its specialists as bounded callable tools. In the explicit offline workflow, Python executes independent specialist assignments concurrently and invokes deterministic manager synthesis; in live mode the same typed contracts are passed through Agents SDK `Runner` calls. Handoffs are not used because the user-facing controller must retain ownership of budgets, branch status, errors, and revision policy.
+
+The configured graph is emitted by `housing-research graph --format mermaid` and is also represented in `src/housing_policy_agents/agents/factory.py`.
+
+## Data and safety boundaries
+
+`SourceLedger` is the only source registry used for citations. Retrieved excerpts are data, never instructions. Source prompt-injection flags are retained for auditability but are not passed into claim support. `validate_claim_references` and `validate_report` run before and after review. Live web search is opt-in (`RESEARCH_PROVIDER=web`, `ALLOW_NETWORK=true`, and `OPENAI_API_KEY`); offline mode uses synthetic fixture records and never presents them as verified evidence.
+
+## Configuration and observability
+
+`AppConfig` bounds turns, sources, searches, retries, concurrency, tokens, time, source diversity, and primary-source coverage. It also contains ablation switches for clarification, manager reconciliation, adversarial review, and named branches. Each run persists the plan, branch findings, ledger, draft, review, final report, metrics, and event log under `artifacts/<run_id>/`.

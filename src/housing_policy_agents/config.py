@@ -31,6 +31,10 @@ class AppConfig(BaseSettings):
     min_source_diversity: int = Field(default=3, ge=1, le=20)
     min_primary_source_coverage: float = Field(default=0.80, ge=0, le=1)
     source_verification: bool = False
+    enable_clarification: bool = True
+    enable_manager_reconciliation: bool = True
+    enable_adversarial_review: bool = True
+    disabled_branches: list[str] = Field(default_factory=list)
 
     def model_post_init(self, __context: object) -> None:
         if self.research_provider == "web" and not self.allow_network:
@@ -39,4 +43,3 @@ class AppConfig(BaseSettings):
     @property
     def live_enabled(self) -> bool:
         return self.research_provider == "web" and self.allow_network and bool(self.openai_api_key)
-

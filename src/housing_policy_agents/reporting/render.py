@@ -33,7 +33,9 @@ def render_decision_matrix(report: DraftReport) -> list[str]:
     header = ["Option"] + [criterion.name for criterion in matrix.criteria]
     lines = ["", "| " + " | ".join(header) + " |", "| " + " | ".join(["---"] * len(header)) + " |"]
     for option in matrix.options:
-        row = [option.name] + [matrix.scores[option.option_id][criterion.criterion_id] for criterion in matrix.criteria]
+        row = [option.name] + [
+            matrix.scores[option.option_id][criterion.criterion_id] for criterion in matrix.criteria
+        ]
         lines.append("| " + " | ".join(row) + " |")
     lines.extend(["", "**Matrix caveats:**", ""])
     lines.extend(f"- {caveat}" for caveat in matrix.caveats)
@@ -45,13 +47,32 @@ def persist_package(package: FinalResearchPackage, root: Path) -> Path:
     artifact_dir.mkdir(parents=True, exist_ok=True)
     payload = package.model_dump(mode="json")
     (artifact_dir / "package.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    (artifact_dir / "brief.json").write_text(json.dumps(package.brief.model_dump(mode="json"), indent=2), encoding="utf-8")
-    (artifact_dir / "plan.json").write_text(json.dumps(package.plan.model_dump(mode="json"), indent=2), encoding="utf-8")
-    (artifact_dir / "sources.json").write_text(json.dumps([item.model_dump(mode="json") for item in package.source_ledger], indent=2), encoding="utf-8")
-    (artifact_dir / "sources.md").write_text(SourceLedger(package.source_ledger).markdown(), encoding="utf-8")
-    (artifact_dir / "draft_report.json").write_text(json.dumps(package.draft_report.model_dump(mode="json"), indent=2), encoding="utf-8")
-    (artifact_dir / "review.json").write_text(json.dumps(package.adversarial_review.model_dump(mode="json"), indent=2), encoding="utf-8")
-    (artifact_dir / "final_report.json").write_text(json.dumps(package.final_report.model_dump(mode="json"), indent=2), encoding="utf-8")
-    (artifact_dir / "report.md").write_text(render_markdown(package.final_report, SourceLedger(package.source_ledger)), encoding="utf-8")
-    (artifact_dir / "metrics.json").write_text(json.dumps(package.metrics.model_dump(mode="json"), indent=2), encoding="utf-8")
+    (artifact_dir / "brief.json").write_text(
+        json.dumps(package.brief.model_dump(mode="json"), indent=2), encoding="utf-8"
+    )
+    (artifact_dir / "plan.json").write_text(
+        json.dumps(package.plan.model_dump(mode="json"), indent=2), encoding="utf-8"
+    )
+    (artifact_dir / "sources.json").write_text(
+        json.dumps([item.model_dump(mode="json") for item in package.source_ledger], indent=2),
+        encoding="utf-8",
+    )
+    (artifact_dir / "sources.md").write_text(
+        SourceLedger(package.source_ledger).markdown(), encoding="utf-8"
+    )
+    (artifact_dir / "draft_report.json").write_text(
+        json.dumps(package.draft_report.model_dump(mode="json"), indent=2), encoding="utf-8"
+    )
+    (artifact_dir / "review.json").write_text(
+        json.dumps(package.adversarial_review.model_dump(mode="json"), indent=2), encoding="utf-8"
+    )
+    (artifact_dir / "final_report.json").write_text(
+        json.dumps(package.final_report.model_dump(mode="json"), indent=2), encoding="utf-8"
+    )
+    (artifact_dir / "report.md").write_text(
+        render_markdown(package.final_report, SourceLedger(package.source_ledger)), encoding="utf-8"
+    )
+    (artifact_dir / "metrics.json").write_text(
+        json.dumps(package.metrics.model_dump(mode="json"), indent=2), encoding="utf-8"
+    )
     return artifact_dir

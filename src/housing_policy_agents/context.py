@@ -17,4 +17,3 @@ class RunContext:
     retries: dict[str, int] = field(default_factory=dict)
     validation_failures: list[str] = field(default_factory=list)
     tool_calls: int = 0
-

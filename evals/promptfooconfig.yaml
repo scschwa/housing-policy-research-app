@@ -1,0 +1,17 @@
+description: Offline evaluation suite for Housing Policy Research Network
+prompts:
+  - file://prompts/research_request.txt
+providers:
+  - id: file://providers/hierarchical_provider.py
+    label: hierarchical-offline
+    config:
+      pythonExecutable: python
+  - id: file://providers/baseline_provider.py
+    label: shallow-baseline
+    config:
+      pythonExecutable: python
+tests: file://datasets/offline.yaml
+defaultTest:
+  assert:
+    - type: python
+      value: file://assertions/quality.py
