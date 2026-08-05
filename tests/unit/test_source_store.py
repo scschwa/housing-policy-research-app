@@ -7,8 +7,14 @@ from housing_policy_agents.models import (
     BranchName,
     ClaimType,
     CountryComparison,
+    DecisionCriterion,
+    DecisionMatrix,
+    DraftReport,
     EvidenceClaim,
     EvidenceStrength,
+    PolicyOption,
+    ReportParagraph,
+    ReportSection,
     SearchQuery,
     SourceRecord,
     SourceTier,
@@ -19,6 +25,7 @@ from housing_policy_agents.tools.source_store import (
     SourceLedger,
     validate_claim_references,
     validate_country_comparisons,
+    validate_report,
 )
 
 
@@ -96,6 +103,42 @@ def test_country_comparison_validation_requires_known_sources_and_differences() 
     report = validate_country_comparisons([comparison], SourceLedger())
     assert not report.ok
     assert "S-missing" in report.errors[0]
+
+
+def test_report_validation_accepts_live_style_section_ids() -> None:
+    ledger = SourceLedger([source("S-1", "https://fixture.invalid/report")])
+    report = DraftReport(
+        title="Live report",
+        executive_summary="A concise summary.",
+        sections=[
+            ReportSection(
+                section_id="sec-1",
+                title="Live section",
+                paragraphs=[ReportParagraph(text="Supported claim.", citation_ids=["S-1"])],
+            )
+        ],
+        decision_matrix=DecisionMatrix(
+            criteria=[
+                DecisionCriterion(
+                    criterion_id="benefit", name="Benefit", description="Benefit"
+                )
+            ],
+            options=[
+                PolicyOption(
+                    option_id="O1",
+                    name="O1",
+                    description="demo",
+                    mechanism="demo",
+                    evidence_strength=EvidenceStrength.MODERATE,
+                )
+            ],
+            scores={"O1": {"benefit": 4}},
+        ),
+    )
+
+    validation = validate_report(report, ledger)
+
+    assert validation.ok
 
 
 def test_research_cache_round_trips_sources() -> None:

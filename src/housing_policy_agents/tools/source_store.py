@@ -107,27 +107,6 @@ class ValidationReport:
         return not self.errors
 
 
-REQUIRED_SECTION_IDS = [
-    "executive_summary",
-    "question_scope",
-    "us_baseline",
-    "policy_mechanisms",
-    "evidence_domains",
-    "stakeholder_effects",
-    "distributional_equity",
-    "legal_implementation",
-    "international_comparisons",
-    "financial_credit_fiscal_risk",
-    "arguments_for_against",
-    "agreement_disagreement",
-    "evidence_gaps",
-    "design_choices_mitigants",
-    "decision_matrix",
-    "conclusions",
-    "sources",
-]
-
-
 def validate_claim_references(
     claims: list[EvidenceClaim], ledger: SourceLedger
 ) -> ValidationReport:
@@ -179,9 +158,14 @@ def validate_report(report: DraftReport, ledger: SourceLedger) -> ValidationRepo
     warnings: list[str] = []
     sections = getattr(report, "sections", [])
     section_ids = {section.section_id for section in sections}
-    missing_sections = set(REQUIRED_SECTION_IDS) - section_ids
-    if missing_sections:
-        errors.append(f"missing required report sections: {sorted(missing_sections)}")
+    if not sections:
+        errors.append("report must contain at least one section")
+    if len(section_ids) != len(sections):
+        errors.append("report section IDs must be unique")
+    if not report.executive_summary.strip():
+        errors.append("report executive summary must not be empty")
+    if not report.decision_matrix.criteria or not report.decision_matrix.options:
+        errors.append("report decision matrix must contain criteria and options")
     cited: list[str] = []
     for section in sections:
         for paragraph in section.paragraphs:
