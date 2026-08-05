@@ -19,6 +19,9 @@ class AppConfig(BaseSettings):
     research_provider: Literal["offline", "web"] = "offline"
     allow_network: bool = False
     trace_include_sensitive_data: bool = False
+    sub_agent_telemetry_enabled: bool = True
+    sub_agent_telemetry_include_content: bool = True
+    sub_agent_telemetry_max_chars: int = Field(default=30_000, ge=1_000, le=200_000)
     artifacts_dir: Path = Path("artifacts")
     fixture_path: Path = Path("tests/fixtures/mortgage_portability.json")
     max_turns_per_agent: int = Field(default=6, ge=1, le=20)

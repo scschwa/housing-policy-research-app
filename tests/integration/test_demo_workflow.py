@@ -51,6 +51,15 @@ def test_fixture_workflow_persists_revised_package() -> None:
     assert (artifact / "report.md").exists()
     loaded = json.loads((artifact / "package.json").read_text(encoding="utf-8"))
     assert loaded["run_id"] == package.run_id
+    interaction_summary = json.loads(
+        (artifact / "interaction_summary.json").read_text(encoding="utf-8")
+    )
+    interaction_index = json.loads(
+        (artifact / "sub-agent-telemetry" / "index.json").read_text(encoding="utf-8")
+    )
+    assert interaction_summary["handoff_count"] >= 3
+    assert interaction_index["handoffs"]
+    assert (artifact / "sub-agent-telemetry").is_dir()
     assert progress[0] == "run_started"
     assert "branch_started" in progress
     assert "manager_finished" in progress

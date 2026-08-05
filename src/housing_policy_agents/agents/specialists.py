@@ -19,6 +19,7 @@ from ..models import (
     SourceRecord,
     SpecialistFinding,
 )
+from ..telemetry.interactions import run_agent_with_telemetry
 from ..tools.research import FixtureResearchBackend, ResearchBackend
 from .factory import build_specialist_agent
 
@@ -408,7 +409,7 @@ async def run_specialist(
                 finished_at=_now(),
             )
 
-        from agents import RunConfig, Runner
+        from agents import RunConfig
 
         agent = build_specialist_agent(
             assignment.branch.value, context.config, backend.agent_tools()
@@ -420,15 +421,17 @@ async def run_specialist(
             trace_include_sensitive_data=context.config.trace_include_sensitive_data,
             trace_metadata={"run_id": context.run_id, "branch": assignment.branch.value},
         )
-        result = await Runner.run(
-            agent,
-            json.dumps(
-                {
-                    "assignment": assignment.model_dump(mode="json"),
-                    "cached_sources": [item.model_dump(mode="json") for item in source_records],
-                },
-                indent=2,
-            ),
+        input_payload = {
+            "assignment": assignment.model_dump(mode="json"),
+            "cached_sources": [item.model_dump(mode="json") for item in source_records],
+        }
+        result = await run_agent_with_telemetry(
+            context=context,
+            agent=agent,
+            runner_input=json.dumps(input_payload, indent=2),
+            input_payload=input_payload,
+            agent_name=f"{assignment.branch.value}_researcher",
+            stage="research",
             max_turns=context.config.max_turns_per_agent,
             run_config=run_config,
         )

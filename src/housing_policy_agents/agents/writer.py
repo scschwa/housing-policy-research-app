@@ -18,6 +18,7 @@ from ..models import (
     ReportSection,
     ResearchBrief,
 )
+from ..telemetry.interactions import run_agent_with_telemetry
 from .factory import build_writer_agent
 
 
@@ -425,19 +426,21 @@ async def write_report(
 ) -> DraftReport:
     if context.config.research_provider == "offline":
         return offline_report(brief, managers, source_ids)
-    from agents import RunConfig, Runner
+    from agents import RunConfig
 
     agent = build_writer_agent(context.config)
-    result = await Runner.run(
-        agent,
-        json.dumps(
-            {
-                "brief": brief.model_dump(mode="json"),
-                "manager_syntheses": [item.model_dump(mode="json") for item in managers],
-                "source_ids": sorted(source_ids),
-            },
-            indent=2,
-        ),
+    input_payload = {
+        "brief": brief.model_dump(mode="json"),
+        "manager_syntheses": [item.model_dump(mode="json") for item in managers],
+        "source_ids": sorted(source_ids),
+    }
+    result = await run_agent_with_telemetry(
+        context=context,
+        agent=agent,
+        runner_input=json.dumps(input_payload, indent=2),
+        input_payload=input_payload,
+        agent_name="synthesis_writer",
+        stage="draft",
         max_turns=context.config.max_turns_per_agent,
         run_config=RunConfig(
             model=context.config.openai_model,
@@ -472,15 +475,20 @@ async def revise_report(
         report.revised = True
         report.revision_count += 1
         return report
-    from agents import RunConfig, Runner
+    from agents import RunConfig
 
     agent = build_writer_agent(context.config)
-    result = await Runner.run(
-        agent,
-        json.dumps(
-            {"draft": report.model_dump(mode="json"), "review": review.model_dump(mode="json")},
-            indent=2,
-        ),
+    input_payload = {
+        "draft": report.model_dump(mode="json"),
+        "review": review.model_dump(mode="json"),
+    }
+    result = await run_agent_with_telemetry(
+        context=context,
+        agent=agent,
+        runner_input=json.dumps(input_payload, indent=2),
+        input_payload=input_payload,
+        agent_name="synthesis_writer_revision",
+        stage="revision",
         max_turns=max(1, min(context.config.max_turns_per_agent, 2)),
         run_config=RunConfig(
             model=context.config.openai_model,

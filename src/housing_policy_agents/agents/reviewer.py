@@ -6,6 +6,7 @@ import json
 
 from ..context import RunContext
 from ..models import AdversarialReview, DraftReport, ReleaseRecommendation, ReviewFinding
+from ..telemetry.interactions import run_agent_with_telemetry
 from ..tools.source_store import SourceLedger, validate_report
 from .factory import build_reviewer_agent
 
@@ -76,19 +77,21 @@ async def review_report(
 ) -> AdversarialReview:
     if context.config.research_provider == "offline":
         return offline_review(report, ledger)
-    from agents import RunConfig, Runner
+    from agents import RunConfig
 
     agent = build_reviewer_agent(context.config)
-    result = await Runner.run(
-        agent,
-        json.dumps(
-            {
-                "draft": report.model_dump(mode="json"),
-                "sources": [item.model_dump(mode="json") for item in ledger.values()],
-                "evidence": evidence,
-            },
-            indent=2,
-        ),
+    input_payload = {
+        "draft": report.model_dump(mode="json"),
+        "sources": [item.model_dump(mode="json") for item in ledger.values()],
+        "evidence": evidence,
+    }
+    result = await run_agent_with_telemetry(
+        context=context,
+        agent=agent,
+        runner_input=json.dumps(input_payload, indent=2),
+        input_payload=input_payload,
+        agent_name="adversarial_reviewer",
+        stage="review",
         max_turns=context.config.max_turns_per_agent,
         run_config=RunConfig(
             model=context.config.openai_model,

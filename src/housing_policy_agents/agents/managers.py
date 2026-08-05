@@ -6,6 +6,7 @@ import json
 
 from ..context import RunContext
 from ..models import BranchStatus, ManagerName, ManagerSynthesis, SpecialistFinding
+from ..telemetry.interactions import run_agent_with_telemetry
 from .factory import build_manager_agent
 
 MANAGER_BRANCHES = {
@@ -67,18 +68,20 @@ async def reconcile_manager(
             limitations=limitations,
         )
 
-    from agents import RunConfig, Runner
+    from agents import RunConfig
 
     agent = build_manager_agent(manager.value, context.config)
-    result = await Runner.run(
-        agent,
-        json.dumps(
-            {
-                "manager": manager.value,
-                "findings": [item.model_dump(mode="json") for item in findings],
-            },
-            indent=2,
-        ),
+    input_payload = {
+        "manager": manager.value,
+        "findings": [item.model_dump(mode="json") for item in findings],
+    }
+    result = await run_agent_with_telemetry(
+        context=context,
+        agent=agent,
+        runner_input=json.dumps(input_payload, indent=2),
+        input_payload=input_payload,
+        agent_name=manager.value,
+        stage="reconciliation",
         max_turns=context.config.max_turns_per_agent,
         run_config=RunConfig(
             model=context.config.openai_model,

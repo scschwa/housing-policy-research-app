@@ -32,6 +32,7 @@ from ..models import (
     UserResearchRequest,
 )
 from ..reporting.render import persist_package
+from ..telemetry.interactions import InteractionTelemetry
 from ..telemetry.metrics import EventRecorder, ProgressCallback, Stopwatch, finish_metrics
 from ..tools.research import FixtureResearchBackend, LiveResearchBackend, ResearchBackend
 from ..tools.source_store import (
@@ -63,7 +64,19 @@ class ResearchWorkflow:
 
         run_id = f"run-{uuid.uuid4().hex[:12]}"
         trace_id = f"trace_{uuid.uuid4().hex}"
-        context = RunContext(config=self.config, run_id=run_id, trace_id=trace_id)
+        context = RunContext(
+            config=self.config,
+            run_id=run_id,
+            trace_id=trace_id,
+            interaction_telemetry=InteractionTelemetry(
+                run_id=run_id,
+                enabled=self.config.sub_agent_telemetry_enabled,
+                include_content=self.config.sub_agent_telemetry_include_content,
+                max_chars=self.config.sub_agent_telemetry_max_chars,
+            ),
+        )
+        telemetry = context.interaction_telemetry
+        assert telemetry is not None
         events = EventRecorder(run_id, on_record=progress_callback)
         stopwatch = Stopwatch()
         started_at = datetime.now(UTC)
@@ -143,6 +156,15 @@ class ResearchWorkflow:
                     manager=manager.value,
                     branches=[item.branch.value for item in manager_findings],
                 )
+                telemetry.handoff(
+                    source="specialist_network",
+                    target=manager.value,
+                    stage="manager_reconciliation",
+                    payload={
+                        "branches": [item.branch.value for item in manager_findings],
+                        "finding_count": len(manager_findings),
+                    },
+                )
                 synthesis = await reconcile_manager(manager, manager_findings, context)
                 events.record(
                     "manager_finished",
@@ -166,6 +188,15 @@ class ResearchWorkflow:
         events.record("managers_reconciled", count=len(manager_syntheses))
 
         events.record("draft_started")
+        telemetry.handoff(
+            source="research_managers",
+            target="synthesis_writer",
+            stage="drafting",
+            payload={
+                "manager_count": len(manager_syntheses),
+                "source_count": len(ledger.ids()),
+            },
+        )
         draft = await write_report(brief, list(manager_syntheses), ledger.ids(), context)
         events.record("draft_completed", sections=len(draft.sections))
         pre_review = validate_report(draft, ledger)
@@ -177,6 +208,15 @@ class ResearchWorkflow:
         )
         if self.config.enable_adversarial_review:
             events.record("review_started")
+            telemetry.handoff(
+                source="synthesis_writer",
+                target="adversarial_reviewer",
+                stage="review",
+                payload={
+                    "section_count": len(draft.sections),
+                    "source_count": len(ledger.ids()),
+                },
+            )
             review = await review_report(
                 draft,
                 ledger,
@@ -204,6 +244,12 @@ class ResearchWorkflow:
             item.mandatory_revision for item in review.findings
         ):
             events.record("revision_started")
+            telemetry.handoff(
+                source="adversarial_reviewer",
+                target="synthesis_writer",
+                stage="revision",
+                payload={"finding_count": len(review.findings)},
+            )
             fallback_reason: str | None = None
             try:
                 final_report = await asyncio.wait_for(
@@ -277,6 +323,7 @@ class ResearchWorkflow:
         (artifact_dir / "events.json").write_text(
             __import__("json").dumps(events.events, indent=2), encoding="utf-8"
         )
+        telemetry.persist(artifact_dir)
         return package
 
     def _apply_ablation(self, plan: ResearchPlan) -> ResearchPlan:

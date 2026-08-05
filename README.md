@@ -39,6 +39,8 @@ During `ask` and `demo --live`, the CLI prints bounded progress for intake, plan
 
 Copy `.env.example` to `.env` for a local configuration. Offline mode requires no key. Live mode requires an OpenAI API key, `RESEARCH_PROVIDER=web`, and `ALLOW_NETWORK=true`; the application refuses live configuration without the explicit network switch. Set bounded limits such as `MAX_TURNS_PER_AGENT`, `REVISION_TIMEOUT_SECONDS`, `MAX_SOURCES`, `MAX_BRANCH_RETRIES`, and `MAX_CONCURRENCY` for the deployment rather than relying on unbounded model behavior. If a live revision exceeds its timeout, the validated draft is retained and the run completes with an explicit caveat.
 
+By default, live runs also persist redacted sub-agent telemetry. The artifact root contains `interaction_summary.json`; `sub-agent-telemetry/index.json` lists workflow handoffs and recorded calls; and each numbered interaction directory contains `request.json`, `transcript.json`, and `result.json`. Specialist failures include the exception, bounded traceback, request payload, and any partial SDK items available from the failed run. Set `SUB_AGENT_TELEMETRY_INCLUDE_CONTENT=false` to keep metadata, handoffs, and failure details while omitting prompt/response bodies, or set `SUB_AGENT_TELEMETRY_ENABLED=false` to disable the files entirely. Content is truncated per value at `SUB_AGENT_TELEMETRY_MAX_CHARS` and common secret-shaped values are redacted.
+
 ## Fixed and interactive requests
 
 `ask` is interactive by default and asks only high-value clarification questions. Use `--fast` to accept transparent defaults:

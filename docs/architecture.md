@@ -1,6 +1,8 @@
 # Architecture
 
-Housing Policy Research Network is a CLI-first, application-controlled research workflow. Python owns state, concurrency, retries, validation, artifact persistence, and the bounded revision count. The OpenAI Agents SDK supplies typed agents, hosted web search for live mode, tracing configuration, and manager/specialist callable tools.
+Housing Policy Research Network is a CLI-first, application-controlled research workflow. Python owns state, concurrency, retries, validation, artifact persistence, tracing metadata, sub-agent interaction telemetry, and the bounded revision count. The OpenAI Agents SDK supplies typed agents, hosted web search for live mode, tracing configuration, and manager/specialist callable tools.
+
+Each live agent call is wrapped by the application telemetry recorder. It captures the bounded request payload, SDK-generated run items (including tool calls and outputs), raw model responses, final output, failure details, and explicit workflow handoffs. Artifacts expose a root `interaction_summary.json` plus a `sub-agent-telemetry/` directory with an index and one folder per interaction. Content capture is redacted, bounded, and configurable through `SUB_AGENT_TELEMETRY_*` settings.
 
 ## Runtime flow
 
