@@ -372,9 +372,19 @@ class DecisionMatrix(StrictModel):
     @model_validator(mode="after")
     def every_option_has_scores(self) -> DecisionMatrix:
         option_ids = {item.option_id for item in self.options}
+        criterion_ids = {item.criterion_id for item in self.criteria}
+        if set(self.scores) == criterion_ids:
+            nested_ids = {key for values in self.scores.values() for key in values}
+            if nested_ids == option_ids:
+                self.scores = {
+                    option_id: {
+                        criterion_id: self.scores[criterion_id][option_id]
+                        for criterion_id in criterion_ids
+                    }
+                    for option_id in option_ids
+                }
         if set(self.scores) != option_ids:
             raise ValueError("decision matrix scores must include every policy option exactly once")
-        criterion_ids = {item.criterion_id for item in self.criteria}
         for option_id, values in self.scores.items():
             missing = criterion_ids - set(values)
             if missing:

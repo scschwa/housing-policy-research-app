@@ -75,6 +75,26 @@ def test_decision_matrix_accepts_qualitative_score_ranges() -> None:
     assert score.range == "1-3"
 
 
+def test_decision_matrix_normalizes_transposed_scores() -> None:
+    criteria = [
+        DecisionCriterion(criterion_id="benefit", name="Benefit", description="Benefit"),
+        DecisionCriterion(criterion_id="risk", name="Risk", description="Risk"),
+    ]
+    matrix = DecisionMatrix(
+        criteria=criteria,
+        options=[option("O1"), option("O2")],
+        scores={
+            "benefit": {"O1": "high", "O2": "medium"},
+            "risk": {"O1": "low", "O2": "high"},
+        },
+    )
+
+    assert matrix.scores == {
+        "O1": {"benefit": 5, "risk": 1},
+        "O2": {"benefit": 3, "risk": 5},
+    }
+
+
 def test_manager_synthesis_accepts_source_ids() -> None:
     synthesis = ManagerSynthesis(
         manager=ManagerName.POLICY,
