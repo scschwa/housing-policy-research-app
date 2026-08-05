@@ -481,7 +481,7 @@ async def revise_report(
             {"draft": report.model_dump(mode="json"), "review": review.model_dump(mode="json")},
             indent=2,
         ),
-        max_turns=context.config.max_turns_per_agent,
+        max_turns=max(1, min(context.config.max_turns_per_agent, 2)),
         run_config=RunConfig(
             model=context.config.openai_model,
             workflow_name="Housing Policy Research Network",

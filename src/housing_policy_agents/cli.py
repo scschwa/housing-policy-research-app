@@ -121,7 +121,15 @@ def _display_progress(event: str, metadata: dict[str, object]) -> None:
     elif event == "revision_started":
         console.print("[cyan]Applying bounded report revision...[/cyan]")
     elif event == "bounded_revision":
-        console.print(f"[green]OK - Revision complete (revision={metadata.get('revision_count', 0)})[/green]")
+        if metadata.get("fallback"):
+            console.print("[yellow]OK - Revision fallback used; retaining validated draft[/yellow]")
+        else:
+            console.print(f"[green]OK - Revision complete (revision={metadata.get('revision_count', 0)})[/green]")
+    elif event == "revision_timed_out":
+        console.print(
+            f"[yellow]Revision timed out after {metadata.get('timeout_seconds', 0)} seconds; "
+            "retaining validated draft[/yellow]"
+        )
     elif event == "final_validation":
         console.print(
             f"[cyan]OK - Final validation complete (errors={metadata.get('errors', 0)}, "

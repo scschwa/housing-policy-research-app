@@ -22,6 +22,7 @@ class AppConfig(BaseSettings):
     artifacts_dir: Path = Path("artifacts")
     fixture_path: Path = Path("tests/fixtures/mortgage_portability.json")
     max_turns_per_agent: int = Field(default=6, ge=1, le=20)
+    revision_timeout_seconds: int = Field(default=120, ge=10, le=600)
     max_searches: int = Field(default=6, ge=1, le=100)
     max_sources: int = Field(default=24, ge=1, le=200)
     max_branch_retries: int = Field(default=1, ge=0, le=5)
