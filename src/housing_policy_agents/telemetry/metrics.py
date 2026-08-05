@@ -3,19 +3,26 @@
 from __future__ import annotations
 
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 
 from ..models import RunMetrics
 
+ProgressCallback = Callable[[str, dict[str, object]], None]
+
 
 @dataclass
 class EventRecorder:
     run_id: str
+    on_record: ProgressCallback | None = None
     events: list[dict[str, object]] = field(default_factory=list)
 
     def record(self, event: str, **metadata: object) -> None:
-        self.events.append({"timestamp": datetime.now(UTC).isoformat(), "event": event, **metadata})
+        record = {"timestamp": datetime.now(UTC).isoformat(), "event": event, **metadata}
+        self.events.append(record)
+        if self.on_record:
+            self.on_record(event, metadata)
 
 
 @dataclass

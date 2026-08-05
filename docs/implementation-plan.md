@@ -16,10 +16,11 @@ The implementation is complete through the offline acceptance path. The reposito
 Verification performed before publishing:
 
 - `ruff check .` — clean.
-- `pytest -q` — 13 passed.
-- `mypy --exclude-gitignore src tests evals` — 34 files checked with no issues.
+- `pytest -q` — 16 passed.
+- `mypy --exclude-gitignore src tests evals` — 35 files checked with no issues.
 - Offline Promptfoo evaluation — 52/52 cases passed.
 - Ablation Promptfoo evaluation — 208/208 cases passed across eight providers.
 - Offline demo plus artifact validation — completed with `ok: true`.
+- CLI progress smoke test — stage and branch updates printed successfully on Windows-safe ASCII output.
 
 Live evaluation remains opt-in because it requires a configured model/API key and incurs external retrieval/token cost. Synthetic fixtures are intentionally used for deterministic CI and security regression coverage.

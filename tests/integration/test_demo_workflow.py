@@ -20,13 +20,19 @@ def test_fixture_workflow_persists_revised_package() -> None:
     config = AppConfig(
         research_provider="offline", fixture_path=fixture, artifacts_dir=artifact_root
     )
+    progress: list[str] = []
     request = UserResearchRequest(
         question=QUESTION,
         mode=RunMode.FAST,
         provider=ResearchProviderName.OFFLINE,
         accept_defaults=True,
     )
-    package = asyncio.run(ResearchWorkflow(config).run(request))
+    package = asyncio.run(
+        ResearchWorkflow(config).run(
+            request,
+            progress_callback=lambda event, metadata: progress.append(event),
+        )
+    )
     artifact = artifact_root / package.run_id
     assert package.final_report.revised is True
     assert package.final_report.revision_count == 1
@@ -45,6 +51,10 @@ def test_fixture_workflow_persists_revised_package() -> None:
     assert (artifact / "report.md").exists()
     loaded = json.loads((artifact / "package.json").read_text(encoding="utf-8"))
     assert loaded["run_id"] == package.run_id
+    assert progress[0] == "run_started"
+    assert "branch_started" in progress
+    assert "manager_finished" in progress
+    assert progress[-1] == "artifacts_persisted"
 
 
 def test_branch_selection_avoids_mortgage_operations_for_zoning() -> None:

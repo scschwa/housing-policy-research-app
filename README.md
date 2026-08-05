@@ -33,6 +33,8 @@ npm run eval:offline
 
 Live mode requires `OPENAI_API_KEY`, `OPENAI_MODEL`, and `RESEARCH_PROVIDER=web`. It is intentionally excluded from the default offline evaluation suite.
 
+During `ask` and `demo --live`, the CLI prints bounded progress for intake, planning, each research branch, manager reconciliation, drafting, adversarial review, revision, validation, and artifact persistence. Live agent outputs remain Pydantic-validated; models containing typed mappings use the Agents SDK's explicit non-strict schema fallback because that SDK path cannot represent arbitrary JSON object keys in strict mode.
+
 ## Environment configuration
 
 Copy `.env.example` to `.env` for a local configuration. Offline mode requires no key. Live mode requires an OpenAI API key, `RESEARCH_PROVIDER=web`, and `ALLOW_NETWORK=true`; the application refuses live configuration without the explicit network switch. Set bounded limits such as `MAX_TURNS_PER_AGENT`, `MAX_SOURCES`, `MAX_BRANCH_RETRIES`, and `MAX_CONCURRENCY` for the deployment rather than relying on unbounded model behavior.

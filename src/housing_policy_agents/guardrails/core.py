@@ -21,6 +21,18 @@ HOUSING_TERMS = {
     "insurance",
     "property tax",
     "land use",
+    "chattel loan",
+    "chattel loans",
+    "manufactured home",
+    "manufactured housing",
+    "mobile home",
+    "housing finance",
+    "real estate finance",
+    "fannie mae",
+    "freddie mac",
+    "government-sponsored enterprise",
+    "government sponsored enterprise",
+    "gse",
 }
 INJECTION_PATTERNS = [
     r"ignore\s+(all\s+)?previous",

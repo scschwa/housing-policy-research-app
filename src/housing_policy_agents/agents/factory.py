@@ -15,6 +15,24 @@ def read_prompt(name: str) -> str:
     return (PROMPT_ROOT / f"{name}.md").read_text(encoding="utf-8")
 
 
+def agent_output_schema(output_type: type[Any]) -> Any:
+    """Prefer strict schemas, relaxing only models with SDK-incompatible mappings.
+
+    The Agents SDK strict-schema normalizer rejects JSON Schema objects whose
+    ``additionalProperties`` value is itself a schema. Pydantic models such as
+    ``ManagerSynthesis.branch_statuses`` and ``DecisionMatrix.scores`` use typed
+    mappings for valid internal data, so those outputs need the SDK's explicit
+    non-strict fallback. Pydantic validation still runs on the returned object.
+    """
+
+    from agents import AgentOutputSchema, UserError
+
+    try:
+        return AgentOutputSchema(output_type, strict_json_schema=True)
+    except UserError:
+        return AgentOutputSchema(output_type, strict_json_schema=False)
+
+
 def build_orchestrator_agent(config: AppConfig) -> Any:
     from agents import Agent
 
@@ -22,7 +40,7 @@ def build_orchestrator_agent(config: AppConfig) -> Any:
         name="Research Orchestrator",
         instructions=read_prompt("orchestrator"),
         model=config.openai_model,
-        output_type=ResearchPlan,
+        output_type=agent_output_schema(ResearchPlan),
     )
 
 
@@ -34,7 +52,7 @@ def build_specialist_agent(branch: str, config: AppConfig, tools: list[Any]) -> 
         instructions=f"{read_prompt('specialist')}\nYour assigned branch is {branch}.",
         model=config.openai_model,
         tools=tools,
-        output_type=SpecialistFinding,
+        output_type=agent_output_schema(SpecialistFinding),
     )
 
 
@@ -51,7 +69,7 @@ def build_manager_agent(
         ),
         model=config.openai_model,
         tools=specialist_tools or [],
-        output_type=ManagerSynthesis,
+        output_type=agent_output_schema(ManagerSynthesis),
     )
 
 
@@ -62,7 +80,7 @@ def build_writer_agent(config: AppConfig) -> Any:
         name="Synthesis Writer",
         instructions=read_prompt("writer"),
         model=config.openai_model,
-        output_type=DraftReport,
+        output_type=agent_output_schema(DraftReport),
     )
 
 
@@ -75,7 +93,7 @@ def build_reviewer_agent(config: AppConfig) -> Any:
         name="Adversarial Reviewer",
         instructions=read_prompt("reviewer"),
         model=config.openai_model,
-        output_type=AdversarialReview,
+        output_type=agent_output_schema(AdversarialReview),
     )
 
 

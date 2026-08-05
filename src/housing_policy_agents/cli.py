@@ -22,6 +22,7 @@ from .models import (
     UserResearchRequest,
 )
 from .reporting.render import render_markdown
+from .telemetry.metrics import ProgressCallback
 from .tools.source_store import SourceLedger, validate_report
 from .workflows.research_workflow import ResearchWorkflow, WorkflowError
 
@@ -65,11 +66,79 @@ def _answers(questions: Sequence[ClarificationQuestion], fast: bool) -> dict[str
     return answers
 
 
+def _display_progress(event: str, metadata: dict[str, object]) -> None:
+    """Print bounded, non-sensitive workflow progress for CLI users."""
+
+    def label(value: object) -> str:
+        return str(value).replace("_", " ").title()
+
+    if event == "run_started":
+        console.print(f"[bold cyan]Starting {label(metadata.get('provider', 'research'))} research[/bold cyan]")
+    elif event == "intake_validated":
+        console.print("[cyan]OK - Intake accepted; applying research defaults[/cyan]")
+    elif event == "plan_created":
+        branches = metadata.get("branches", [])
+        branch_count = len(branches) if isinstance(branches, list) else 0
+        console.print(f"[cyan]OK - Research plan created ({branch_count} branches)[/cyan]")
+    elif event == "research_started":
+        console.print(f"[cyan]Researching {metadata.get('assignments', 0)} assignments...[/cyan]")
+    elif event == "branch_started":
+        console.print(f"  [dim]-> Branch started: {label(metadata.get('branch', 'unknown'))}[/dim]")
+    elif event == "branch_finished":
+        console.print(
+            f"  [green]OK - Branch finished: {label(metadata.get('branch', 'unknown'))} "
+            f"({label(metadata.get('status', 'unknown'))}; attempts={metadata.get('attempts', 1)})[/green]"
+        )
+    elif event == "branches_validated":
+        console.print(
+            f"[cyan]OK - Evidence checked (errors={metadata.get('errors', 0)}, "
+            f"warnings={metadata.get('warnings', 0)})[/cyan]"
+        )
+    elif event == "manager_started":
+        console.print(f"[cyan]Reconciling {label(metadata.get('manager', 'manager'))}...[/cyan]")
+    elif event == "manager_finished":
+        console.print(f"[green]OK - Manager synthesis complete: {label(metadata.get('manager', 'manager'))}[/green]")
+    elif event == "managers_reconciled":
+        console.print(f"[cyan]OK - Manager layer complete ({metadata.get('count', 0)} managers)[/cyan]")
+    elif event == "draft_started":
+        console.print("[cyan]Writing evidence-grounded draft report...[/cyan]")
+    elif event == "draft_completed":
+        console.print(f"[green]OK - Draft report complete ({metadata.get('sections', 0)} sections)[/green]")
+    elif event == "pre_review_validation":
+        console.print(
+            f"[cyan]OK - Pre-review validation complete (errors={metadata.get('errors', 0)}, "
+            f"warnings={metadata.get('warnings', 0)})[/cyan]"
+        )
+    elif event == "review_started":
+        console.print("[cyan]Running adversarial review...[/cyan]")
+    elif event == "review_completed":
+        console.print(
+            f"[green]OK - Review complete: {label(metadata.get('recommendation', 'unknown'))} "
+            f"({metadata.get('findings', 0)} findings)[/green]"
+        )
+    elif event == "review_skipped":
+        console.print("[yellow]Adversarial review skipped by configuration[/yellow]")
+    elif event == "revision_started":
+        console.print("[cyan]Applying bounded report revision...[/cyan]")
+    elif event == "bounded_revision":
+        console.print(f"[green]OK - Revision complete (revision={metadata.get('revision_count', 0)})[/green]")
+    elif event == "final_validation":
+        console.print(
+            f"[cyan]OK - Final validation complete (errors={metadata.get('errors', 0)}, "
+            f"warnings={metadata.get('warnings', 0)})[/cyan]"
+        )
+    elif event == "artifacts_persisted":
+        console.print(f"[green]OK - Artifacts written to {metadata.get('path', 'artifacts')}[/green]")
+
+
 async def _run_request(
-    request: UserResearchRequest, provider: ResearchProviderName, answers: dict[str, str]
+    request: UserResearchRequest,
+    provider: ResearchProviderName,
+    answers: dict[str, str],
+    progress_callback: ProgressCallback | None = None,
 ) -> FinalResearchPackage:
     workflow = ResearchWorkflow(_config(provider))
-    return await workflow.run(request, answers)
+    return await workflow.run(request, answers, progress_callback=progress_callback)
 
 
 @app.command()
@@ -93,7 +162,7 @@ def ask(
     questions = decide_clarifications(request).questions
     answers = _answers(questions, fast)
     try:
-        package = asyncio.run(_run_request(request, provider, answers))
+        package = asyncio.run(_run_request(request, provider, answers, _display_progress))
     except WorkflowError as exc:
         raise typer.BadParameter(str(exc)) from exc
     console.print(f"\n[green]Run complete:[/green] {package.run_id}")
@@ -117,7 +186,7 @@ def demo(
         question=DEMO_QUESTION, mode=RunMode.FAST, provider=provider, accept_defaults=True
     )
     try:
-        package = asyncio.run(_run_request(request, provider, {}))
+        package = asyncio.run(_run_request(request, provider, {}, _display_progress))
     except WorkflowError as exc:
         raise typer.BadParameter(str(exc)) from exc
     console.print(f"[green]Demo complete:[/green] {package.run_id}")

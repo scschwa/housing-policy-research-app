@@ -32,7 +32,7 @@ from ..models import (
     UserResearchRequest,
 )
 from ..reporting.render import persist_package
-from ..telemetry.metrics import EventRecorder, Stopwatch, finish_metrics
+from ..telemetry.metrics import EventRecorder, ProgressCallback, Stopwatch, finish_metrics
 from ..tools.research import FixtureResearchBackend, LiveResearchBackend, ResearchBackend
 from ..tools.source_store import (
     SourceLedger,
@@ -52,7 +52,10 @@ class ResearchWorkflow:
         self.graph = build_agent_graph(self.config)
 
     async def run(
-        self, request: UserResearchRequest, answers: dict[str, str] | None = None
+        self,
+        request: UserResearchRequest,
+        answers: dict[str, str] | None = None,
+        progress_callback: ProgressCallback | None = None,
     ) -> FinalResearchPackage:
         decision = assess_request(request)
         if not decision.allowed:
@@ -61,10 +64,11 @@ class ResearchWorkflow:
         run_id = f"run-{uuid.uuid4().hex[:12]}"
         trace_id = f"trace_{uuid.uuid4().hex}"
         context = RunContext(config=self.config, run_id=run_id, trace_id=trace_id)
-        events = EventRecorder(run_id)
+        events = EventRecorder(run_id, on_record=progress_callback)
         stopwatch = Stopwatch()
         started_at = datetime.now(UTC)
         events.record("run_started", provider=self.config.research_provider)
+        events.record("intake_validated", mode=request.mode.value)
 
         brief = build_brief(
             request,
@@ -73,6 +77,7 @@ class ResearchWorkflow:
         )
         plan = self._apply_ablation(build_plan(brief))
         events.record("plan_created", branches=[branch.value for branch in plan.selected_branches])
+        events.record("research_started", assignments=len(plan.assignments))
         backend = (
             FixtureResearchBackend(self.config.fixture_path)
             if self.config.research_provider == "offline"
@@ -130,20 +135,39 @@ class ResearchWorkflow:
                 if finding.branch.value in branch_names:
                     grouped[manager].append(finding)
         if self.config.enable_manager_reconciliation:
+            async def reconcile_one(
+                manager: ManagerName, manager_findings: list[SpecialistFinding]
+            ) -> ManagerSynthesis:
+                events.record(
+                    "manager_started",
+                    manager=manager.value,
+                    branches=[item.branch.value for item in manager_findings],
+                )
+                synthesis = await reconcile_manager(manager, manager_findings, context)
+                events.record(
+                    "manager_finished",
+                    manager=manager.value,
+                    status=synthesis.status.value,
+                )
+                return synthesis
+
             manager_syntheses = await asyncio.gather(
                 *[
-                    reconcile_manager(manager, manager_findings, context)
+                    reconcile_one(manager, manager_findings)
                     for manager, manager_findings in grouped.items()
                 ]
             )
         else:
+            events.record("manager_reconciliation_skipped")
             manager_syntheses = [
                 self._pass_through_manager(manager, manager_findings)
                 for manager, manager_findings in grouped.items()
             ]
         events.record("managers_reconciled", count=len(manager_syntheses))
 
+        events.record("draft_started")
         draft = await write_report(brief, list(manager_syntheses), ledger.ids(), context)
+        events.record("draft_completed", sections=len(draft.sections))
         pre_review = validate_report(draft, ledger)
         context.validation_failures.extend(pre_review.errors)
         events.record(
@@ -151,15 +175,22 @@ class ResearchWorkflow:
             errors=len(pre_review.errors),
             warnings=len(pre_review.warnings),
         )
-        review = (
-            await review_report(
+        if self.config.enable_adversarial_review:
+            events.record("review_started")
+            review = await review_report(
                 draft,
                 ledger,
                 [item.model_dump(mode="json") for item in manager_syntheses],
                 context,
             )
-            if self.config.enable_adversarial_review
-            else AdversarialReview(
+            events.record(
+                "review_completed",
+                recommendation=review.release_recommendation.value,
+                findings=len(review.findings),
+            )
+        else:
+            events.record("review_skipped")
+            review = AdversarialReview(
                 citation_completeness=1.0,
                 grounding_score=0.0,
                 balance_score=0.0,
@@ -168,11 +199,11 @@ class ResearchWorkflow:
                 release_recommendation=ReleaseRecommendation.APPROVE_WITH_CAVEATS,
                 reviewer_notes=["Adversarial review disabled by ablation configuration."],
             )
-        )
         final_report = draft
         if review.release_recommendation.value == "revise" or any(
             item.mandatory_revision for item in review.findings
         ):
+            events.record("revision_started")
             final_report = await revise_report(draft, review, context)
             events.record("bounded_revision", revision_count=final_report.revision_count)
         final_validation = validate_report(final_report, ledger)
@@ -215,10 +246,10 @@ class ResearchWorkflow:
             metrics=metrics,
         )
         artifact_dir = persist_package(package, Path(self.config.artifacts_dir))
+        events.record("artifacts_persisted", path=str(artifact_dir))
         (artifact_dir / "events.json").write_text(
             __import__("json").dumps(events.events, indent=2), encoding="utf-8"
         )
-        events.record("artifacts_persisted", path=str(artifact_dir))
         return package
 
     def _apply_ablation(self, plan: ResearchPlan) -> ResearchPlan:
