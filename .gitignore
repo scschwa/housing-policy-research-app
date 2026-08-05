@@ -1,0 +1,1 @@
+.venv/\n.venv-system/\n__pycache__/\n*.py[cod]\n.mypy_cache/\n.pytest_cache/\n.ruff_cache/\n.coverage\nhtmlcov/\n.env\n.promptfoo/\nnode_modules/\nartifacts/*\n!artifacts/.gitkeep\n*.log\n
