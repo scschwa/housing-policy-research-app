@@ -41,6 +41,7 @@ def test_ledger_deduplicates_urls_and_merges_provenance() -> None:
     record = ledger.add(duplicate)
     assert record.source_id == "S-1"
     assert record.retrieved_by == ["branch-b"]
+    assert ledger.resolve_id("S-2") == "S-1"
     assert len(ledger.values()) == 1
 
 
@@ -56,6 +57,24 @@ def test_claim_reference_validation_reports_missing_source() -> None:
     report = validate_claim_references([claim], SourceLedger())
     assert not report.ok
     assert "S-missing" in report.errors[0]
+
+
+def test_claim_validation_resolves_a_duplicate_source_alias() -> None:
+    ledger = SourceLedger([source("S-1", "https://fixture.invalid/a")])
+    ledger.add(source("S-2", "https://fixture.invalid/a/"))
+    claim = EvidenceClaim(
+        text="claim",
+        claim_type=ClaimType.FACT,
+        evidence_strength=EvidenceStrength.STRONG,
+        confidence=0.8,
+        originating_agent="test",
+        supporting_source_ids=["S-2"],
+    )
+
+    report = validate_claim_references([claim], ledger)
+
+    assert report.ok
+    assert claim.supporting_source_ids == ["S-1"]
 
 
 def test_country_comparison_validation_requires_known_sources_and_differences() -> None:

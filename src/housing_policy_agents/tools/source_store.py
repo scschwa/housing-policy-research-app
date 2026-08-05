@@ -24,9 +24,11 @@ class SourceLedger:
     """Deduplicates sources while preserving provenance and safety flags."""
 
     records: dict[str, SourceRecord]
+    aliases: dict[str, str]
 
     def __init__(self, records: list[SourceRecord] | None = None) -> None:
         self.records = {}
+        self.aliases = {}
         for record in records or []:
             self.add(record)
 
@@ -43,6 +45,7 @@ class SourceLedger:
             None,
         )
         if duplicate:
+            self.aliases[record.source_id] = duplicate.source_id
             duplicate.retrieved_by = sorted(set(duplicate.retrieved_by + record.retrieved_by))
             duplicate.used_by = sorted(set(duplicate.used_by + record.used_by))
             duplicate.safety_flags = sorted(set(duplicate.safety_flags + record.safety_flags))
@@ -54,6 +57,7 @@ class SourceLedger:
             )
             return duplicate
         self.records[record.source_id] = record
+        self.aliases.setdefault(record.source_id, record.source_id)
         return record
 
     def get(self, source_id: str) -> SourceRecord | None:
@@ -61,6 +65,11 @@ class SourceLedger:
 
     def ids(self) -> set[str]:
         return set(self.records)
+
+    def resolve_id(self, source_id: str) -> str:
+        """Return the canonical ID retained after URL/content deduplication."""
+
+        return self.aliases.get(source_id, source_id)
 
     def values(self) -> list[SourceRecord]:
         return list(self.records.values())
@@ -126,6 +135,12 @@ def validate_claim_references(
     warnings: list[str] = []
     known = ledger.ids()
     for claim in claims:
+        claim.supporting_source_ids = [
+            ledger.resolve_id(source_id) for source_id in claim.supporting_source_ids
+        ]
+        claim.contradicting_source_ids = [
+            ledger.resolve_id(source_id) for source_id in claim.contradicting_source_ids
+        ]
         refs = set(claim.supporting_source_ids + claim.contradicting_source_ids)
         missing = refs - known
         if missing:
@@ -144,6 +159,7 @@ def validate_country_comparisons(
     warnings: list[str] = []
     known = ledger.ids()
     for comparison in comparisons:
+        comparison.source_ids = [ledger.resolve_id(source_id) for source_id in comparison.source_ids]
         missing = set(comparison.source_ids) - known
         if missing:
             errors.append(
@@ -169,6 +185,9 @@ def validate_report(report: DraftReport, ledger: SourceLedger) -> ValidationRepo
     cited: list[str] = []
     for section in sections:
         for paragraph in section.paragraphs:
+            paragraph.citation_ids = [
+                ledger.resolve_id(source_id) for source_id in paragraph.citation_ids
+            ]
             cited.extend(paragraph.citation_ids)
             if paragraph.substantive and not paragraph.citation_ids:
                 errors.append(f"substantive paragraph {paragraph.paragraph_id} has no citation")

@@ -34,7 +34,8 @@ def render_decision_matrix(report: DraftReport) -> list[str]:
     lines = ["", "| " + " | ".join(header) + " |", "| " + " | ".join(["---"] * len(header)) + " |"]
     for option in matrix.options:
         row = [option.name] + [
-            matrix.scores[option.option_id][criterion.criterion_id] for criterion in matrix.criteria
+            str(matrix.scores[option.option_id][criterion.criterion_id])
+            for criterion in matrix.criteria
         ]
         lines.append("| " + " | ".join(row) + " |")
     lines.extend(["", "**Matrix caveats:**", ""])

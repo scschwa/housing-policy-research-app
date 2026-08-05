@@ -322,7 +322,7 @@ class DecisionCriterion(StrictModel):
 class DecisionMatrix(StrictModel):
     criteria: list[DecisionCriterion]
     options: list[PolicyOption]
-    scores: dict[str, dict[str, str]]
+    scores: dict[str, dict[str, int]]
     caveats: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
@@ -335,6 +335,13 @@ class DecisionMatrix(StrictModel):
             missing = criterion_ids - set(values)
             if missing:
                 raise ValueError(f"option {option_id} is missing criteria: {sorted(missing)}")
+            invalid = {
+                criterion_id: score
+                for criterion_id, score in values.items()
+                if score < 1 or score > 5
+            }
+            if invalid:
+                raise ValueError(f"option {option_id} has scores outside 1-5: {invalid}")
         return self
 
 

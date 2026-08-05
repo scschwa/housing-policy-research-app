@@ -42,5 +42,5 @@ def test_decision_matrix_requires_every_option_and_criterion() -> None:
         DecisionMatrix(
             criteria=[criterion],
             options=[option("O1"), option("O2")],
-            scores={"O1": {"benefit": "4"}},
+            scores={"O1": {"benefit": 4}},
         )

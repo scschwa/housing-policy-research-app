@@ -173,21 +173,21 @@ def build_decision_matrix() -> DecisionMatrix:
     ]
     scores = {
         "O1": {
-            criterion.criterion_id: value
+            criterion.criterion_id: int(value)
             for criterion, value in zip(
-                criteria, ["5", "2", "2", "1", "1", "2", "2", "2", "1", "3", "1"], strict=True
+                criteria, [5, 2, 2, 1, 1, 2, 2, 2, 1, 3, 1], strict=True
             )
         },
         "O2": {
-            criterion.criterion_id: value
+            criterion.criterion_id: int(value)
             for criterion, value in zip(
-                criteria, ["3", "3", "4", "2", "3", "3", "3", "3", "2", "3", "4"], strict=True
+                criteria, [3, 3, 4, 2, 3, 3, 3, 3, 2, 3, 4], strict=True
             )
         },
         "O3": {
-            criterion.criterion_id: value
+            criterion.criterion_id: int(value)
             for criterion, value in zip(
-                criteria, ["2", "4", "4", "4", "4", "4", "4", "4", "3", "2", "4"], strict=True
+                criteria, [2, 4, 4, 4, 4, 4, 4, 4, 3, 2, 4], strict=True
             )
         },
     }
