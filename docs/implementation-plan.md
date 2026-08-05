@@ -16,7 +16,7 @@ The implementation is complete through the offline acceptance path. The reposito
 Verification performed before publishing:
 
 - `ruff check .` — clean.
-- `pytest -q` — 16 passed.
+- `pytest -q` — 17 passed.
 - `mypy --exclude-gitignore src tests evals` — 35 files checked with no issues.
 - Offline Promptfoo evaluation — 52/52 cases passed.
 - Ablation Promptfoo evaluation — 208/208 cases passed across eight providers.
