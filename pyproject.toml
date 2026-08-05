@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "housing-policy-research-network"
+version = "0.1.0"
+description = "A hierarchical, evidence-grounded housing policy research network."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "openai-agents>=0.4.0",
+  "pydantic>=2.10",
+  "pydantic-settings>=2.7",
+  "typer>=0.15",
+  "rich>=13.9",
+  "httpx>=0.28",
+  "tenacity>=9.0",
+  "python-dateutil>=2.9",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "pytest-asyncio>=0.24",
+  "ruff>=0.9",
+  "mypy>=1.14",
+  "types-python-dateutil>=2.9",
+]
+
+[project.scripts]
+housing-research = "housing_policy_agents.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+housing_policy_agents = ["prompts/*.md"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests", "evals"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src", "tests", "evals"]
+pretty = true
+warn_unused_configs = true
+check_untyped_defs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+

@@ -1,0 +1,65 @@
+# Housing Policy Research Network
+
+Housing Policy Research Network is a CLI-first demonstration application for producing decision-ready, evidence-grounded housing-policy research. It uses the OpenAI Agents SDK for Python to coordinate a hierarchical research network and Promptfoo for deterministic and rubric-based evaluation.
+
+The default `demo` path is fully offline and fixture-backed. Live research is opt-in and uses the Agents SDK hosted web search tool when an OpenAI API key is configured.
+
+## Quick start
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e ".[dev]"
+python -m housing_policy_agents.cli demo --offline --format both
+```
+
+The completed run is written to `artifacts/<run_id>/`.
+
+## Commands
+
+```powershell
+housing-research demo --offline --format both
+housing-research ask "Should the United States permit alternative credit data in mortgage underwriting?" --fast
+housing-research graph --format mermaid
+housing-research validate artifacts/<run_id>/package.json
+pytest -q
+ruff check .
+mypy src tests evals
+npm ci
+npm run eval:offline
+```
+
+Live mode requires `OPENAI_API_KEY`, `OPENAI_MODEL`, and `RESEARCH_PROVIDER=web`. It is intentionally excluded from the default offline evaluation suite.
+
+## Architecture
+
+```mermaid
+flowchart TD
+    U[CLI user] --> O[Research Orchestrator]
+    O --> P[Research Plan]
+    P --> PM[Policy Manager]
+    P --> IM[Industry Manager]
+    P --> AM[Advocacy Manager]
+    P --> GM[Global Manager]
+    PM --> PS[3 policy specialists]
+    IM --> IS[4 industry specialists]
+    AM --> AS[3 advocacy specialists]
+    GM --> GS[Global researcher]
+    PS --> L[Source ledger and branch validation]
+    IS --> L
+    AS --> L
+    GS --> L
+    L --> W[Synthesis writer]
+    W --> V[Deterministic pre-review checks]
+    V --> R[Adversarial reviewer]
+    R --> W2[One bounded revision]
+    W2 --> A[Final artifacts]
+```
+
+Managers are bounded agent tools and specialists return typed findings. Python owns the workflow state machine, branch selection, retry policy, concurrency, validation, persistence, and revision count.
+
+## Safety and limitations
+
+This system provides research assistance, not legal advice. Sources must be verified before formal reliance. Forecasts, causal claims, and policy conclusions are uncertain. Retrieved content is untrusted data; embedded instructions are detected and ignored. Synthetic fixtures are clearly labeled and must not be treated as live evidence.
+
+See `docs/architecture.md`, `docs/agent-contracts.md`, `docs/threat-model.md`, `docs/evaluation-design.md`, and `docs/limitations.md`.
