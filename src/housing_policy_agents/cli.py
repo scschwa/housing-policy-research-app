@@ -125,9 +125,9 @@ def _display_progress(event: str, metadata: dict[str, object]) -> None:
             console.print("[yellow]OK - Revision fallback used; retaining validated draft[/yellow]")
         else:
             console.print(f"[green]OK - Revision complete (revision={metadata.get('revision_count', 0)})[/green]")
-    elif event == "revision_timed_out":
+    elif event == "revision_fallback":
         console.print(
-            f"[yellow]Revision timed out after {metadata.get('timeout_seconds', 0)} seconds; "
+            f"[yellow]Revision fallback: {metadata.get('reason', 'revision unavailable')}; "
             "retaining validated draft[/yellow]"
         )
     elif event == "final_validation":

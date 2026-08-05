@@ -320,7 +320,24 @@ class DecisionCriterion(StrictModel):
     scale: str = "1=low / 5=high"
 
 
-DecisionScore = int | Literal["low", "medium", "high"]
+class DecisionScoreDetail(StrictModel):
+    range: str
+    note: str = ""
+
+    @field_validator("range")
+    @classmethod
+    def validate_range(cls, value: str) -> str:
+        normalized = value.strip().replace("–", "-").replace("—", "-").replace(" ", "")
+        parts = normalized.split("-")
+        if len(parts) not in {1, 2} or any(not part.isdigit() for part in parts):
+            raise ValueError("score range must be a point or range from 1 to 5")
+        bounds = [int(part) for part in parts]
+        if any(bound < 1 or bound > 5 for bound in bounds) or bounds != sorted(bounds):
+            raise ValueError("score range must be ordered and within 1 to 5")
+        return "-".join(str(bound) for bound in bounds)
+
+
+DecisionScore = int | Literal["low", "medium", "high"] | DecisionScoreDetail
 
 
 class DecisionMatrix(StrictModel):
@@ -341,12 +358,15 @@ class DecisionMatrix(StrictModel):
             if not isinstance(criteria, dict):
                 normalized[option_id] = criteria
                 continue
-            normalized[option_id] = {
-                criterion_id: labels.get(score.strip().lower(), score)
-                if isinstance(score, str)
-                else score
-                for criterion_id, score in criteria.items()
-            }
+            normalized[option_id] = {}
+            for criterion_id, score in criteria.items():
+                if isinstance(score, str):
+                    lowered = score.strip().lower()
+                    if lowered in labels:
+                        score = labels[lowered]
+                    elif lowered.isdigit() and 1 <= int(lowered) <= 5:
+                        score = int(lowered)
+                normalized[option_id][criterion_id] = score
         return normalized
 
     @model_validator(mode="after")
@@ -362,7 +382,10 @@ class DecisionMatrix(StrictModel):
             invalid = {
                 criterion_id: score
                 for criterion_id, score in values.items()
-                if not isinstance(score, int) or score < 1 or score > 5
+                if not (
+                    (isinstance(score, int) and 1 <= score <= 5)
+                    or isinstance(score, DecisionScoreDetail)
+                )
             }
             if invalid:
                 raise ValueError(f"option {option_id} has scores outside 1-5: {invalid}")

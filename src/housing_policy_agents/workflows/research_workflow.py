@@ -204,31 +204,35 @@ class ResearchWorkflow:
             item.mandatory_revision for item in review.findings
         ):
             events.record("revision_started")
+            fallback_reason: str | None = None
             try:
                 final_report = await asyncio.wait_for(
                     revise_report(draft, review, context),
                     timeout=self.config.revision_timeout_seconds,
                 )
-                events.record("bounded_revision", revision_count=final_report.revision_count)
             except TimeoutError:
+                fallback_reason = (
+                    f"timeout after {self.config.revision_timeout_seconds} seconds"
+                )
+            except Exception as exc:
+                fallback_reason = f"{type(exc).__name__} from revision output"
+            if fallback_reason is not None:
                 final_report = draft
                 review = review.model_copy(
                     update={
                         "reviewer_notes": [
                             *review.reviewer_notes,
-                            (
-                                "The bounded revision exceeded "
-                                f"{self.config.revision_timeout_seconds} seconds; "
-                                "the validated draft was retained."
-                            ),
+                            f"The bounded revision failed ({fallback_reason}); the validated draft was retained.",
                         ]
                     }
                 )
                 events.record(
-                    "revision_timed_out",
-                    timeout_seconds=self.config.revision_timeout_seconds,
+                    "revision_fallback",
+                    reason=fallback_reason,
                 )
                 events.record("bounded_revision", revision_count=0, fallback=True)
+            else:
+                events.record("bounded_revision", revision_count=final_report.revision_count)
         final_validation = validate_report(final_report, ledger)
         context.validation_failures.extend(final_validation.errors)
         events.record(

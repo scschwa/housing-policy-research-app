@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from ..models import DraftReport, FinalResearchPackage
+from ..models import DecisionScoreDetail, DraftReport, FinalResearchPackage
 from ..tools.source_store import SourceLedger, citation_link
 
 
@@ -34,13 +34,21 @@ def render_decision_matrix(report: DraftReport) -> list[str]:
     lines = ["", "| " + " | ".join(header) + " |", "| " + " | ".join(["---"] * len(header)) + " |"]
     for option in matrix.options:
         row = [option.name] + [
-            str(matrix.scores[option.option_id][criterion.criterion_id])
+            _format_score(matrix.scores[option.option_id][criterion.criterion_id])
             for criterion in matrix.criteria
         ]
         lines.append("| " + " | ".join(row) + " |")
     lines.extend(["", "**Matrix caveats:**", ""])
     lines.extend(f"- {caveat}" for caveat in matrix.caveats)
     return lines + [""]
+
+
+def _format_score(score: object) -> str:
+    if isinstance(score, DecisionScoreDetail):
+        text = score.range if not score.note else f"{score.range}: {score.note}"
+    else:
+        text = str(score)
+    return text.replace("|", "\\|").replace("\n", " ")
 
 
 def persist_package(package: FinalResearchPackage, root: Path) -> Path:

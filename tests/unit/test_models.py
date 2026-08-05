@@ -8,6 +8,7 @@ from housing_policy_agents.models import (
     BranchStatus,
     DecisionCriterion,
     DecisionMatrix,
+    DecisionScoreDetail,
     EvidenceStrength,
     ManagerName,
     ManagerSynthesis,
@@ -59,6 +60,19 @@ def test_decision_matrix_normalizes_qualitative_scores() -> None:
     )
 
     assert matrix.scores == {"O1": {"benefit": 5}}
+
+
+def test_decision_matrix_accepts_qualitative_score_ranges() -> None:
+    criterion = DecisionCriterion(criterion_id="benefit", name="Benefit", description="Benefit")
+    matrix = DecisionMatrix(
+        criteria=[criterion],
+        options=[option("O1")],
+        scores={"O1": {"benefit": {"range": "1-3", "note": "conditional"}}},
+    )
+
+    score = matrix.scores["O1"]["benefit"]
+    assert isinstance(score, DecisionScoreDetail)
+    assert score.range == "1-3"
 
 
 def test_manager_synthesis_accepts_source_ids() -> None:
