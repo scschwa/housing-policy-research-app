@@ -122,7 +122,18 @@ class ResearchWorkflow:
             "branches_validated",
             errors=len(claim_validation.errors),
             warnings=len(claim_validation.warnings),
+            source_count=len(ledger.ids()),
         )
+        if not ledger.ids():
+            events.record(
+                "evidence_unavailable",
+                failed_branches=[
+                    finding.branch.value
+                    for finding in findings
+                    if finding.status != BranchStatus.COMPLETED
+                ],
+                message="No validated specialist source records reached the source ledger.",
+            )
 
         grouped: dict[ManagerName, list[SpecialistFinding]] = defaultdict(list)
         for finding in findings:

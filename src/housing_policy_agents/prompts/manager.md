@@ -26,4 +26,7 @@ Return exactly one `ManagerSynthesis` object. Do not emit Markdown, code fences,
 - Every `source_ids` reference in the synthesis must resolve to a source present in the supplied findings.
 - Keep specialist branch names and statuses aligned with the input. Use `partial` when any required branch failed or is materially incomplete.
 - Keep claims concise and attach source IDs, limitations, and uncertainty to the claims they qualify.
+- Use exactly `very_weak`, `weak`, `moderate`, or `strong` for every evidence-strength field; put provisional qualifiers in limitations.
+- Use `YYYY-MM-DD` dates and UTC ISO 8601 timestamps when reproducing source or finding metadata.
+- If all required branches failed or supplied no validated sources, return a partial synthesis that states that no evidence is available. Do not create fallback source IDs or a substantive conclusion.
 - Before returning, verify the object is valid JSON, contains no extra keys, preserves material disagreement, and can be consumed directly by the synthesis writer.

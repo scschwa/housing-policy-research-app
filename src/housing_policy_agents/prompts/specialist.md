@@ -30,5 +30,8 @@ Source identifiers are especially important:
 - Use the exact same short IDs in every claim, contradiction, country comparison, and top-level `source_ids` list.
 - Every referenced ID must appear in `discovered_sources`. Every discovered source should have a title, source type, tier, relevant excerpt, and limitations when material.
 - Use concise IDs such as `c1`, `c2`, and `x1` for claims and contradictions. Do not use IDs containing spaces or punctuation that is not needed.
+- Use machine-readable temporal values: `publication_date` and `access_date` must be `YYYY-MM-DD`; `started_at` and `finished_at` must be UTC ISO 8601 such as `2026-08-06T14:30:00Z`.
+- Use exactly one canonical `evidence_strength` value: `very_weak`, `weak`, `moderate`, or `strong`. Put qualifiers such as â€œprovisionalâ€ or â€œlimitedâ€ in `material_limitations`, not in the enum field.
+- If no source can be validated, return a completed finding with an explicit evidence gap only when the typed object can still be satisfied; otherwise return the typed failure fields with a clear `error`. Never fill required fields with prose placeholders.
 
 Before returning, perform this checklist: the object is valid JSON; all required fields are present; every source reference resolves to a discovered source; URLs are in `url` rather than `source_id`; claims state why they matter and what the manager should do with them; uncertainty and contrary evidence are recorded; and no unsupported content is included.

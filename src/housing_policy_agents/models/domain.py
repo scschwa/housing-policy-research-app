@@ -17,6 +17,36 @@ def utc_now() -> datetime:
     return datetime.now(UTC)
 
 
+def _coerce_date(value: Any) -> Any:
+    if isinstance(value, str):
+        try:
+            return date.fromisoformat(value[:10])
+        except ValueError:
+            return value
+    return value
+
+
+def _coerce_datetime(value: Any) -> Any:
+    if isinstance(value, str):
+        try:
+            return datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return value
+    return value
+
+
+def _normalize_evidence_strength(value: Any) -> Any:
+    if not isinstance(value, str):
+        return value
+    normalized = value.strip().lower().replace("-", "_").replace(" ", "_")
+    for strength in EvidenceStrength:
+        if normalized == strength.value or normalized.startswith(f"{strength.value}_"):
+            return strength.value
+    if normalized.startswith(("limited", "insufficient", "minimal")):
+        return EvidenceStrength.WEAK.value
+    return value
+
+
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
@@ -221,6 +251,11 @@ class CountryComparison(StrictModel):
     evidence_quality: EvidenceStrength
     source_ids: list[str] = Field(default_factory=list)
 
+    @field_validator("evidence_quality", mode="before")
+    @classmethod
+    def normalize_quality(cls, value: Any) -> Any:
+        return _normalize_evidence_strength(value)
+
 
 _SOURCE_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{1,80}$")
 
@@ -265,12 +300,15 @@ class SourceRecord(StrictModel):
 
         if not isinstance(value, Mapping):
             return value
+        updated = dict(value)
+        for field in ("publication_date", "access_date"):
+            if field in updated:
+                updated[field] = _coerce_date(updated[field])
         raw_id = value.get("source_id")
         if not isinstance(raw_id, str) or not raw_id.strip().lower().startswith(
             ("http://", "https://")
         ):
-            return value
-        updated = dict(value)
+            return updated
         updated["source_id"] = canonical_source_id(raw_id)
         updated["url"] = updated.get("url") or raw_id
         return updated
@@ -296,6 +334,11 @@ class EvidenceClaim(StrictModel):
     applicable_period: str | None = None
     material_limitations: list[str] = Field(default_factory=list)
     originating_agent: str
+
+    @field_validator("evidence_strength", mode="before")
+    @classmethod
+    def normalize_strength(cls, value: Any) -> Any:
+        return _normalize_evidence_strength(value)
 
 
 class Contradiction(StrictModel):
@@ -339,6 +382,9 @@ class SpecialistFinding(StrictModel):
         if not isinstance(value, Mapping):
             return value
         payload = dict(value)
+        for field in ("started_at", "finished_at"):
+            if field in payload:
+                payload[field] = _coerce_datetime(payload[field])
         aliases: dict[str, str] = {}
         raw_sources = payload.get("discovered_sources") or []
         normalized_sources: list[Any] = []
@@ -428,6 +474,11 @@ class PolicyOption(StrictModel):
     evidence_strength: EvidenceStrength
     source_ids: list[str] = Field(default_factory=list)
 
+    @field_validator("evidence_strength", mode="before")
+    @classmethod
+    def normalize_strength(cls, value: Any) -> Any:
+        return _normalize_evidence_strength(value)
+
 
 class DecisionCriterion(StrictModel):
     criterion_id: str
@@ -443,7 +494,7 @@ class DecisionScoreDetail(StrictModel):
     @field_validator("range")
     @classmethod
     def validate_range(cls, value: str) -> str:
-        normalized = value.strip().replace("–", "-").replace("—", "-").replace(" ", "")
+        normalized = value.strip().replace("â€“", "-").replace("â€”", "-").replace(" ", "")
         parts = normalized.split("-")
         if len(parts) not in {1, 2} or any(not part.isdigit() for part in parts):
             raise ValueError("score range must be a point or range from 1 to 5")

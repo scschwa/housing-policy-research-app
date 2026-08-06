@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import UTC, date, datetime
 
 import pytest
 from pydantic import ValidationError
@@ -83,6 +83,50 @@ def test_specialist_finding_normalizes_url_source_ids() -> None:
     assert finding.discovered_sources[0].url == url
     assert finding.claims[0].supporting_source_ids == [source_id]
     assert finding.source_ids == [source_id]
+
+
+def test_specialist_finding_normalizes_live_temporal_strings() -> None:
+    finding = SpecialistFinding.model_validate(
+        {
+            "branch": BranchName.GOVERNMENT,
+            "agent_name": "government_sources_researcher",
+            "status": BranchStatus.COMPLETED,
+            "summary": "The source establishes a current policy constraint.",
+            "discovered_sources": [
+                {
+                    "source_id": "s-date",
+                    "title": "Official policy materials",
+                    "publication_date": "2026-08-06",
+                    "access_date": "2026-08-06",
+                    "source_type": SourceType.AGENCY_GUIDANCE,
+                    "tier": SourceTier.AUTHORITATIVE_PRIMARY,
+                    "excerpt": "The relevant policy text.",
+                }
+            ],
+            "started_at": "2026-08-06T14:30:00Z",
+            "finished_at": "2026-08-06T14:31:00Z",
+        }
+    )
+
+    assert finding.discovered_sources[0].publication_date == date(2026, 8, 6)
+    assert finding.discovered_sources[0].access_date == date(2026, 8, 6)
+    assert finding.started_at == datetime(2026, 8, 6, 14, 30, tzinfo=UTC)
+    assert finding.finished_at == datetime(2026, 8, 6, 14, 31, tzinfo=UTC)
+
+
+def test_evidence_strength_normalizes_model_qualifiers() -> None:
+    claim = EvidenceClaim(
+        text="The estimate is provisional.",
+        claim_type="estimate",
+        evidence_strength="moderate (provisional)",
+        confidence=0.4,
+        originating_agent="test",
+    )
+    policy_option = option("O-provisional")
+    policy_option.evidence_strength = "weak (limited)"
+
+    assert claim.evidence_strength == EvidenceStrength.MODERATE
+    assert policy_option.evidence_strength == EvidenceStrength.WEAK
 
 
 def test_decision_matrix_requires_every_option_and_criterion() -> None:

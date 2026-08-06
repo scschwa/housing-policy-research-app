@@ -75,7 +75,7 @@ def offline_review(report: DraftReport, ledger: SourceLedger) -> AdversarialRevi
 async def review_report(
     report: DraftReport, ledger: SourceLedger, evidence: object, context: RunContext
 ) -> AdversarialReview:
-    if context.config.research_provider == "offline":
+    if context.config.research_provider == "offline" or not ledger.ids():
         return offline_review(report, ledger)
     from agents import RunConfig
 

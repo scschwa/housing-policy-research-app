@@ -45,6 +45,29 @@ async def reconcile_manager(
         if all(status == BranchStatus.COMPLETED for status in statuses.values())
         else BranchStatus.PARTIAL
     )
+    usable_findings = [
+        finding
+        for finding in findings
+        if finding.status == BranchStatus.COMPLETED and finding.discovered_sources
+    ]
+    if not usable_findings:
+        failed_branches = [
+            finding.branch.value
+            for finding in findings
+            if finding.status != BranchStatus.COMPLETED
+        ]
+        return ManagerSynthesis(
+            manager=manager,
+            status=BranchStatus.PARTIAL,
+            specialist_branches=branches,
+            branch_statuses=statuses,
+            findings=findings,
+            limitations=[
+                "No specialist branch returned a validated finding with a discovered source.",
+                "This manager must not infer substantive conclusions or invent citation IDs.",
+                f"Unavailable branches: {', '.join(failed_branches) or 'none reported'}.",
+            ],
+        )
     if context.config.research_provider == "offline":
         claims = [claim for finding in findings for claim in finding.claims]
         contradictions = [item for finding in findings for item in finding.contradictions]

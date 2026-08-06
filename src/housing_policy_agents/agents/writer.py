@@ -418,12 +418,133 @@ def offline_report(
     )
 
 
+def no_evidence_report(
+    brief: ResearchBrief,
+    managers: list[ManagerSynthesis],
+    reason: str = "No specialist branch returned validated evidence.",
+) -> DraftReport:
+    """Return a safe, structurally valid report when the evidence ledger is empty.
+
+    This is intentionally not a substantive policy answer. It keeps the workflow
+    auditable and gives the user an actionable explanation instead of allowing a
+    downstream model to manufacture source IDs after upstream failures.
+    """
+
+    failed_branches = sorted(
+        {
+            branch.value
+            for manager in managers
+            for branch, status in manager.branch_statuses.items()
+            if status != "completed"
+        }
+    )
+    criterion = DecisionCriterion(
+        criterion_id="evidence_availability",
+        name="Evidence availability",
+        description="Whether validated source material is available for a defensible policy comparison.",
+    )
+    option = PolicyOption(
+        option_id="defer",
+        name="Defer substantive conclusions pending validated research",
+        description="Do not draw policy conclusions until at least one specialist branch returns validated source records.",
+        mechanism="Retry or repair the failed research branches, then rerun the manager and writer stages.",
+        expected_benefits=["avoids unsupported claims", "preserves source integrity"],
+        expected_costs=["delays substantive analysis"],
+        risks=["decision-makers may lack timely analysis"],
+        mitigants=["retry with captured telemetry", "verify source and date fields before handoff"],
+        implementation_requirements=["successful specialist validation", "source ledger review"],
+        evidence_strength=EvidenceStrength.VERY_WEAK,
+    )
+    failed_text = ", ".join(failed_branches) if failed_branches else "not identified"
+    return DraftReport(
+        title=f"Evidence unavailable for: {brief.question}",
+        executive_summary=(
+            "No validated specialist evidence was available for this run. The application has "
+            "withheld substantive conclusions and citation-bearing analysis."
+        ),
+        sections=[
+            ReportSection(
+                "evidence_status",
+                "Evidence status",
+                [
+                    ReportParagraph(
+                        text=f"{reason} A source-grounded answer cannot be produced from this run.",
+                        substantive=False,
+                    )
+                ],
+            ),
+            ReportSection(
+                "recovery_steps",
+                "Recovery steps",
+                [
+                    ReportParagraph(
+                        text=(
+                            "Retry the specialist branches with telemetry enabled, inspect their validation "
+                            "errors, and rerun the synthesis after successful source validation. Branches "
+                            f"currently unavailable: {failed_text}."
+                        ),
+                        substantive=False,
+                    )
+                ],
+            ),
+        ],
+        decision_matrix=DecisionMatrix(
+            criteria=[criterion],
+            options=[option],
+            scores={"defer": {"evidence_availability": 1}},
+            caveats=["This is a failure-containment status, not a policy recommendation."],
+        ),
+        evidence_gaps=[
+            "No specialist branch returned a validated source record.",
+            "No substantive consequences, legal conclusions, or distributional estimates can be supported from this run.",
+        ],
+        limitations=[
+            "The report intentionally contains no substantive, citation-bearing paragraphs.",
+            "Rerun after resolving the specialist validation failures.",
+        ],
+    )
+
+
+def _contain_report_citations(report: DraftReport, source_ids: set[str]) -> DraftReport:
+    """Drop citations not supplied by upstream and demote unsupported paragraphs."""
+
+    allowed = set(source_ids)
+    dropped = 0
+    for section in report.sections:
+        for paragraph in section.paragraphs:
+            original = list(paragraph.citation_ids)
+            paragraph.citation_ids = [item for item in original if item in allowed]
+            dropped += len(original) - len(paragraph.citation_ids)
+            if paragraph.substantive and not paragraph.citation_ids:
+                paragraph.substantive = False
+                paragraph.revision_note = (
+                    "Demoted during boundary validation because no supplied source ID supported this paragraph."
+                )
+    report.source_ids_used = [item for item in report.source_ids_used if item in allowed]
+    for option in report.decision_matrix.options:
+        option.source_ids = [item for item in option.source_ids if item in allowed]
+    if dropped:
+        report.evidence_gaps.append(
+            f"{dropped} model-supplied citation reference(s) were not present in the upstream source ledger."
+        )
+        report.limitations.append(
+            "Unsupported paragraphs were withheld at the writer boundary rather than given fabricated citations."
+        )
+    return report
+
+
 async def write_report(
     brief: ResearchBrief,
     managers: list[ManagerSynthesis],
     source_ids: set[str],
     context: RunContext,
 ) -> DraftReport:
+    if not source_ids:
+        return no_evidence_report(
+            brief,
+            managers,
+            reason="The upstream source ledger is empty because no specialist evidence passed validation.",
+        )
     if context.config.research_provider == "offline":
         return offline_report(brief, managers, source_ids)
     from agents import RunConfig
@@ -460,12 +581,21 @@ async def write_report(
     )
     if not isinstance(result.final_output, DraftReport):
         raise TypeError("writer did not return DraftReport")
-    return result.final_output
+    return _contain_report_citations(result.final_output, source_ids)
 
 
 async def revise_report(
     report: DraftReport, review: AdversarialReview, context: RunContext
 ) -> DraftReport:
+    if not report.source_ids_used and not any(
+        paragraph.citation_ids for section in report.sections for paragraph in section.paragraphs
+    ):
+        report.revised = True
+        report.revision_count += 1
+        report.limitations.append(
+            "Revision was not sent to a model because the report intentionally contains no validated evidence."
+        )
+        return report
     if context.config.research_provider == "offline":
         for section in report.sections:
             if section.section_id == "arguments_for_against":
@@ -520,4 +650,11 @@ async def revise_report(
     revised = result.final_output
     revised.revised = True
     revised.revision_count = report.revision_count + 1
-    return revised
+    previously_validated_ids = set(report.source_ids_used)
+    previously_validated_ids.update(
+        citation_id
+        for section in report.sections
+        for paragraph in section.paragraphs
+        for citation_id in paragraph.citation_ids
+    )
+    return _contain_report_citations(revised, previously_validated_ids)
