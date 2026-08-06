@@ -33,13 +33,15 @@ npm run eval:offline
 
 Live mode requires `OPENAI_API_KEY`, `OPENAI_MODEL`, and `RESEARCH_PROVIDER=web`. It is intentionally excluded from the default offline evaluation suite.
 
-During `ask` and `demo --live`, the CLI prints bounded progress for intake, planning, each research branch, manager reconciliation, drafting, adversarial review, revision, validation, and artifact persistence. Live agent outputs remain Pydantic-validated; models containing typed mappings use the Agents SDK's explicit non-strict schema fallback because that SDK path cannot represent arbitrary JSON object keys in strict mode.
+During `ask` and `demo --live`, the CLI prints bounded progress for intake, planning, each research branch, manager reconciliation, drafting, adversarial review, revision, validation, and artifact persistence. Each specialist assignment includes its role definition, shared research context, sibling branches, in-scope and out-of-scope boundaries, preferred source classes, downstream handoff requirements, and typed response contract. Live agent outputs remain Pydantic-validated; models containing typed mappings use the Agents SDK's explicit non-strict schema fallback because that SDK path cannot represent arbitrary JSON object keys in strict mode.
 
 ## Environment configuration
 
 Copy `.env.example` to `.env` for a local configuration. Offline mode requires no key. Live mode requires an OpenAI API key, `RESEARCH_PROVIDER=web`, and `ALLOW_NETWORK=true`; the application refuses live configuration without the explicit network switch. Set bounded limits such as `MAX_TURNS_PER_AGENT`, `REVISION_TIMEOUT_SECONDS`, `MAX_SOURCES`, `MAX_BRANCH_RETRIES`, and `MAX_CONCURRENCY` for the deployment rather than relying on unbounded model behavior. If a live revision exceeds its timeout, the validated draft is retained and the run completes with an explicit caveat.
 
 By default, live runs also persist redacted sub-agent telemetry. The artifact root contains `interaction_summary.json`; `sub-agent-telemetry/index.json` lists workflow handoffs and recorded calls; and each numbered interaction directory contains `request.json`, `transcript.json`, and `result.json`. Specialist failures include the exception, bounded traceback, request payload, and any partial SDK items available from the failed run. Set `SUB_AGENT_TELEMETRY_INCLUDE_CONTENT=false` to keep metadata, handoffs, and failure details while omitting prompt/response bodies, or set `SUB_AGENT_TELEMETRY_ENABLED=false` to disable the files entirely. Content is truncated per value at `SUB_AGENT_TELEMETRY_MAX_CHARS` and common secret-shaped values are redacted.
+
+The specialist contract uses short internal source IDs and stores URLs separately in `SourceRecord.url`. If a live model incorrectly places a URL in `source_id`, the model boundary deterministically converts it to a stable internal ID, preserves the URL, and rewrites claim references before strict validation. This protects the run from a common model-formatting failure while retaining the original evidence locator.
 
 ## Fixed and interactive requests
 

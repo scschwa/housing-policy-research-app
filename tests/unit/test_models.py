@@ -9,6 +9,7 @@ from housing_policy_agents.models import (
     DecisionCriterion,
     DecisionMatrix,
     DecisionScoreDetail,
+    EvidenceClaim,
     EvidenceStrength,
     ManagerName,
     ManagerSynthesis,
@@ -16,6 +17,8 @@ from housing_policy_agents.models import (
     SourceRecord,
     SourceTier,
     SourceType,
+    SpecialistFinding,
+    canonical_source_id,
 )
 
 
@@ -39,6 +42,47 @@ def test_source_record_rejects_inconsistent_synthetic_type() -> None:
             synthetic=True,
             access_date=date.today(),
         )
+
+
+def test_specialist_finding_normalizes_url_source_ids() -> None:
+    url = "https://www.fhfa.gov/document/chattel-pilot.pdf?utm_source=openai"
+    source_id = canonical_source_id(url)
+    finding = SpecialistFinding.model_validate(
+        {
+            "branch": BranchName.GOVERNMENT,
+            "agent_name": "government_sources_researcher",
+            "status": BranchStatus.COMPLETED,
+            "summary": "The source establishes a current policy constraint.",
+            "claims": [
+                EvidenceClaim(
+                    claim_id="c1",
+                    text="The source identifies a policy constraint.",
+                    claim_type="fact",
+                    why_it_matters="It affects implementation feasibility.",
+                    manager_implication="Carry the constraint into the options analysis.",
+                    supporting_source_ids=[url],
+                    evidence_strength="strong",
+                    confidence=0.9,
+                    originating_agent="government_sources_researcher",
+                ).model_dump(mode="json")
+            ],
+            "discovered_sources": [
+                {
+                    "source_id": url,
+                    "title": "Chattel pilot materials",
+                    "source_type": SourceType.AGENCY_GUIDANCE,
+                    "tier": SourceTier.AUTHORITATIVE_PRIMARY,
+                    "excerpt": "The relevant policy text.",
+                }
+            ],
+            "source_ids": [url],
+        }
+    )
+
+    assert finding.discovered_sources[0].source_id == source_id
+    assert finding.discovered_sources[0].url == url
+    assert finding.claims[0].supporting_source_ids == [source_id]
+    assert finding.source_ids == [source_id]
 
 
 def test_decision_matrix_requires_every_option_and_criterion() -> None:

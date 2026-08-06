@@ -163,9 +163,22 @@ class ResearchWorkflow:
                     payload={
                         "branches": [item.branch.value for item in manager_findings],
                         "finding_count": len(manager_findings),
+                        "failed_branches": [
+                            item.branch.value
+                            for item in manager_findings
+                            if item.status == BranchStatus.FAILED
+                        ],
+                        "research_question": brief.question,
+                        "policy_scope": brief.policy_scope,
+                        "source_id_contract": "short internal IDs; URLs remain in source.url",
                     },
                 )
-                synthesis = await reconcile_manager(manager, manager_findings, context)
+                synthesis = await reconcile_manager(
+                    manager,
+                    manager_findings,
+                    context,
+                    brief=brief,
+                )
                 events.record(
                     "manager_finished",
                     manager=manager.value,
@@ -195,6 +208,11 @@ class ResearchWorkflow:
             payload={
                 "manager_count": len(manager_syntheses),
                 "source_count": len(ledger.ids()),
+                "research_question": brief.question,
+                "downstream_instruction": (
+                    "Use manager findings as evidence inputs; preserve uncertainty, source IDs, "
+                    "contradictions, and branch limitations."
+                ),
             },
         )
         draft = await write_report(brief, list(manager_syntheses), ledger.ids(), context)
@@ -215,6 +233,10 @@ class ResearchWorkflow:
                 payload={
                     "section_count": len(draft.sections),
                     "source_count": len(ledger.ids()),
+                    "downstream_instruction": (
+                        "Check factual support, source quality, legal calibration, uncertainty, "
+                        "distributional coverage, and source-ID integrity."
+                    ),
                 },
             )
             review = await review_report(
@@ -248,7 +270,13 @@ class ResearchWorkflow:
                 source="adversarial_reviewer",
                 target="synthesis_writer",
                 stage="revision",
-                payload={"finding_count": len(review.findings)},
+                payload={
+                    "finding_count": len(review.findings),
+                    "downstream_instruction": (
+                        "Revise only where the review identifies a material issue; retain valid "
+                        "citations and do not invent evidence."
+                    ),
+                },
             )
             fallback_reason: str | None = None
             try:

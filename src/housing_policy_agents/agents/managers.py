@@ -5,7 +5,13 @@ from __future__ import annotations
 import json
 
 from ..context import RunContext
-from ..models import BranchStatus, ManagerName, ManagerSynthesis, SpecialistFinding
+from ..models import (
+    BranchStatus,
+    ManagerName,
+    ManagerSynthesis,
+    ResearchBrief,
+    SpecialistFinding,
+)
 from ..telemetry.interactions import run_agent_with_telemetry
 from .factory import build_manager_agent
 
@@ -27,7 +33,10 @@ MANAGER_BRANCHES = {
 
 
 async def reconcile_manager(
-    manager: ManagerName, findings: list[SpecialistFinding], context: RunContext
+    manager: ManagerName,
+    findings: list[SpecialistFinding],
+    context: RunContext,
+    brief: ResearchBrief | None = None,
 ) -> ManagerSynthesis:
     branches = [finding.branch for finding in findings]
     statuses = {finding.branch: finding.status for finding in findings}
@@ -73,6 +82,23 @@ async def reconcile_manager(
     agent = build_manager_agent(manager.value, context.config)
     input_payload = {
         "manager": manager.value,
+        "handoff_context": {
+            "upstream": "bounded specialist findings from the selected branches",
+            "downstream": "a synthesis writer producing a decision-ready report",
+            "research_question": brief.question if brief else None,
+            "jurisdiction": brief.jurisdiction if brief else None,
+            "policy_scope": brief.policy_scope if brief else None,
+            "time_horizon": brief.time_horizon if brief else None,
+            "manager_request": (
+                "Reconcile what the supplied findings establish, what they only suggest, "
+                "where they disagree, which claims are source-supported, and what evidence "
+                "gaps or sibling questions must be carried downstream."
+            ),
+            "source_id_contract": (
+                "Use only the short source IDs already present in the findings. Never invent or "
+                "substitute URLs for source IDs."
+            ),
+        },
         "findings": [item.model_dump(mode="json") for item in findings],
     }
     result = await run_agent_with_telemetry(

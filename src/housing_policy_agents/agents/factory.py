@@ -6,9 +6,30 @@ from pathlib import Path
 from typing import Any
 
 from ..config import AppConfig
-from ..models import DraftReport, ManagerSynthesis, ResearchPlan, SpecialistFinding
+from ..models import BranchName, DraftReport, ManagerSynthesis, ResearchPlan, SpecialistFinding
+from .orchestrator import BRANCH_PROFILES
 
 PROMPT_ROOT = Path(__file__).parents[1] / "prompts"
+
+MANAGER_ROLE_GUIDANCE = {
+    "policy_research_manager": (
+        "You are the calm, skeptical policy integrator for government, legal, and academic evidence. "
+        "Reconcile authority, policy baseline, empirical mechanisms, and uncertainty without allowing "
+        "a compelling narrative to outrun the record."
+    ),
+    "industry_research_manager": (
+        "You are an operations-minded market integrator. Compare consumer, origination, servicing, and "
+        "risk-transfer findings while separating observed practice, stakeholder incentives, and forecasts."
+    ),
+    "advocacy_research_manager": (
+        "You are an equity-conscious but evidence-disciplined integrator. Preserve consumer and community "
+        "concerns, identify who bears risk, and distinguish advocacy positions from measured outcomes."
+    ),
+    "global_research_manager": (
+        "You are a comparative-policy analyst. Admit institutional differences, reject superficial country "
+        "analogies, and retain only lessons that can be translated into conditional U.S. design questions."
+    ),
+}
 
 
 def read_prompt(name: str) -> str:
@@ -47,9 +68,23 @@ def build_orchestrator_agent(config: AppConfig) -> Any:
 def build_specialist_agent(branch: str, config: AppConfig, tools: list[Any]) -> Any:
     from agents import Agent
 
+    profile = BRANCH_PROFILES[BranchName(branch)]
+    profile_text = "\n".join(
+        [
+            f"Branch role: {profile.role}",
+            f"Role definition: {profile.role_definition}",
+            "In scope: " + "; ".join(profile.in_scope),
+            "Out of scope: " + "; ".join(profile.out_of_scope),
+            "Preferred sources: " + "; ".join(profile.preferred_sources),
+            "Research dimensions: " + "; ".join(profile.research_dimensions),
+        ]
+    )
     return Agent(
         name=f"{branch.replace('_', ' ').title()} Researcher",
-        instructions=f"{read_prompt('specialist')}\nYour assigned branch is {branch}.",
+        instructions=(
+            f"{read_prompt('specialist')}\n\n{profile_text}\n\n"
+            f"Your assigned branch is {branch}. Follow the runtime assignment context exactly."
+        ),
         model=config.openai_model,
         tools=tools,
         output_type=agent_output_schema(SpecialistFinding),
@@ -64,8 +99,8 @@ def build_manager_agent(
     return Agent(
         name=manager.replace("_", " ").title(),
         instructions=(
-            "You reconcile bounded specialist findings. Preserve disagreements and label incentive-driven claims. "
-            "Do not invent sources or legal conclusions. Return the typed manager synthesis."
+            f"{read_prompt('manager')}\n\n"
+            f"Manager persona: {MANAGER_ROLE_GUIDANCE.get(manager, 'You are a careful evidence integrator.')}"
         ),
         model=config.openai_model,
         tools=specialist_tools or [],
@@ -139,7 +174,14 @@ def build_agent_graph(config: AppConfig) -> dict[str, Any]:
         tools = [
             specialists[branch].as_tool(
                 tool_name=f"research_{branch}",
-                tool_description=f"Run the bounded {branch} specialist.",
+                tool_description=(
+                    f"Invoke the bounded {BRANCH_PROFILES[BranchName(branch)].role}. "
+                    "Pass a complete bounded request containing the policy question, manager request, "
+                    "policy decisions supported, branch objective, scope boundaries, preferred source "
+                    "types, research dimensions, sibling context, and required response contract. "
+                    "The specialist returns claim-level typed evidence using short source IDs and URLs "
+                    "only in source.url; do not ask it for a general narrative."
+                ),
                 max_turns=config.max_turns_per_agent,
             )
             for branch in branches

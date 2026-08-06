@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import hashlib
+import re
+from collections.abc import Mapping
 from datetime import UTC, date, datetime
 from enum import IntEnum, StrEnum
 from typing import Any, Literal
@@ -170,6 +173,12 @@ class ResearchAssignment(StrictModel):
     branch: BranchName
     manager: ManagerName
     objective: str
+    research_context: str = ""
+    in_scope: list[str] = Field(default_factory=list)
+    out_of_scope: list[str] = Field(default_factory=list)
+    preferred_sources: list[str] = Field(default_factory=list)
+    policy_decisions_supported: list[str] = Field(default_factory=list)
+    handoff_instructions: list[str] = Field(default_factory=list)
     required_questions: list[str] = Field(default_factory=list)
     search_queries: list[SearchQuery] = Field(default_factory=list)
     source_tier_targets: list[SourceTier] = Field(default_factory=list)
@@ -213,6 +222,21 @@ class CountryComparison(StrictModel):
     source_ids: list[str] = Field(default_factory=list)
 
 
+_SOURCE_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{1,80}$")
+
+
+def canonical_source_id(value: str) -> str:
+    """Return a stable internal ID while leaving already-valid IDs unchanged."""
+
+    text = value.strip()
+    if _SOURCE_ID_PATTERN.fullmatch(text):
+        return text
+    if text.lower().startswith(("http://", "https://")):
+        digest = hashlib.sha256(text.encode("utf-8")).hexdigest()[:12]
+        return f"s_{digest}"
+    return text
+
+
 class SourceRecord(StrictModel):
     source_id: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]{1,80}$")
     title: str
@@ -234,6 +258,23 @@ class SourceRecord(StrictModel):
     safety_flags: list[str] = Field(default_factory=list)
     content_hash: str | None = None
 
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_url_source_id(cls, value: Any) -> Any:
+        """Keep model-generated URLs usable without weakening the internal ID contract."""
+
+        if not isinstance(value, Mapping):
+            return value
+        raw_id = value.get("source_id")
+        if not isinstance(raw_id, str) or not raw_id.strip().lower().startswith(
+            ("http://", "https://")
+        ):
+            return value
+        updated = dict(value)
+        updated["source_id"] = canonical_source_id(raw_id)
+        updated["url"] = updated.get("url") or raw_id
+        return updated
+
     @model_validator(mode="after")
     def synthetic_metadata(self) -> SourceRecord:
         if self.synthetic and self.source_type != SourceType.SYNTHETIC_FIXTURE:
@@ -245,6 +286,8 @@ class EvidenceClaim(StrictModel):
     claim_id: str = Field(default_factory=lambda: f"claim-{uuid4().hex[:10]}")
     text: str
     claim_type: ClaimType
+    why_it_matters: str = ""
+    manager_implication: str = ""
     supporting_source_ids: list[str] = Field(default_factory=list)
     contradicting_source_ids: list[str] = Field(default_factory=list)
     evidence_strength: EvidenceStrength
@@ -281,6 +324,79 @@ class SpecialistFinding(StrictModel):
     error: str | None = None
     started_at: datetime = Field(default_factory=utc_now)
     finished_at: datetime = Field(default_factory=utc_now)
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_source_references(cls, value: Any) -> Any:
+        """Normalize URL-shaped IDs before strict nested validation.
+
+        Live research models occasionally place a retrieved URL in ``source_id``
+        even though the application uses short IDs internally. The URL remains
+        available in ``SourceRecord.url`` while every claim/reference points to
+        the same deterministic internal ID.
+        """
+
+        if not isinstance(value, Mapping):
+            return value
+        payload = dict(value)
+        aliases: dict[str, str] = {}
+        raw_sources = payload.get("discovered_sources") or []
+        normalized_sources: list[Any] = []
+        for raw_source in raw_sources:
+            if isinstance(raw_source, Mapping):
+                source = dict(raw_source)
+                raw_id = source.get("source_id")
+                if isinstance(raw_id, str):
+                    normalized = canonical_source_id(raw_id)
+                    if normalized != raw_id:
+                        aliases[raw_id] = normalized
+                        source["source_id"] = normalized
+                        if source.get("url") is None:
+                            source["url"] = raw_id
+                normalized_sources.append(source)
+            else:
+                normalized_sources.append(raw_source)
+        if raw_sources:
+            payload["discovered_sources"] = normalized_sources
+
+        def remap_ids(values: Any) -> Any:
+            if not isinstance(values, list):
+                return values
+            return [
+                aliases.get(item, canonical_source_id(item) if isinstance(item, str) else item)
+                for item in values
+            ]
+
+        for field in ("source_ids",):
+            if field in payload:
+                payload[field] = remap_ids(payload[field])
+        for field in ("claims", "contradictions"):
+            items = payload.get(field) or []
+            normalized_items: list[Any] = []
+            for raw_item in items:
+                if not isinstance(raw_item, Mapping):
+                    normalized_items.append(raw_item)
+                    continue
+                item = dict(raw_item)
+                for reference_field in ("supporting_source_ids", "contradicting_source_ids"):
+                    if reference_field in item:
+                        item[reference_field] = remap_ids(item[reference_field])
+                normalized_items.append(item)
+            if field in payload:
+                payload[field] = normalized_items
+        comparisons = payload.get("country_comparisons") or []
+        normalized_comparisons: list[Any] = []
+        for raw_comparison in comparisons:
+            if not isinstance(raw_comparison, Mapping):
+                normalized_comparisons.append(raw_comparison)
+                continue
+            comparison = dict(raw_comparison)
+            if "source_ids" in comparison:
+                comparison["source_ids"] = remap_ids(comparison["source_ids"])
+            normalized_comparisons.append(comparison)
+        if "country_comparisons" in payload:
+            payload["country_comparisons"] = normalized_comparisons
+        return payload
 
 
 class ManagerSynthesis(StrictModel):

@@ -39,6 +39,10 @@ sequenceDiagram
 
 The orchestrator exposes four manager agents as bounded `Agent.as_tool` tools. Each manager exposes its specialists as bounded callable tools. In the explicit offline workflow, Python executes independent specialist assignments concurrently and invokes deterministic manager synthesis; in live mode the same typed contracts are passed through Agents SDK `Runner` calls. Handoffs are not used because the user-facing controller must retain ownership of budgets, branch status, errors, and revision policy.
 
+Every runtime `ResearchAssignment` is a structured handoff, not just a one-line objective. It carries the shared question and policy context, manager and sibling-branch purpose, role-specific in-scope and out-of-scope boundaries, preferred source classes, research dimensions, required questions, and a response contract. Manager, writer, reviewer, and revision payloads carry corresponding upstream/downstream handoff context. Specialist prompts additionally define role temperament, evidence rules, source-ID conventions, and a pre-return validation checklist.
+
+The internal source-ID contract is strict and stable: short IDs such as `s1` or `s_fhfa_chattel` are used for references, while full URLs live in `SourceRecord.url`. The model boundary normalizes URL-shaped IDs into deterministic IDs and rewrites nested references before strict Pydantic validation, so a semantically useful response is not discarded solely because a model confused an identifier with a locator.
+
 The configured graph is emitted by `housing-research graph --format mermaid` and is also represented in `src/housing_policy_agents/agents/factory.py`.
 
 ## Data and safety boundaries

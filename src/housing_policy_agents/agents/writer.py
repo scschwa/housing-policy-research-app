@@ -433,6 +433,15 @@ async def write_report(
         "brief": brief.model_dump(mode="json"),
         "manager_syntheses": [item.model_dump(mode="json") for item in managers],
         "source_ids": sorted(source_ids),
+        "handoff_context": {
+            "upstream": "reconciled manager evidence packages",
+            "downstream": "adversarial reviewer and final policy decision-maker",
+            "source_id_contract": "Use only supplied short source IDs; URLs are source metadata, not citation IDs.",
+            "required_behavior": (
+                "Produce a balanced decision-ready report, preserve branch limitations and disagreements, "
+                "and distinguish evidence from inference."
+            ),
+        },
     }
     result = await run_agent_with_telemetry(
         context=context,
@@ -481,6 +490,15 @@ async def revise_report(
     input_payload = {
         "draft": report.model_dump(mode="json"),
         "review": review.model_dump(mode="json"),
+        "handoff_context": {
+            "upstream": "adversarial review findings",
+            "downstream": "validated final research package",
+            "source_id_contract": "Retain only valid supplied citation IDs; never replace them with URLs.",
+            "required_behavior": (
+                "Address material review findings without inventing evidence, changing the question, "
+                "or removing justified uncertainty."
+            ),
+        },
     }
     result = await run_agent_with_telemetry(
         context=context,

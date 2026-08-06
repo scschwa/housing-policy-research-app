@@ -16,7 +16,7 @@ The implementation is complete through the offline acceptance path. The reposito
 Verification performed before publishing:
 
 - `ruff check .` — clean.
-- `pytest -q` — 24 passed.
+- `pytest -q` — 27 passed.
 - `mypy --exclude-gitignore src tests evals` — 35 files checked with no issues.
 - Offline Promptfoo evaluation — 52/52 cases passed.
 - Ablation Promptfoo evaluation — 208/208 cases passed across eight providers.
@@ -24,5 +24,6 @@ Verification performed before publishing:
 - CLI progress smoke test — stage and branch updates printed successfully on Windows-safe ASCII output.
 - Live chattel-loan question smoke test — completed with exit code 0; saved artifact validation returned `ok: true` with one citation-repetition warning.
 - Sub-agent telemetry smoke test — redacted request/result files, handoff index, and root interaction summary persisted successfully.
+- Structured handoff and source-ID regression tests — role/scope context, manager handoff instructions, and URL-shaped source IDs validated successfully.
 
 Live evaluation remains opt-in because it requires a configured model/API key and incurs external retrieval/token cost. Synthetic fixtures are intentionally used for deterministic CI and security regression coverage.
