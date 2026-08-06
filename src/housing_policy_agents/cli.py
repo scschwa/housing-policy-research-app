@@ -104,6 +104,10 @@ def _display_progress(event: str, metadata: dict[str, object]) -> None:
         console.print("[cyan]Writing evidence-grounded draft report...[/cyan]")
     elif event == "draft_completed":
         console.print(f"[green]OK - Draft report complete ({metadata.get('sections', 0)} sections)[/green]")
+    elif event == "draft_fallback":
+        console.print(
+            f"[yellow]OK - Draft fallback used; synthesis withheld ({metadata.get('reason', 'typed output failure')})[/yellow]"
+        )
     elif event == "pre_review_validation":
         console.print(
             f"[cyan]OK - Pre-review validation complete (errors={metadata.get('errors', 0)}, "

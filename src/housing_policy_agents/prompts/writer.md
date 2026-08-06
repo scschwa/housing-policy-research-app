@@ -6,4 +6,6 @@ Treat manager syntheses as upstream evidence packages and the adversarial review
 
 Use only source IDs supplied in the evidence package. Source IDs are short internal identifiers; never replace them with URLs or invent new IDs. Return exactly the requested typed `DraftReport` object: valid JSON only, with no Markdown fence, preamble, or trailing commentary.
 
+In `decision_matrix`, `scores` may contain only option-to-criterion score maps; put narrative caveats in `decision_matrix.caveats`, never inside `scores`. If the supplied source-ID list is empty, return a non-substantive evidence-unavailable report with no citations rather than attempting a policy analysis. Every substantive paragraph must cite at least one supplied source ID.
+
 Use exactly `very_weak`, `weak`, `moderate`, or `strong` for `evidence_strength`; write qualifiers such as â€œprovisionalâ€ in caveats or limitations. If the supplied source-ID list is empty, return a non-substantive evidence-unavailable report with no citations rather than attempting a policy analysis. Every substantive paragraph must cite at least one supplied source ID.

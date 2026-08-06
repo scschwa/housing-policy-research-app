@@ -422,8 +422,9 @@ def no_evidence_report(
     brief: ResearchBrief,
     managers: list[ManagerSynthesis],
     reason: str = "No specialist branch returned validated evidence.",
+    source_count: int = 0,
 ) -> DraftReport:
-    """Return a safe, structurally valid report when the evidence ledger is empty.
+    """Return a safe, structurally valid report when substantive synthesis is unavailable.
 
     This is intentionally not a substantive policy answer. It keeps the workflow
     auditable and gives the user an actionable explanation instead of allowing a
@@ -456,12 +457,36 @@ def no_evidence_report(
         evidence_strength=EvidenceStrength.VERY_WEAK,
     )
     failed_text = ", ".join(failed_branches) if failed_branches else "not identified"
-    return DraftReport(
-        title=f"Evidence unavailable for: {brief.question}",
-        executive_summary=(
+    recovery_text = (
+        "Inspect the synthesis-writer telemetry, correct the typed-output issue, and retry the "
+        "synthesis using the preserved specialist evidence."
+        if source_count
+        else (
+            "Retry the specialist branches with telemetry enabled, inspect their validation errors, "
+            "and rerun the synthesis after successful source validation."
+        )
+    )
+    if source_count:
+        summary = (
+            "Validated specialist evidence was collected, but the synthesis response did not pass "
+            "typed validation. The application has withheld substantive conclusions."
+        )
+        evidence_gaps = [
+            "A valid synthesis report was not produced from the collected specialist evidence.",
+            "Substantive consequences, legal conclusions, and distributional estimates were withheld pending a successful synthesis retry.",
+        ]
+    else:
+        summary = (
             "No validated specialist evidence was available for this run. The application has "
             "withheld substantive conclusions and citation-bearing analysis."
-        ),
+        )
+        evidence_gaps = [
+            "No specialist branch returned a validated source record.",
+            "No substantive consequences, legal conclusions, or distributional estimates can be supported from this run.",
+        ]
+    return DraftReport(
+        title=f"Evidence unavailable for: {brief.question}",
+        executive_summary=summary,
         sections=[
             ReportSection(
                 "evidence_status",
@@ -479,9 +504,7 @@ def no_evidence_report(
                 [
                     ReportParagraph(
                         text=(
-                            "Retry the specialist branches with telemetry enabled, inspect their validation "
-                            "errors, and rerun the synthesis after successful source validation. Branches "
-                            f"currently unavailable: {failed_text}."
+                            f"{recovery_text} Branches currently unavailable: {failed_text}."
                         ),
                         substantive=False,
                     )
@@ -494,10 +517,7 @@ def no_evidence_report(
             scores={"defer": {"evidence_availability": 1}},
             caveats=["This is a failure-containment status, not a policy recommendation."],
         ),
-        evidence_gaps=[
-            "No specialist branch returned a validated source record.",
-            "No substantive consequences, legal conclusions, or distributional estimates can be supported from this run.",
-        ],
+        evidence_gaps=evidence_gaps,
         limitations=[
             "The report intentionally contains no substantive, citation-bearing paragraphs.",
             "Rerun after resolving the specialist validation failures.",
@@ -549,39 +569,52 @@ async def write_report(
         return offline_report(brief, managers, source_ids)
     from agents import RunConfig
 
-    agent = build_writer_agent(context.config)
-    input_payload = {
-        "brief": brief.model_dump(mode="json"),
-        "manager_syntheses": [item.model_dump(mode="json") for item in managers],
-        "source_ids": sorted(source_ids),
-        "handoff_context": {
-            "upstream": "reconciled manager evidence packages",
-            "downstream": "adversarial reviewer and final policy decision-maker",
-            "source_id_contract": "Use only supplied short source IDs; URLs are source metadata, not citation IDs.",
-            "required_behavior": (
-                "Produce a balanced decision-ready report, preserve branch limitations and disagreements, "
-                "and distinguish evidence from inference."
+    try:
+        agent = build_writer_agent(context.config)
+        input_payload = {
+            "brief": brief.model_dump(mode="json"),
+            "manager_syntheses": [item.model_dump(mode="json") for item in managers],
+            "source_ids": sorted(source_ids),
+            "handoff_context": {
+                "upstream": "reconciled manager evidence packages",
+                "downstream": "adversarial reviewer and final policy decision-maker",
+                "source_id_contract": "Use only supplied short source IDs; URLs are source metadata, not citation IDs.",
+                "required_behavior": (
+                    "Produce a balanced decision-ready report, preserve branch limitations and disagreements, "
+                    "and distinguish evidence from inference."
+                ),
+            },
+        }
+        result = await run_agent_with_telemetry(
+            context=context,
+            agent=agent,
+            runner_input=json.dumps(input_payload, indent=2),
+            input_payload=input_payload,
+            agent_name="synthesis_writer",
+            stage="draft",
+            max_turns=context.config.max_turns_per_agent,
+            run_config=RunConfig(
+                model=context.config.openai_model,
+                workflow_name="Housing Policy Research Network",
+                trace_id=context.trace_id,
+                trace_include_sensitive_data=context.config.trace_include_sensitive_data,
             ),
-        },
-    }
-    result = await run_agent_with_telemetry(
-        context=context,
-        agent=agent,
-        runner_input=json.dumps(input_payload, indent=2),
-        input_payload=input_payload,
-        agent_name="synthesis_writer",
-        stage="draft",
-        max_turns=context.config.max_turns_per_agent,
-        run_config=RunConfig(
-            model=context.config.openai_model,
-            workflow_name="Housing Policy Research Network",
-            trace_id=context.trace_id,
-            trace_include_sensitive_data=context.config.trace_include_sensitive_data,
-        ),
-    )
-    if not isinstance(result.final_output, DraftReport):
-        raise TypeError("writer did not return DraftReport")
-    return _contain_report_citations(result.final_output, source_ids)
+        )
+        if not isinstance(result.final_output, DraftReport):
+            raise TypeError("writer did not return DraftReport")
+        return _contain_report_citations(result.final_output, source_ids)
+    except Exception as exc:
+        reason = (
+            f"Synthesis writer output was withheld after {type(exc).__name__}; "
+            "inspect the sub-agent telemetry and retry the run."
+        )
+        context.metadata["writer_fallback_reason"] = reason
+        return no_evidence_report(
+            brief,
+            managers,
+            reason=reason,
+            source_count=len(source_ids),
+        )
 
 
 async def revise_report(

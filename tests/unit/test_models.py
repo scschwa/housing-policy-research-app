@@ -150,6 +150,23 @@ def test_decision_matrix_normalizes_qualitative_scores() -> None:
     assert matrix.scores == {"O1": {"benefit": 5}}
 
 
+def test_decision_matrix_moves_embedded_caveats_out_of_scores() -> None:
+    criterion = DecisionCriterion(criterion_id="benefit", name="Benefit", description="Benefit")
+    matrix = DecisionMatrix.model_validate(
+        {
+            "criteria": [criterion.model_dump()],
+            "options": [option("O1").model_dump()],
+            "scores": {
+                "O1": {"benefit": "high"},
+                "caveats": ["Scores are qualitative and relative."],
+            },
+        }
+    )
+
+    assert matrix.scores == {"O1": {"benefit": 5}}
+    assert matrix.caveats == ["Scores are qualitative and relative."]
+
+
 def test_decision_matrix_accepts_qualitative_score_ranges() -> None:
     criterion = DecisionCriterion(criterion_id="benefit", name="Benefit", description="Benefit")
     matrix = DecisionMatrix(

@@ -513,6 +513,25 @@ class DecisionMatrix(StrictModel):
     scores: dict[str, dict[str, DecisionScore]]
     caveats: list[str] = Field(default_factory=list)
 
+    @model_validator(mode="before")
+    @classmethod
+    def move_embedded_caveats(cls, value: Any) -> Any:
+        """Accept a common model shape that nests matrix caveats under scores."""
+        if not isinstance(value, Mapping):
+            return value
+        updated = dict(value)
+        raw_scores = updated.get("scores")
+        if not isinstance(raw_scores, Mapping) or "caveats" not in raw_scores:
+            return updated
+        embedded = raw_scores.get("caveats")
+        updated["scores"] = {
+            key: item for key, item in raw_scores.items() if key != "caveats"
+        }
+        if isinstance(embedded, list):
+            existing = updated.get("caveats") or []
+            updated["caveats"] = [*existing, *embedded]
+        return updated
+
     @field_validator("scores", mode="before")
     @classmethod
     def normalize_score_labels(cls, value: Any) -> Any:

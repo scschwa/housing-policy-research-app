@@ -227,7 +227,10 @@ class ResearchWorkflow:
             },
         )
         draft = await write_report(brief, list(manager_syntheses), ledger.ids(), context)
-        events.record("draft_completed", sections=len(draft.sections))
+        if fallback_reason := context.metadata.get("writer_fallback_reason"):
+            events.record("draft_fallback", reason=fallback_reason)
+        else:
+            events.record("draft_completed", sections=len(draft.sections))
         pre_review = validate_report(draft, ledger)
         context.validation_failures.extend(pre_review.errors)
         events.record(
