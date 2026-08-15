@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import time
 
 from ..context import RunContext
 from ..models import (
@@ -38,6 +39,7 @@ async def reconcile_manager(
     context: RunContext,
     brief: ResearchBrief | None = None,
 ) -> ManagerSynthesis:
+    local_started = time.perf_counter()
     branches = [finding.branch for finding in findings]
     statuses = {finding.branch: finding.status for finding in findings}
     overall = (
@@ -56,7 +58,7 @@ async def reconcile_manager(
             for finding in findings
             if finding.status != BranchStatus.COMPLETED
         ]
-        return ManagerSynthesis(
+        synthesis = ManagerSynthesis(
             manager=manager,
             status=BranchStatus.PARTIAL,
             specialist_branches=branches,
@@ -68,6 +70,14 @@ async def reconcile_manager(
                 f"Unavailable branches: {', '.join(failed_branches) or 'none reported'}.",
             ],
         )
+        if context.interaction_telemetry is not None:
+            context.interaction_telemetry.record_local(
+                agent=manager.value,
+                stage="reconciliation_fallback",
+                duration_ms=int((time.perf_counter() - local_started) * 1000),
+                model="application-fallback",
+            )
+        return synthesis
     if context.config.research_provider == "offline":
         claims = [claim for finding in findings for claim in finding.claims]
         contradictions = [item for finding in findings for item in finding.contradictions]
@@ -81,7 +91,7 @@ async def reconcile_manager(
                 "Industry claims about operational burden and risk allocation may reflect genuine constraints as well as stakeholder incentives.",
             ]
         limitations = sorted({item for finding in findings for item in finding.limitations})
-        return ManagerSynthesis(
+        synthesis = ManagerSynthesis(
             manager=manager,
             status=overall,
             specialist_branches=branches,
@@ -99,6 +109,13 @@ async def reconcile_manager(
             incentive_driven_claims=incentive,
             limitations=limitations,
         )
+        if context.interaction_telemetry is not None:
+            context.interaction_telemetry.record_local(
+                agent=manager.value,
+                stage="reconciliation",
+                duration_ms=int((time.perf_counter() - local_started) * 1000),
+            )
+        return synthesis
 
     from agents import RunConfig
 
@@ -120,6 +137,11 @@ async def reconcile_manager(
             "source_id_contract": (
                 "Use only the short source IDs already present in the findings. Never invent or "
                 "substitute URLs for source IDs."
+            ),
+            "depth_requirements": (
+                "Explain the policy baseline, causal mechanisms, affected actors, timing, "
+                "distributional incidence, implementation dependencies, contrary evidence, and "
+                "conditions that would change each important conclusion."
             ),
         },
         "findings": [item.model_dump(mode="json") for item in findings],

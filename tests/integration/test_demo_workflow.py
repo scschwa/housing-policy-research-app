@@ -2,9 +2,21 @@ import asyncio
 import json
 from pathlib import Path
 
+import pytest
+
+import housing_policy_agents.workflows.research_workflow as workflow_module
 from housing_policy_agents.agents.orchestrator import select_branches
 from housing_policy_agents.config import AppConfig
-from housing_policy_agents.models import ResearchProviderName, RunMode, UserResearchRequest
+from housing_policy_agents.context import RunContext
+from housing_policy_agents.models import (
+    DraftReport,
+    ManagerSynthesis,
+    ReportParagraph,
+    ResearchBrief,
+    ResearchProviderName,
+    RunMode,
+    UserResearchRequest,
+)
 from housing_policy_agents.workflows.research_workflow import ResearchWorkflow
 
 QUESTION = (
@@ -49,6 +61,14 @@ def test_fixture_workflow_persists_revised_package() -> None:
     assert len(global_findings[0].country_comparisons) == 3
     assert len(package.manager_syntheses[-1].country_comparisons) == 3
     assert (artifact / "report.md").exists()
+    assert (artifact / "audit_report.md").exists()
+    assert (artifact / "usage_report.md").exists()
+    assert (artifact / "audit_report.json").exists()
+    assert (artifact / "usage_report.json").exists()
+    assert package.audit_report is not None
+    assert package.usage_report is not None
+    assert package.usage_report.records
+    assert package.usage_report.wall_clock_ms > 0
     loaded = json.loads((artifact / "package.json").read_text(encoding="utf-8"))
     assert loaded["run_id"] == package.run_id
     interaction_summary = json.loads(
@@ -73,3 +93,59 @@ def test_branch_selection_avoids_mortgage_operations_for_zoning() -> None:
     assert "government_sources" in {branch.value for branch in branches}
     assert "servicing" not in {branch.value for branch in branches}
     assert "loan_originator" not in {branch.value for branch in branches}
+
+
+def test_workflow_persists_audit_for_withheld_validation_failure(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    original_write_report = workflow_module.write_report
+
+    async def invalid_writer(
+        brief: ResearchBrief,
+        managers: list[ManagerSynthesis],
+        source_ids: set[str],
+        context: RunContext,
+    ) -> DraftReport:
+        report = await original_write_report(brief, managers, source_ids, context)
+        report.sections[0].paragraphs.append(
+            ReportParagraph(
+                paragraph_id="audit-target",
+                text="This injected test statement has no supporting citation.",
+                citation_ids=[],
+            )
+        )
+        return report
+
+    monkeypatch.setattr(workflow_module, "write_report", invalid_writer)
+    fixture = Path(__file__).parents[1] / "fixtures" / "mortgage_portability.json"
+    config = AppConfig(
+        research_provider="offline",
+        fixture_path=fixture,
+        artifacts_dir=tmp_path,
+    )
+    request = UserResearchRequest(
+        question=QUESTION,
+        mode=RunMode.FAST,
+        provider=ResearchProviderName.OFFLINE,
+        accept_defaults=True,
+    )
+
+    package = asyncio.run(ResearchWorkflow(config).run(request))
+    audit_path = tmp_path / package.run_id / "audit_report.md"
+    target = next(
+        paragraph
+        for section in package.final_report.sections
+        for paragraph in section.paragraphs
+        if paragraph.paragraph_id == "audit-target"
+    )
+
+    assert target.withheld is True
+    assert package.audit_report is not None
+    assert package.audit_report.entries[0].original_content == (
+        "This injected test statement has no supporting citation."
+    )
+    assert package.audit_report.entries[0].status.value == "withheld"
+    audit_markdown = audit_path.read_text(encoding="utf-8")
+    assert "This injected test statement has no supporting citation." in audit_markdown
+    assert "Final report representation" in audit_markdown

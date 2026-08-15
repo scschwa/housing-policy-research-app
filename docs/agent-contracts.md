@@ -21,6 +21,7 @@ All contracts are Pydantic models in `src/housing_policy_agents/models/domain.py
 | Advocacy Research Manager | three advocacy findings | `ManagerSynthesis` | advocacy specialist tools | forcing consensus across genuine value conflicts |
 | Global Research Manager | global finding | `ManagerSynthesis` | global specialist tool | removing weak-comparability caveats |
 | Synthesis Writer | brief, manager syntheses, ledger IDs | `DraftReport` | no broad new research | fabricating citations, consensus, precision, or unsupported legal certainty |
+| Validation Re-work Specialist | flagged targets, original and withheld report, ledger, accepted evidence | corrected `DraftReport` | no new research | changing unflagged units, inventing evidence, or releasing an unsupported target instead of withholding it |
 | Adversarial Reviewer | draft, source ledger, accepted evidence | `AdversarialReview` | no report rewrite | rewriting the whole report, hiding security findings, or approving unresolved critical defects |
 
 Managers are callable tools to make the hierarchy inspectable while Python remains the workflow authority. A specialist failure is returned as a `SpecialistFinding` with `FAILED` status and an error, so unavailable perspectives remain visible in artifacts and limitations.

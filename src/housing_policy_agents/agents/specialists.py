@@ -389,7 +389,8 @@ async def run_specialist(
                         ],
                     }
                 )
-            return SpecialistFinding(
+            finished = _now()
+            finding = SpecialistFinding(
                 branch=assignment.branch,
                 agent_name=f"{assignment.branch.value}_researcher",
                 status=BranchStatus.COMPLETED,
@@ -406,8 +407,16 @@ async def run_specialist(
                 ],
                 prompt_injection_flags=injection_flags,
                 started_at=started,
-                finished_at=_now(),
+                finished_at=finished,
             )
+            telemetry = context.interaction_telemetry
+            if telemetry is not None:
+                telemetry.record_local(
+                    agent=f"{assignment.branch.value}_researcher",
+                    stage="research",
+                    duration_ms=max(0, int((finished - started).total_seconds() * 1000)),
+                )
+            return finding
 
         from agents import RunConfig
 
@@ -445,6 +454,14 @@ async def run_specialist(
         finding.finished_at = _now()
         return finding
     except Exception as exc:  # branch failures are preserved in the final package
+        finished = _now()
+        if isinstance(backend, FixtureResearchBackend) and context.interaction_telemetry is not None:
+            context.interaction_telemetry.record_local(
+                agent=f"{assignment.branch.value}_researcher",
+                stage="research",
+                duration_ms=max(0, int((finished - started).total_seconds() * 1000)),
+                status="failed",
+            )
         return SpecialistFinding(
             branch=assignment.branch,
             agent_name=f"{assignment.branch.value}_researcher",
@@ -453,5 +470,5 @@ async def run_specialist(
             limitations=["This perspective was unavailable for this run."],
             error=f"{type(exc).__name__}: {exc}",
             started_at=started,
-            finished_at=_now(),
+            finished_at=finished,
         )

@@ -6,6 +6,6 @@
 - Source deduplication uses normalized URLs and excerpt hashes; it is not a full semantic near-duplicate detector.
 - The simple injection detector is lexical. It is a defense-in-depth control, not a proof that arbitrary malicious content is harmless.
 - Qualitative decision-matrix scores are not forecasts and do not imply that a higher score is always preferable.
-- The workflow records bounded retries and latency, but exact live token/cost accounting depends on SDK/provider response metadata and should be instrumented further in production.
+- The workflow captures request and token usage from Agents SDK lifecycle responses, including responses that later fail typed parsing. Providers that omit usage metadata cannot be reconstructed exactly. USD estimates require current per-million-token rates in environment configuration and are labeled approximate.
 - No report is legal, financial, or investment advice. Current law, regulations, sources, and forecasts must be independently verified before formal reliance.
 - A production deployment should add authentication, encrypted artifact storage, retention controls, stronger PII redaction, semantic source matching, domain allowlists, and human approval for release.

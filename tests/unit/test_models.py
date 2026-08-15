@@ -6,6 +6,7 @@ from pydantic import ValidationError
 from housing_policy_agents.models import (
     BranchName,
     BranchStatus,
+    ClaimType,
     DecisionCriterion,
     DecisionMatrix,
     DecisionScoreDetail,
@@ -57,11 +58,11 @@ def test_specialist_finding_normalizes_url_source_ids() -> None:
                 EvidenceClaim(
                     claim_id="c1",
                     text="The source identifies a policy constraint.",
-                    claim_type="fact",
+                    claim_type=ClaimType.FACT,
                     why_it_matters="It affects implementation feasibility.",
                     manager_implication="Carry the constraint into the options analysis.",
                     supporting_source_ids=[url],
-                    evidence_strength="strong",
+                    evidence_strength=EvidenceStrength.STRONG,
                     confidence=0.9,
                     originating_agent="government_sources_researcher",
                 ).model_dump(mode="json")
@@ -115,15 +116,17 @@ def test_specialist_finding_normalizes_live_temporal_strings() -> None:
 
 
 def test_evidence_strength_normalizes_model_qualifiers() -> None:
-    claim = EvidenceClaim(
-        text="The estimate is provisional.",
-        claim_type="estimate",
-        evidence_strength="moderate (provisional)",
-        confidence=0.4,
-        originating_agent="test",
+    claim = EvidenceClaim.model_validate(
+        {
+            "text": "The estimate is provisional.",
+            "claim_type": "estimate",
+            "evidence_strength": "moderate (provisional)",
+            "confidence": 0.4,
+            "originating_agent": "test",
+        }
     )
     policy_option = option("O-provisional")
-    policy_option.evidence_strength = "weak (limited)"
+    policy_option.evidence_strength = "weak (limited)"  # type: ignore[assignment]
 
     assert claim.evidence_strength == EvidenceStrength.MODERATE
     assert policy_option.evidence_strength == EvidenceStrength.WEAK
@@ -169,10 +172,12 @@ def test_decision_matrix_moves_embedded_caveats_out_of_scores() -> None:
 
 def test_decision_matrix_accepts_qualitative_score_ranges() -> None:
     criterion = DecisionCriterion(criterion_id="benefit", name="Benefit", description="Benefit")
-    matrix = DecisionMatrix(
-        criteria=[criterion],
-        options=[option("O1")],
-        scores={"O1": {"benefit": {"range": "1-3", "note": "conditional"}}},
+    matrix = DecisionMatrix.model_validate(
+        {
+            "criteria": [criterion.model_dump()],
+            "options": [option("O1").model_dump()],
+            "scores": {"O1": {"benefit": {"range": "1-3", "note": "conditional"}}},
+        }
     )
 
     score = matrix.scores["O1"]["benefit"]

@@ -12,6 +12,7 @@ from ..agents.factory import build_agent_graph
 from ..agents.managers import reconcile_manager
 from ..agents.orchestrator import build_brief, build_plan
 from ..agents.reviewer import review_report
+from ..agents.rework import rework_validation_failures
 from ..agents.specialists import run_specialist
 from ..agents.writer import revise_report, write_report
 from ..config import AppConfig
@@ -25,6 +26,7 @@ from ..models import (
     ManagerName,
     ManagerSynthesis,
     ReleaseRecommendation,
+    ReportAudit,
     ResearchAssignment,
     ResearchPlan,
     RunMetrics,
@@ -34,6 +36,7 @@ from ..models import (
 from ..reporting.render import persist_package
 from ..telemetry.interactions import InteractionTelemetry
 from ..telemetry.metrics import EventRecorder, ProgressCallback, Stopwatch, finish_metrics
+from ..telemetry.usage import build_usage_report
 from ..tools.research import FixtureResearchBackend, LiveResearchBackend, ResearchBackend
 from ..tools.source_store import (
     SourceLedger,
@@ -79,6 +82,7 @@ class ResearchWorkflow:
         assert telemetry is not None
         events = EventRecorder(run_id, on_record=progress_callback)
         stopwatch = Stopwatch()
+        audit = ReportAudit(run_id=run_id)
         started_at = datetime.now(UTC)
         events.record("run_started", provider=self.config.research_provider)
         events.record("intake_validated", mode=request.mode.value)
@@ -227,10 +231,13 @@ class ResearchWorkflow:
             },
         )
         draft = await write_report(brief, list(manager_syntheses), ledger.ids(), context)
+        writer_draft = draft.model_copy(deep=True)
         if fallback_reason := context.metadata.get("writer_fallback_reason"):
             events.record("draft_fallback", reason=fallback_reason)
         else:
             events.record("draft_completed", sections=len(draft.sections))
+            if retry_reason := context.metadata.get("writer_retry_reason"):
+                events.record("draft_retry_used", reason=retry_reason)
         pre_review = validate_report(draft, ledger)
         context.validation_failures.extend(pre_review.errors)
         events.record(
@@ -238,6 +245,45 @@ class ResearchWorkflow:
             errors=len(pre_review.errors),
             warnings=len(pre_review.warnings),
         )
+        if pre_review.errors:
+            audit.initial_error_count += len(pre_review.errors)
+            events.record(
+                "validation_rework_started",
+                stage="pre_review",
+                errors=len(pre_review.errors),
+            )
+            telemetry.handoff(
+                source="deterministic_validator",
+                target="validation_rework_specialist",
+                stage="pre_review_rework",
+                payload={
+                    "error_count": len(pre_review.errors),
+                    "authorized_targets": [issue.target_id for issue in pre_review.issues],
+                    "instruction": (
+                        "Repair only flagged units using the approved evidence package; keep "
+                        "unsupported units withheld."
+                    ),
+                },
+            )
+            outcome = await rework_validation_failures(
+                report=draft,
+                validation=pre_review,
+                ledger=ledger,
+                evidence=[item.model_dump(mode="json") for item in manager_syntheses],
+                context=context,
+                stage="pre_review",
+            )
+            draft = outcome.report
+            pre_review = outcome.validation
+            audit.entries.extend(outcome.entries)
+            audit.repair_passes += outcome.passes
+            events.record(
+                "validation_rework_completed",
+                stage="pre_review",
+                passes=outcome.passes,
+                remaining_errors=len(pre_review.errors),
+                withheld=sum(entry.status.value == "withheld" for entry in outcome.entries),
+            )
         if self.config.enable_adversarial_review:
             events.record("review_started")
             telemetry.handoff(
@@ -292,31 +338,31 @@ class ResearchWorkflow:
                     ),
                 },
             )
-            fallback_reason: str | None = None
+            revision_fallback_reason: str | None = None
             try:
                 final_report = await asyncio.wait_for(
                     revise_report(draft, review, context),
                     timeout=self.config.revision_timeout_seconds,
                 )
             except TimeoutError:
-                fallback_reason = (
+                revision_fallback_reason = (
                     f"timeout after {self.config.revision_timeout_seconds} seconds"
                 )
             except Exception as exc:
-                fallback_reason = f"{type(exc).__name__} from revision output"
-            if fallback_reason is not None:
+                revision_fallback_reason = f"{type(exc).__name__} from revision output"
+            if revision_fallback_reason is not None:
                 final_report = draft
                 review = review.model_copy(
                     update={
                         "reviewer_notes": [
                             *review.reviewer_notes,
-                            f"The bounded revision failed ({fallback_reason}); the validated draft was retained.",
+                            f"The bounded revision failed ({revision_fallback_reason}); the validated draft was retained.",
                         ]
                     }
                 )
                 events.record(
                     "revision_fallback",
-                    reason=fallback_reason,
+                    reason=revision_fallback_reason,
                 )
                 events.record("bounded_revision", revision_count=0, fallback=True)
             else:
@@ -328,6 +374,51 @@ class ResearchWorkflow:
             errors=len(final_validation.errors),
             warnings=len(final_validation.warnings),
         )
+        if final_validation.errors:
+            audit.initial_error_count += len(final_validation.errors)
+            events.record(
+                "validation_rework_started",
+                stage="final",
+                errors=len(final_validation.errors),
+            )
+            telemetry.handoff(
+                source="deterministic_validator",
+                target="validation_rework_specialist",
+                stage="final_rework",
+                payload={
+                    "error_count": len(final_validation.errors),
+                    "authorized_targets": [issue.target_id for issue in final_validation.issues],
+                    "instruction": (
+                        "Repair only flagged units after adversarial review; keep unsupported units "
+                        "withheld and preserve valid revisions."
+                    ),
+                },
+            )
+            outcome = await rework_validation_failures(
+                report=final_report,
+                validation=final_validation,
+                ledger=ledger,
+                evidence={
+                    "manager_syntheses": [
+                        item.model_dump(mode="json") for item in manager_syntheses
+                    ],
+                    "adversarial_review": review.model_dump(mode="json"),
+                },
+                context=context,
+                stage="final",
+            )
+            final_report = outcome.report
+            final_validation = outcome.validation
+            audit.entries.extend(outcome.entries)
+            audit.repair_passes += outcome.passes
+            events.record(
+                "validation_rework_completed",
+                stage="final",
+                passes=outcome.passes,
+                remaining_errors=len(final_validation.errors),
+                withheld=sum(entry.status.value == "withheld" for entry in outcome.entries),
+            )
+        audit.final_error_count = len(final_validation.errors)
 
         branch_statuses = {finding.branch.value: finding.status for finding in findings}
         metrics = RunMetrics(
@@ -347,6 +438,21 @@ class ResearchWorkflow:
             },
         )
         finish_metrics(metrics, stopwatch)
+        usage_report = build_usage_report(
+            run_id=run_id,
+            telemetry=telemetry,
+            config=self.config,
+            wall_clock_ms=metrics.latency_ms or stopwatch.elapsed_ms,
+        )
+        metrics.requests = usage_report.requests
+        metrics.input_tokens = usage_report.input_tokens
+        metrics.cached_input_tokens = usage_report.cached_input_tokens
+        metrics.cache_write_tokens = usage_report.cache_write_tokens
+        metrics.output_tokens = usage_report.output_tokens
+        metrics.reasoning_tokens = usage_report.reasoning_tokens
+        metrics.total_tokens = usage_report.total_tokens
+        metrics.approximate_cost_usd = usage_report.approximate_cost_usd
+        metrics.cumulative_agent_ms = usage_report.cumulative_agent_ms
         package = FinalResearchPackage(
             run_id=run_id,
             request=request,
@@ -355,10 +461,12 @@ class ResearchWorkflow:
             specialist_findings=findings,
             manager_syntheses=list(manager_syntheses),
             source_ledger=ledger.values(),
-            draft_report=draft,
+            draft_report=writer_draft,
             adversarial_review=review,
             final_report=final_report,
             metrics=metrics,
+            audit_report=audit,
+            usage_report=usage_report,
         )
         artifact_dir = persist_package(package, Path(self.config.artifacts_dir))
         events.record("artifacts_persisted", path=str(artifact_dir))

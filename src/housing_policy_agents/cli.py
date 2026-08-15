@@ -10,6 +10,7 @@ from typing import Annotated
 
 import typer
 from rich.console import Console
+from rich.table import Table
 
 from .agents.factory import mermaid_graph
 from .agents.orchestrator import decide_clarifications
@@ -104,6 +105,11 @@ def _display_progress(event: str, metadata: dict[str, object]) -> None:
         console.print("[cyan]Writing evidence-grounded draft report...[/cyan]")
     elif event == "draft_completed":
         console.print(f"[green]OK - Draft report complete ({metadata.get('sections', 0)} sections)[/green]")
+    elif event == "draft_retry_used":
+        console.print(
+            "[yellow]Draft completed through the bounded compact retry after the initial "
+            "structured output failed.[/yellow]"
+        )
     elif event == "draft_fallback":
         console.print(
             f"[yellow]OK - Draft fallback used; synthesis withheld ({metadata.get('reason', 'typed output failure')})[/yellow]"
@@ -139,8 +145,63 @@ def _display_progress(event: str, metadata: dict[str, object]) -> None:
             f"[cyan]OK - Final validation complete (errors={metadata.get('errors', 0)}, "
             f"warnings={metadata.get('warnings', 0)})[/cyan]"
         )
+    elif event == "validation_rework_started":
+        console.print(
+            f"[yellow]Validation re-work started ({label(metadata.get('stage', 'report'))}; "
+            f"issues={metadata.get('errors', 0)})[/yellow]"
+        )
+    elif event == "validation_rework_completed":
+        console.print(
+            f"[green]OK - Validation re-work complete "
+            f"({label(metadata.get('stage', 'report'))}; passes={metadata.get('passes', 0)}; "
+            f"withheld={metadata.get('withheld', 0)}; "
+            f"remaining={metadata.get('remaining_errors', 0)})[/green]"
+        )
     elif event == "artifacts_persisted":
         console.print(f"[green]OK - Artifacts written to {metadata.get('path', 'artifacts')}[/green]")
+
+
+def _display_usage_summary(package: FinalResearchPackage) -> None:
+    usage = package.usage_report
+    if usage is None:
+        return
+    cost = (
+        f"${usage.approximate_cost_usd:.6f}"
+        if usage.approximate_cost_usd is not None
+        else "not configured"
+    )
+    console.print(
+        "\n[bold]Usage summary[/bold]: "
+        f"requests={usage.requests}; input={usage.input_tokens:,}; "
+        f"output={usage.output_tokens:,}; total={usage.total_tokens:,}; "
+        f"wall={usage.wall_clock_ms / 1000:.2f}s; approximate cost={cost}"
+    )
+    if not usage.records:
+        return
+    table = Table(title="Agent and sub-agent usage", show_lines=False)
+    table.add_column("Agent")
+    table.add_column("Stage")
+    table.add_column("Tokens", justify="right")
+    table.add_column("Time", justify="right")
+    table.add_column("Approx. cost", justify="right")
+    for record in sorted(
+        usage.records,
+        key=lambda item: (item.total_tokens, item.duration_ms),
+        reverse=True,
+    ):
+        record_cost = (
+            f"${record.approximate_cost_usd:.6f}"
+            if record.approximate_cost_usd is not None
+            else "n/a"
+        )
+        table.add_row(
+            record.agent,
+            record.stage,
+            f"{record.total_tokens:,}",
+            f"{record.duration_ms / 1000:.2f}s",
+            record_cost,
+        )
+    console.print(table)
 
 
 async def _run_request(
@@ -179,6 +240,7 @@ def ask(
         raise typer.BadParameter(str(exc)) from exc
     console.print(f"\n[green]Run complete:[/green] {package.run_id}")
     console.print(f"Artifacts: {(Path('artifacts') / package.metrics.run_id).as_posix()}")
+    _display_usage_summary(package)
     if output_format in {"json", "both"}:
         console.print(json.dumps(package.model_dump(mode="json"), indent=2))
     if output_format in {"markdown", "both"}:
@@ -204,6 +266,7 @@ def demo(
     console.print(f"[green]Demo complete:[/green] {package.run_id}")
     artifact_dir = Path("artifacts") / package.run_id
     console.print(f"Artifacts: {artifact_dir}")
+    _display_usage_summary(package)
     if output_format in {"json", "both"}:
         console.print(json.dumps(package.model_dump(mode="json"), indent=2))
     if output_format in {"markdown", "both"}:
@@ -217,7 +280,7 @@ def graph(format: str = typer.Option("mermaid", "--format", help="mermaid or asc
         typer.echo(mermaid_graph())
         return
     typer.echo(
-        "Orchestrator -> Policy | Industry | Advocacy | Global -> Specialists -> Writer -> Validator -> Reviewer -> Revision -> Artifacts"
+        "Orchestrator -> Policy | Industry | Advocacy | Global -> Specialists -> Writer -> Validator -> Re-work -> Reviewer -> Revision -> Final validation/Re-work -> Artifacts"
     )
 
 

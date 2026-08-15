@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from ..models import CountryComparison, DraftReport, EvidenceClaim, SourceRecord
 
@@ -98,9 +98,19 @@ class SourceLedger:
 
 
 @dataclass
+class ValidationIssue:
+    code: str
+    message: str
+    target_type: str
+    target_id: str
+    section_id: str | None = None
+
+
+@dataclass
 class ValidationReport:
     errors: list[str]
     warnings: list[str]
+    issues: list[ValidationIssue] = field(default_factory=list)
 
     @property
     def ok(self) -> bool:
@@ -156,16 +166,59 @@ def validate_country_comparisons(
 def validate_report(report: DraftReport, ledger: SourceLedger) -> ValidationReport:
     errors: list[str] = []
     warnings: list[str] = []
+    issues: list[ValidationIssue] = []
+
+    def add_error(
+        code: str,
+        message: str,
+        target_type: str,
+        target_id: str,
+        section_id: str | None = None,
+    ) -> None:
+        errors.append(message)
+        issues.append(
+            ValidationIssue(
+                code=code,
+                message=message,
+                target_type=target_type,
+                target_id=target_id,
+                section_id=section_id,
+            )
+        )
+
     sections = getattr(report, "sections", [])
     section_ids = {section.section_id for section in sections}
     if not sections:
-        errors.append("report must contain at least one section")
+        add_error(
+            "report.sections.empty",
+            "report must contain at least one section",
+            "report",
+            report.report_id,
+        )
     if len(section_ids) != len(sections):
-        errors.append("report section IDs must be unique")
-    if not report.executive_summary.strip():
-        errors.append("report executive summary must not be empty")
-    if not report.decision_matrix.criteria or not report.decision_matrix.options:
-        errors.append("report decision matrix must contain criteria and options")
+        add_error(
+            "report.sections.duplicate_ids",
+            "report section IDs must be unique",
+            "report",
+            report.report_id,
+        )
+    if not report.executive_summary_withheld and not report.executive_summary.strip():
+        add_error(
+            "report.executive_summary.empty",
+            "report executive summary must not be empty",
+            "executive_summary",
+            "executive_summary",
+        )
+    if not report.decision_matrix_withheld and (
+        not report.decision_matrix.criteria or not report.decision_matrix.options
+    ):
+        add_error(
+            "report.decision_matrix.empty",
+            "report decision matrix must contain criteria and options",
+            "decision_matrix",
+            "decision_matrix",
+            "decision_matrix",
+        )
     cited: list[str] = []
     for section in sections:
         for paragraph in section.paragraphs:
@@ -173,12 +226,24 @@ def validate_report(report: DraftReport, ledger: SourceLedger) -> ValidationRepo
                 ledger.resolve_id(source_id) for source_id in paragraph.citation_ids
             ]
             cited.extend(paragraph.citation_ids)
+            if paragraph.withheld:
+                continue
             if paragraph.substantive and not paragraph.citation_ids:
-                errors.append(f"substantive paragraph {paragraph.paragraph_id} has no citation")
+                add_error(
+                    "report.paragraph.missing_citation",
+                    f"substantive paragraph {paragraph.paragraph_id} has no citation",
+                    "paragraph",
+                    paragraph.paragraph_id,
+                    section.section_id,
+                )
             missing = set(paragraph.citation_ids) - ledger.ids()
             if missing:
-                errors.append(
-                    f"paragraph {paragraph.paragraph_id} cites nonexistent sources: {sorted(missing)}"
+                add_error(
+                    "report.paragraph.invalid_citation",
+                    f"paragraph {paragraph.paragraph_id} cites nonexistent sources: {sorted(missing)}",
+                    "paragraph",
+                    paragraph.paragraph_id,
+                    section.section_id,
                 )
     if len(cited) != len(set(cited)) and len(cited) > 0:
         warnings.append("some sources are cited repeatedly; this is not itself an error")
@@ -188,11 +253,34 @@ def validate_report(report: DraftReport, ledger: SourceLedger) -> ValidationRepo
     source_urls = [record.url.rstrip("/").lower() for record in ledger.values() if record.url]
     duplicates = {url for url in source_urls if source_urls.count(url) > 1}
     if duplicates:
-        errors.append(f"duplicate source URLs: {sorted(duplicates)}")
+        add_error(
+            "report.sources.duplicate_urls",
+            f"duplicate source URLs: {sorted(duplicates)}",
+            "source_ledger",
+            "sources",
+            "sources",
+        )
     option_ids = {option.option_id for option in report.decision_matrix.options}
-    if set(report.decision_matrix.scores) != option_ids:
-        errors.append("decision matrix does not include every policy option")
-    return ValidationReport(errors, warnings)
+    for option in report.decision_matrix.options:
+        option.source_ids = [ledger.resolve_id(source_id) for source_id in option.source_ids]
+        missing = set(option.source_ids) - ledger.ids()
+        if not report.decision_matrix_withheld and missing:
+            add_error(
+                "report.decision_matrix.invalid_citation",
+                f"decision matrix option {option.option_id} cites nonexistent sources: {sorted(missing)}",
+                "decision_matrix",
+                "decision_matrix",
+                "decision_matrix",
+            )
+    if not report.decision_matrix_withheld and set(report.decision_matrix.scores) != option_ids:
+        add_error(
+            "report.decision_matrix.incomplete_scores",
+            "decision matrix does not include every policy option",
+            "decision_matrix",
+            "decision_matrix",
+            "decision_matrix",
+        )
+    return ValidationReport(errors, warnings, issues)
 
 
 def citation_link(source_id: str) -> str:

@@ -132,6 +132,17 @@ def build_reviewer_agent(config: AppConfig) -> Any:
     )
 
 
+def build_rework_agent(config: AppConfig) -> Any:
+    from agents import Agent
+
+    return Agent(
+        name="Validation Re-work Specialist",
+        instructions=read_prompt("rework"),
+        model=config.openai_model,
+        output_type=agent_output_schema(DraftReport),
+    )
+
+
 def build_agent_graph(config: AppConfig) -> dict[str, Any]:
     """Build the configured graph and expose manager agents as callable tools."""
 
@@ -204,6 +215,7 @@ def build_agent_graph(config: AppConfig) -> dict[str, Any]:
         "specialists": specialists,
         "writer": build_writer_agent(config),
         "reviewer": build_reviewer_agent(config),
+        "rework": build_rework_agent(config),
     }
 
 
@@ -236,6 +248,8 @@ def mermaid_graph() -> str:
     FS --> W
     GL --> W
     W --> V[Deterministic Validation]
-    V --> AR[Adversarial Review]
+    V --> RW[Validation Re-work]
+    RW --> AR[Adversarial Review]
     AR --> RV[One Bounded Revision]
-    RV --> OUT[Final Research Package]"""
+    RV --> FV[Final Validation and Re-work]
+    FV --> OUT[Final Research Package and Audit]"""

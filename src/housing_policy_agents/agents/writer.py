@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import time
 from collections.abc import Iterable
 
 from ..context import RunContext
@@ -10,6 +11,7 @@ from ..models import (
     AdversarialReview,
     DecisionCriterion,
     DecisionMatrix,
+    DecisionScore,
     DraftReport,
     EvidenceStrength,
     ManagerSynthesis,
@@ -172,7 +174,7 @@ def build_decision_matrix() -> DecisionMatrix:
             description="Ability to correct or unwind the design",
         ),
     ]
-    scores = {
+    scores: dict[str, dict[str, DecisionScore]] = {
         "O1": {
             criterion.criterion_id: int(value)
             for criterion, value in zip(
@@ -526,29 +528,22 @@ def no_evidence_report(
 
 
 def _contain_report_citations(report: DraftReport, source_ids: set[str]) -> DraftReport:
-    """Drop citations not supplied by upstream and demote unsupported paragraphs."""
+    """Constrain metadata while leaving invalid report citations for audited re-work."""
 
     allowed = set(source_ids)
-    dropped = 0
+    invalid = 0
     for section in report.sections:
         for paragraph in section.paragraphs:
-            original = list(paragraph.citation_ids)
-            paragraph.citation_ids = [item for item in original if item in allowed]
-            dropped += len(original) - len(paragraph.citation_ids)
-            if paragraph.substantive and not paragraph.citation_ids:
-                paragraph.substantive = False
-                paragraph.revision_note = (
-                    "Demoted during boundary validation because no supplied source ID supported this paragraph."
-                )
+            invalid += sum(item not in allowed for item in paragraph.citation_ids)
     report.source_ids_used = [item for item in report.source_ids_used if item in allowed]
     for option in report.decision_matrix.options:
-        option.source_ids = [item for item in option.source_ids if item in allowed]
-    if dropped:
+        invalid += sum(item not in allowed for item in option.source_ids)
+    if invalid:
         report.evidence_gaps.append(
-            f"{dropped} model-supplied citation reference(s) were not present in the upstream source ledger."
+            f"{invalid} model-supplied citation reference(s) were not present in the upstream source ledger."
         )
         report.limitations.append(
-            "Unsupported paragraphs were withheld at the writer boundary rather than given fabricated citations."
+            "Invalid citation references were routed to deterministic validation, bounded re-work, and audit."
         )
     return report
 
@@ -559,40 +554,85 @@ async def write_report(
     source_ids: set[str],
     context: RunContext,
 ) -> DraftReport:
+    local_started = time.perf_counter()
     if not source_ids:
-        return no_evidence_report(
+        report = no_evidence_report(
             brief,
             managers,
             reason="The upstream source ledger is empty because no specialist evidence passed validation.",
         )
+        if context.interaction_telemetry is not None:
+            context.interaction_telemetry.record_local(
+                agent="synthesis_writer",
+                stage="draft_fallback",
+                duration_ms=int((time.perf_counter() - local_started) * 1000),
+                model="application-fallback",
+            )
+        return report
     if context.config.research_provider == "offline":
-        return offline_report(brief, managers, source_ids)
+        report = offline_report(brief, managers, source_ids)
+        if context.interaction_telemetry is not None:
+            context.interaction_telemetry.record_local(
+                agent="synthesis_writer",
+                stage="draft",
+                duration_ms=int((time.perf_counter() - local_started) * 1000),
+            )
+        return report
     from agents import RunConfig
 
-    try:
+    quality_requirements: dict[str, object] = {
+        "target_word_range_when_supported": "1800-3200",
+        "executive_summary_words": "250-400",
+        "major_section_paragraphs": "2-4",
+        "section_count": "6-9, excluding the executive summary",
+        "citation_format": (
+            "Use citation_ids fields only; do not put bracketed source IDs in prose."
+        ),
+        "required_analysis": [
+            "current legal, institutional, market, and administrative baseline",
+            "causal mechanisms and first-order consequences",
+            "second-order, feedback, and unintended consequences",
+            "distributional incidence and stakeholder effects",
+            "implementation sequencing, capacity, and failure modes",
+            "counterevidence, uncertainty, and evidence-changing conditions",
+            "decision implications, safeguards, and evidence agenda",
+        ],
+        "anti_padding_rule": (
+            "Do not add unsupported detail or repeat points to meet a length target."
+        ),
+    }
+    input_payload: dict[str, object] = {
+        "brief": brief.model_dump(mode="json"),
+        "manager_syntheses": [item.model_dump(mode="json") for item in managers],
+        "source_ids": sorted(source_ids),
+        "handoff_context": {
+            "upstream": "reconciled manager evidence packages",
+            "downstream": "adversarial reviewer and final policy decision-maker",
+            "source_id_contract": "Use only supplied short source IDs; URLs are source metadata, not citation IDs.",
+            "required_behavior": (
+                "Produce a balanced decision-ready report, preserve branch limitations and disagreements, "
+                "and distinguish evidence from inference."
+            ),
+        },
+        "quality_requirements": quality_requirements,
+    }
+
+    async def run_writer(
+        payload: dict[str, object],
+        *,
+        agent_name: str,
+        stage: str,
+        max_turns: int,
+    ) -> DraftReport:
         agent = build_writer_agent(context.config)
-        input_payload = {
-            "brief": brief.model_dump(mode="json"),
-            "manager_syntheses": [item.model_dump(mode="json") for item in managers],
-            "source_ids": sorted(source_ids),
-            "handoff_context": {
-                "upstream": "reconciled manager evidence packages",
-                "downstream": "adversarial reviewer and final policy decision-maker",
-                "source_id_contract": "Use only supplied short source IDs; URLs are source metadata, not citation IDs.",
-                "required_behavior": (
-                    "Produce a balanced decision-ready report, preserve branch limitations and disagreements, "
-                    "and distinguish evidence from inference."
-                ),
-            },
-        }
         result = await run_agent_with_telemetry(
             context=context,
             agent=agent,
-            runner_input=json.dumps(input_payload, indent=2),
-            input_payload=input_payload,
-            agent_name="synthesis_writer",
-            stage="draft",
-            max_turns=context.config.max_turns_per_agent,
+            runner_input=json.dumps(payload, indent=2),
+            input_payload=payload,
+            agent_name=agent_name,
+            stage=stage,
+            max_turns=max_turns,
             run_config=RunConfig(
                 model=context.config.openai_model,
                 workflow_name="Housing Policy Research Network",
@@ -602,11 +642,48 @@ async def write_report(
         )
         if not isinstance(result.final_output, DraftReport):
             raise TypeError("writer did not return DraftReport")
-        return _contain_report_citations(result.final_output, source_ids)
-    except Exception as exc:
+        return result.final_output
+
+    try:
+        report = await run_writer(
+            input_payload,
+            agent_name="synthesis_writer",
+            stage="draft",
+            max_turns=context.config.max_turns_per_agent,
+        )
+        return _contain_report_citations(report, source_ids)
+    except Exception as first_exc:
+        context.metadata["writer_retry_reason"] = (
+            f"Initial synthesis failed after {type(first_exc).__name__}; a bounded compact retry was requested."
+        )
+        retry_payload = dict(input_payload)
+        retry_payload["retry_context"] = {
+            "reason": type(first_exc).__name__,
+            "instruction": (
+                "Return a complete valid DraftReport within the compact limits. Preserve analytical "
+                "depth through mechanisms and evidence, but reduce repetition, list length, and prose."
+            ),
+        }
+        retry_payload["quality_requirements"] = {
+            **quality_requirements,
+            "target_word_range_when_supported": "1200-2200",
+            "executive_summary_words": "200-300",
+            "major_section_paragraphs": "2-3",
+            "section_count": "6-8, excluding the executive summary",
+        }
+        try:
+            report = await run_writer(
+                retry_payload,
+                agent_name="synthesis_writer_retry",
+                stage="draft_retry",
+                max_turns=max(1, min(context.config.max_turns_per_agent, 3)),
+            )
+            return _contain_report_citations(report, source_ids)
+        except Exception as retry_exc:
+            exc = retry_exc
         reason = (
-            f"Synthesis writer output was withheld after {type(exc).__name__}; "
-            "inspect the sub-agent telemetry and retry the run."
+            f"Synthesis writer output was withheld after initial {type(first_exc).__name__} "
+            f"and retry {type(exc).__name__}; inspect the sub-agent telemetry and retry the run."
         )
         context.metadata["writer_fallback_reason"] = reason
         return no_evidence_report(
@@ -620,6 +697,7 @@ async def write_report(
 async def revise_report(
     report: DraftReport, review: AdversarialReview, context: RunContext
 ) -> DraftReport:
+    local_started = time.perf_counter()
     if not report.source_ids_used and not any(
         paragraph.citation_ids for section in report.sections for paragraph in section.paragraphs
     ):
@@ -628,6 +706,13 @@ async def revise_report(
         report.limitations.append(
             "Revision was not sent to a model because the report intentionally contains no validated evidence."
         )
+        if context.interaction_telemetry is not None:
+            context.interaction_telemetry.record_local(
+                agent="synthesis_writer_revision",
+                stage="revision_fallback",
+                duration_ms=int((time.perf_counter() - local_started) * 1000),
+                model="application-fallback",
+            )
         return report
     if context.config.research_provider == "offline":
         for section in report.sections:
@@ -646,6 +731,12 @@ async def revise_report(
                 )
         report.revised = True
         report.revision_count += 1
+        if context.interaction_telemetry is not None:
+            context.interaction_telemetry.record_local(
+                agent="synthesis_writer_revision",
+                stage="revision",
+                duration_ms=int((time.perf_counter() - local_started) * 1000),
+            )
         return report
     from agents import RunConfig
 

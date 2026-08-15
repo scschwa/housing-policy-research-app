@@ -9,7 +9,8 @@ import traceback
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
-from typing import Any
+from types import SimpleNamespace
+from typing import Any, cast
 
 from pydantic import BaseModel
 
@@ -40,7 +41,7 @@ def _jsonable(value: Any, max_chars: int) -> Any:
     if isinstance(value, BaseModel):
         return _jsonable(value.model_dump(mode="json", exclude_none=True), max_chars)
     if is_dataclass(value):
-        return _jsonable(asdict(value), max_chars)
+        return _jsonable(asdict(cast(Any, value)), max_chars)
     if isinstance(value, Mapping):
         result: dict[str, Any] = {}
         for key, item in value.items():
@@ -65,6 +66,38 @@ def _run_item_payload(item: Any, max_chars: int) -> dict[str, Any]:
         "agent": getattr(agent, "name", None),
         "raw_item": _jsonable(raw_item, max_chars),
     }
+
+
+def _usage_payload(result_or_error: Any) -> dict[str, int]:
+    totals = {
+        "requests": 0,
+        "input_tokens": 0,
+        "cached_input_tokens": 0,
+        "cache_write_tokens": 0,
+        "output_tokens": 0,
+        "reasoning_tokens": 0,
+        "total_tokens": 0,
+    }
+    for response in getattr(result_or_error, "raw_responses", []):
+        usage = getattr(response, "usage", None)
+        if usage is None:
+            continue
+        totals["requests"] += int(getattr(usage, "requests", 0) or 0)
+        totals["input_tokens"] += int(getattr(usage, "input_tokens", 0) or 0)
+        totals["output_tokens"] += int(getattr(usage, "output_tokens", 0) or 0)
+        totals["total_tokens"] += int(getattr(usage, "total_tokens", 0) or 0)
+        input_details = getattr(usage, "input_tokens_details", None)
+        output_details = getattr(usage, "output_tokens_details", None)
+        totals["cached_input_tokens"] += int(
+            getattr(input_details, "cached_tokens", 0) or 0
+        )
+        totals["cache_write_tokens"] += int(
+            getattr(input_details, "cache_write_tokens", 0) or 0
+        )
+        totals["reasoning_tokens"] += int(
+            getattr(output_details, "reasoning_tokens", 0) or 0
+        )
+    return totals
 
 
 class InteractionTelemetry:
@@ -130,6 +163,7 @@ class InteractionTelemetry:
                 ),
                 "transcript": self._transcript(result),
                 "raw_responses": self._raw_responses(result),
+                "usage": _usage_payload(result),
                 "response_ids": [
                     getattr(response, "response_id", None)
                     for response in getattr(result, "raw_responses", [])
@@ -137,10 +171,17 @@ class InteractionTelemetry:
             }
         )
 
-    def fail(self, interaction_id: str | None, error: BaseException) -> None:
+    def fail(
+        self,
+        interaction_id: str | None,
+        error: BaseException,
+        raw_responses: Sequence[Any] | None = None,
+    ) -> None:
         if interaction_id is None:
             return
         record = self._find(interaction_id)
+        captured_responses = list(raw_responses or getattr(error, "raw_responses", []))
+        response_holder = SimpleNamespace(raw_responses=captured_responses)
         record.update(
             {
                 "status": "failed",
@@ -152,7 +193,43 @@ class InteractionTelemetry:
                     "traceback": _redact_text(traceback.format_exc(), self.max_chars),
                 },
                 "transcript": self._transcript(error),
-                "raw_responses": self._raw_responses(error),
+                "raw_responses": self._raw_responses(response_holder),
+                "response_ids": [
+                    getattr(response, "response_id", None) for response in captured_responses
+                ],
+                "usage": _usage_payload(response_holder),
+            }
+        )
+
+    def record_local(
+        self,
+        *,
+        agent: str,
+        stage: str,
+        duration_ms: int,
+        status: str = "completed",
+        model: str = "fixture-deterministic",
+    ) -> None:
+        """Record a deterministic non-SDK agent stage in the same usage ledger."""
+        if not self.enabled:
+            return
+        now = time.time()
+        self.interactions.append(
+            {
+                "interaction_id": f"interaction-{len(self.interactions) + 1:04d}",
+                "agent": agent,
+                "stage": stage,
+                "status": status,
+                "started_at": now - (duration_ms / 1000),
+                "finished_at": now,
+                "duration_ms": duration_ms,
+                "metadata": {"model": model, "local_execution": True},
+                "input": {"content_capture": False, "local_execution": True},
+                "final_output": {"content_capture": False, "local_execution": True},
+                "transcript": [],
+                "raw_responses": [],
+                "response_ids": [],
+                "usage": _usage_payload(None),
             }
         )
 
@@ -268,6 +345,21 @@ class InteractionTelemetry:
             "agents": sorted({record["agent"] for record in self.interactions}),
             "stages": sorted({record["stage"] for record in self.interactions}),
             "elapsed_ms": int((time.perf_counter() - self._started) * 1000),
+            "usage": {
+                key: sum(
+                    int(record.get("usage", {}).get(key, 0))
+                    for record in self.interactions
+                )
+                for key in (
+                    "requests",
+                    "input_tokens",
+                    "cached_input_tokens",
+                    "cache_write_tokens",
+                    "output_tokens",
+                    "reasoning_tokens",
+                    "total_tokens",
+                )
+            },
             "failed_interactions": [
                 {
                     "interaction_id": record["interaction_id"],
@@ -294,6 +386,20 @@ async def run_agent_with_telemetry(
 ) -> Any:
     """Run one Agents SDK call while preserving success/failure exchange data."""
     from agents import Runner
+    from agents.lifecycle import RunHooksBase
+
+    class UsageCaptureHooks(RunHooksBase[Any, Any]):
+        def __init__(self) -> None:
+            self.raw_responses: list[Any] = []
+
+        async def on_llm_end(
+            self,
+            context_wrapper: Any,
+            running_agent: Any,
+            response: Any,
+        ) -> None:
+            del context_wrapper, running_agent
+            self.raw_responses.append(response)
 
     telemetry = context.interaction_telemetry
     if telemetry is None:
@@ -312,15 +418,17 @@ async def run_agent_with_telemetry(
         input_payload=input_payload,
         metadata=metadata,
     )
+    hooks = UsageCaptureHooks()
     try:
         result = await Runner.run(
             agent,
             runner_input,
             max_turns=max_turns,
+            hooks=hooks,
             run_config=run_config,
         )
     except Exception as exc:
-        telemetry.fail(interaction_id, exc)
+        telemetry.fail(interaction_id, exc, raw_responses=hooks.raw_responses)
         raise
     telemetry.complete(interaction_id, result)
     return result

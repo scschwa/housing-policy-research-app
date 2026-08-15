@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import time
 
 from ..context import RunContext
 from ..models import AdversarialReview, DraftReport, ReleaseRecommendation, ReviewFinding
@@ -76,7 +77,20 @@ async def review_report(
     report: DraftReport, ledger: SourceLedger, evidence: object, context: RunContext
 ) -> AdversarialReview:
     if context.config.research_provider == "offline" or not ledger.ids():
-        return offline_review(report, ledger)
+        started = time.perf_counter()
+        review = offline_review(report, ledger)
+        if context.interaction_telemetry is not None:
+            context.interaction_telemetry.record_local(
+                agent="adversarial_reviewer",
+                stage="review",
+                duration_ms=int((time.perf_counter() - started) * 1000),
+                model=(
+                    "fixture-deterministic"
+                    if context.config.research_provider == "offline"
+                    else "application-fallback"
+                ),
+            )
+        return review
     from agents import RunConfig
 
     agent = build_reviewer_agent(context.config)

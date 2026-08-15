@@ -29,12 +29,17 @@ class AppConfig(BaseSettings):
     max_searches: int = Field(default=6, ge=1, le=100)
     max_sources: int = Field(default=24, ge=1, le=200)
     max_branch_retries: int = Field(default=1, ge=0, le=5)
+    max_rework_passes: int = Field(default=2, ge=1, le=3)
+    rework_timeout_seconds: int = Field(default=120, ge=10, le=600)
     max_concurrency: int = Field(default=6, ge=1, le=32)
     total_token_budget: int = Field(default=60_000, ge=1_000)
     total_research_time_seconds: int = Field(default=300, ge=10)
     min_source_diversity: int = Field(default=3, ge=1, le=20)
     min_primary_source_coverage: float = Field(default=0.80, ge=0, le=1)
     source_verification: bool = False
+    openai_input_cost_per_million_usd: float | None = Field(default=None, ge=0)
+    openai_cached_input_cost_per_million_usd: float | None = Field(default=None, ge=0)
+    openai_output_cost_per_million_usd: float | None = Field(default=None, ge=0)
     enable_clarification: bool = True
     enable_manager_reconciliation: bool = True
     enable_adversarial_review: bool = True

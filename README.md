@@ -33,11 +33,15 @@ npm run eval:offline
 
 Live mode requires `OPENAI_API_KEY`, `OPENAI_MODEL`, and `RESEARCH_PROVIDER=web`. It is intentionally excluded from the default offline evaluation suite.
 
-During `ask` and `demo --live`, the CLI prints bounded progress for intake, planning, each research branch, manager reconciliation, drafting, adversarial review, revision, validation, and artifact persistence. Each specialist assignment includes its role definition, shared research context, sibling branches, in-scope and out-of-scope boundaries, preferred source classes, downstream handoff requirements, and typed response contract. Live agent outputs remain Pydantic-validated; models containing typed mappings use the Agents SDK's explicit non-strict schema fallback because that SDK path cannot represent arbitrary JSON object keys in strict mode.
+During `ask` and `demo --live`, the CLI prints bounded progress for intake, planning, each research branch, manager reconciliation, drafting, adversarial review, revision, validation re-work, usage, and artifact persistence. Each specialist assignment includes its role definition, shared research context, sibling branches, in-scope and out-of-scope boundaries, preferred source classes, downstream handoff requirements, and typed response contract. Live agent outputs remain Pydantic-validated; models containing typed mappings use the Agents SDK's explicit non-strict schema fallback because that SDK path cannot represent arbitrary JSON object keys in strict mode.
 
 ## Environment configuration
 
-Copy `.env.example` to `.env` for a local configuration. Offline mode requires no key. Live mode requires an OpenAI API key, `RESEARCH_PROVIDER=web`, and `ALLOW_NETWORK=true`; the application refuses live configuration without the explicit network switch. Set bounded limits such as `MAX_TURNS_PER_AGENT`, `REVISION_TIMEOUT_SECONDS`, `MAX_SOURCES`, `MAX_BRANCH_RETRIES`, and `MAX_CONCURRENCY` for the deployment rather than relying on unbounded model behavior. If a live revision exceeds its timeout, the validated draft is retained and the run completes with an explicit caveat.
+Copy `.env.example` to `.env` for a local configuration. Offline mode requires no key. Live mode requires an OpenAI API key, `RESEARCH_PROVIDER=web`, and `ALLOW_NETWORK=true`; the application refuses live configuration without the explicit network switch. Set bounded limits such as `MAX_TURNS_PER_AGENT`, `REVISION_TIMEOUT_SECONDS`, `MAX_REWORK_PASSES`, `REWORK_TIMEOUT_SECONDS`, `MAX_SOURCES`, `MAX_BRANCH_RETRIES`, and `MAX_CONCURRENCY` for the deployment rather than relying on unbounded model behavior. If a live revision exceeds its timeout, the validated draft is retained and the run completes with an explicit caveat.
+
+Each run writes `audit_report.md` and `audit_report.json`. When deterministic validation flags a paragraph, executive summary, decision matrix, or other report component, the application creates a withheld representation and sends only the flagged targets to a bounded validation re-work specialist. The application merges only authorized target changes, validates again, and records the original content, withholding marker, final replacement, citation changes, repair attempts, and disposition. Unsupported content remains visibly withheld after the configured repair limit.
+
+Each run also writes `usage_report.md` and `usage_report.json`, with request, input, cached-input, cache-write, output, reasoning, total-token, and elapsed-time records for every SDK agent call. Offline deterministic roles appear with zero tokens and their local processing time. Set `OPENAI_INPUT_COST_PER_MILLION_USD`, `OPENAI_CACHED_INPUT_COST_PER_MILLION_USD`, and `OPENAI_OUTPUT_COST_PER_MILLION_USD` to add a transparent approximate USD estimate. Rates are configuration, not embedded pricing assumptions.
 
 By default, live runs also persist redacted sub-agent telemetry. The artifact root contains `interaction_summary.json`; `sub-agent-telemetry/index.json` lists workflow handoffs and recorded calls; and each numbered interaction directory contains `request.json`, `transcript.json`, and `result.json`. Specialist failures include the exception, bounded traceback, request payload, and any partial SDK items available from the failed run. Set `SUB_AGENT_TELEMETRY_INCLUDE_CONTENT=false` to keep metadata, handoffs, and failure details while omitting prompt/response bodies, or set `SUB_AGENT_TELEMETRY_ENABLED=false` to disable the files entirely. Content is truncated per value at `SUB_AGENT_TELEMETRY_MAX_CHARS` and common secret-shaped values are redacted.
 
@@ -91,9 +95,11 @@ flowchart TD
     GS --> L
     L --> W[Synthesis writer]
     W --> V[Deterministic pre-review checks]
-    V --> R[Adversarial reviewer]
+    V --> RW[Bounded validation re-work]
+    RW --> R[Adversarial reviewer]
     R --> W2[One bounded revision]
-    W2 --> A[Final artifacts]
+    W2 --> FV[Final validation and re-work]
+    FV --> A[Report, audit, usage, and telemetry artifacts]
 ```
 
 Managers are bounded agent tools and specialists return typed findings. Python owns the workflow state machine, branch selection, retry policy, concurrency, validation, persistence, and revision count.

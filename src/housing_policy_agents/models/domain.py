@@ -132,6 +132,12 @@ class ReleaseRecommendation(StrEnum):
     REVISE = "revise"
 
 
+class RepairStatus(StrEnum):
+    REPAIRED = "repaired"
+    WITHHELD = "withheld"
+    UNCHANGED = "unchanged"
+
+
 class RunMode(StrEnum):
     INTERACTIVE = "interactive"
     FAST = "fast"
@@ -595,6 +601,8 @@ class ReportParagraph(StrictModel):
     claim_ids: list[str] = Field(default_factory=list)
     substantive: bool = True
     revision_note: str | None = None
+    withheld: bool = False
+    withheld_reason: str | None = None
 
 
 class ReportSection(StrictModel):
@@ -631,6 +639,9 @@ class DraftReport(StrictModel):
     )
     revised: bool = False
     revision_count: int = 0
+    executive_summary_withheld: bool = False
+    decision_matrix_withheld: bool = False
+    withheld_components: list[str] = Field(default_factory=list)
 
 
 class ReviewFinding(StrictModel):
@@ -656,6 +667,69 @@ class AdversarialReview(StrictModel):
     reviewer_notes: list[str] = Field(default_factory=list)
 
 
+class ReportAuditEntry(StrictModel):
+    audit_id: str = Field(default_factory=lambda: f"audit-{uuid4().hex[:10]}")
+    stage: str
+    issue_code: str
+    issue: str
+    target_type: str
+    target_id: str
+    section_id: str | None = None
+    original_content: str
+    withheld_content: str
+    revised_content: str | None = None
+    status: RepairStatus
+    attempts: int = 0
+    citation_ids_before: list[str] = Field(default_factory=list)
+    citation_ids_after: list[str] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+
+
+class ReportAudit(StrictModel):
+    run_id: str
+    entries: list[ReportAuditEntry] = Field(default_factory=list)
+    repair_passes: int = 0
+    initial_error_count: int = 0
+    final_error_count: int = 0
+
+
+class AgentUsageRecord(StrictModel):
+    interaction_id: str
+    agent: str
+    stage: str
+    model: str | None = None
+    status: str
+    requests: int = 0
+    input_tokens: int = 0
+    cached_input_tokens: int = 0
+    cache_write_tokens: int = 0
+    output_tokens: int = 0
+    reasoning_tokens: int = 0
+    total_tokens: int = 0
+    duration_ms: int = 0
+    approximate_cost_usd: float | None = None
+
+
+class UsageReport(StrictModel):
+    run_id: str
+    model: str | None = None
+    records: list[AgentUsageRecord] = Field(default_factory=list)
+    requests: int = 0
+    input_tokens: int = 0
+    cached_input_tokens: int = 0
+    cache_write_tokens: int = 0
+    output_tokens: int = 0
+    reasoning_tokens: int = 0
+    total_tokens: int = 0
+    wall_clock_ms: int = 0
+    cumulative_agent_ms: int = 0
+    approximate_cost_usd: float | None = None
+    pricing_note: str
+    concurrency_note: str = (
+        "Agent durations are cumulative and may exceed wall-clock time because branches run concurrently."
+    )
+
+
 class RunMetrics(StrictModel):
     run_id: str
     started_at: datetime
@@ -665,6 +739,11 @@ class RunMetrics(StrictModel):
     input_tokens: int | None = None
     output_tokens: int | None = None
     approximate_cost_usd: float | None = None
+    requests: int = 0
+    cached_input_tokens: int = 0
+    cache_write_tokens: int = 0
+    reasoning_tokens: int = 0
+    cumulative_agent_ms: int = 0
     model: str | None = None
     trace_id: str | None = None
     branch_statuses: dict[str, BranchStatus] = Field(default_factory=dict)
@@ -685,4 +764,6 @@ class FinalResearchPackage(StrictModel):
     adversarial_review: AdversarialReview
     final_report: DraftReport
     metrics: RunMetrics
+    audit_report: ReportAudit | None = None
+    usage_report: UsageReport | None = None
     created_at: datetime = Field(default_factory=utc_now)
