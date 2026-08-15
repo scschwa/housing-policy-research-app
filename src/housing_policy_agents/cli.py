@@ -22,7 +22,6 @@ from .models import (
     RunMode,
     UserResearchRequest,
 )
-from .reporting.render import render_markdown
 from .telemetry.metrics import ProgressCallback
 from .tools.source_store import SourceLedger, validate_report
 from .workflows.research_workflow import ResearchWorkflow, WorkflowError
@@ -224,10 +223,15 @@ def ask(
         ResearchProviderName, typer.Option("--provider")
     ] = ResearchProviderName.OFFLINE,
     output_format: Annotated[
-        str, typer.Option("--format", help="markdown, json, or both")
+        str,
+        typer.Option(
+            "--format",
+            help="Compatibility option; Markdown and JSON are written to artifacts, not stdout.",
+        ),
     ] = "both",
 ) -> None:
     """Run an interactive or fast research request."""
+    del output_format
     mode = RunMode.FAST if fast else RunMode.INTERACTIVE
     request = UserResearchRequest(
         question=question, mode=mode, provider=provider, accept_defaults=fast
@@ -241,10 +245,6 @@ def ask(
     console.print(f"\n[green]Run complete:[/green] {package.run_id}")
     console.print(f"Artifacts: {(Path('artifacts') / package.metrics.run_id).as_posix()}")
     _display_usage_summary(package)
-    if output_format in {"json", "both"}:
-        console.print(json.dumps(package.model_dump(mode="json"), indent=2))
-    if output_format in {"markdown", "both"}:
-        console.print(render_markdown(package.final_report, SourceLedger(package.source_ledger)))
 
 
 @app.command()
@@ -252,9 +252,14 @@ def demo(
     offline: bool = typer.Option(
         True, "--offline/--live", help="Run the deterministic fixture demo."
     ),
-    output_format: str = typer.Option("both", "--format"),
+    output_format: str = typer.Option(
+        "both",
+        "--format",
+        help="Compatibility option; Markdown and JSON are written to artifacts, not stdout.",
+    ),
 ) -> None:
     """Run the required mortgage-portability demonstration."""
+    del output_format
     provider = ResearchProviderName.OFFLINE if offline else ResearchProviderName.WEB
     request = UserResearchRequest(
         question=DEMO_QUESTION, mode=RunMode.FAST, provider=provider, accept_defaults=True
@@ -267,10 +272,6 @@ def demo(
     artifact_dir = Path("artifacts") / package.run_id
     console.print(f"Artifacts: {artifact_dir}")
     _display_usage_summary(package)
-    if output_format in {"json", "both"}:
-        console.print(json.dumps(package.model_dump(mode="json"), indent=2))
-    if output_format in {"markdown", "both"}:
-        console.print(render_markdown(package.final_report, SourceLedger(package.source_ledger)))
 
 
 @app.command()

@@ -10,7 +10,7 @@ The default `demo` path is fully offline and fixture-backed. Live research is op
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -e ".[dev]"
-python -m housing_policy_agents.cli demo --offline --format both
+python -m housing_policy_agents.cli demo --offline
 ```
 
 The completed run is written to `artifacts/<run_id>/`.
@@ -20,7 +20,7 @@ The demo uses synthetic fixture records and is explicitly labeled as such. Do no
 ## Commands
 
 ```powershell
-housing-research demo --offline --format both
+housing-research demo --offline
 housing-research ask "Should the United States permit alternative credit data in mortgage underwriting?" --fast
 housing-research graph --format mermaid
 housing-research validate artifacts/<run_id>/package.json
@@ -31,13 +31,85 @@ npm ci
 npm run eval:offline
 ```
 
-Live mode requires `OPENAI_API_KEY`, `OPENAI_MODEL`, and `RESEARCH_PROVIDER=web`. It is intentionally excluded from the default offline evaluation suite.
+Live mode requires `OPENAI_API_KEY`. The `ask --provider web` command selects the web provider and enables network access for that run. `OPENAI_MODEL` is optional and defaults to `gpt-5-mini`. Configuration-driven uses outside that CLI command must set `RESEARCH_PROVIDER=web` and `ALLOW_NETWORK=true`. Live mode is intentionally excluded from the default offline evaluation suite.
 
-During `ask` and `demo --live`, the CLI prints bounded progress for intake, planning, each research branch, manager reconciliation, drafting, adversarial review, revision, validation re-work, usage, and artifact persistence. Each specialist assignment includes its role definition, shared research context, sibling branches, in-scope and out-of-scope boundaries, preferred source classes, downstream handoff requirements, and typed response contract. Live agent outputs remain Pydantic-validated; models containing typed mappings use the Agents SDK's explicit non-strict schema fallback because that SDK path cannot represent arbitrary JSON object keys in strict mode.
+During `ask` and `demo --live`, the CLI prints bounded progress for intake, planning, each research branch, manager reconciliation, drafting, adversarial review, revision, validation re-work, usage, and artifact persistence. Raw Markdown and JSON reports are not printed to the terminal; they are written to the run's artifact directory. Each specialist assignment includes its role definition, shared research context, sibling branches, in-scope and out-of-scope boundaries, preferred source classes, downstream handoff requirements, and typed response contract. Live agent outputs remain Pydantic-validated; models containing typed mappings use the Agents SDK's explicit non-strict schema fallback because that SDK path cannot represent arbitrary JSON object keys in strict mode.
+
+## Run a live research query in PowerShell
+
+1. Open a new PowerShell window. If `OPENAI_API_KEY` was added through Windows Environment Variables after PowerShell was already open, close that window and open a new one so the process inherits the key.
+
+2. Navigate to the repository:
+
+   ```powershell
+   cd C:\Users\svenftw\OneDrive\housing-policy-research-app
+   ```
+
+3. Create the virtual environment and install the application if this is the first run:
+
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   python -m pip install -e ".[dev]"
+   ```
+
+   On later runs, activate the existing environment with only:
+
+   ```powershell
+   .\.venv\Scripts\Activate.ps1
+   ```
+
+   If PowerShell blocks the activation script, allow local scripts for the current process and retry:
+
+   ```powershell
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   .\.venv\Scripts\Activate.ps1
+   ```
+
+4. Confirm that the API key is available without printing the secret:
+
+   ```powershell
+   if ([string]::IsNullOrWhiteSpace($env:OPENAI_API_KEY)) {
+       throw "OPENAI_API_KEY is not available in this PowerShell session."
+   }
+   Write-Host "OPENAI_API_KEY is available."
+   ```
+
+5. Optionally select a model. If this step is omitted, the application uses `gpt-5-mini`:
+
+   ```powershell
+   $env:OPENAI_MODEL = "gpt-5-mini"
+   ```
+
+6. Run a live query. `--provider web` opts into hosted web research, and `--fast` accepts the application's documented research defaults:
+
+   ```powershell
+   python -m housing_policy_agents.cli ask "What would be the possible consequences if the Government Sponsored Enterprises of Fannie Mae and Freddie Mac began to purchase and guaranty Chattel loans in the US?" --provider web --fast
+   ```
+
+7. Follow progress in the terminal. When the run finishes, the CLI prints the run ID, artifact directory, token usage, processing time, and estimated token cost. It does not print the raw report or package JSON.
+
+8. Open the artifact directory shown by the CLI. The main outputs are:
+
+   - `report.md`: readable final research report
+   - `final_report.json`: structured final report
+   - `package.json`: complete typed research package
+   - `audit_report.md`: validation flags and re-work history
+   - `usage_report.md`: per-agent timing, tokens, and estimated cost
+   - `sub-agent-telemetry/`: recorded agent and sub-agent interactions
+
+   For example:
+
+   ```powershell
+   $latestRun = Get-ChildItem .\artifacts -Directory |
+       Sort-Object LastWriteTime -Descending |
+       Select-Object -First 1
+   Invoke-Item $latestRun.FullName
+   ```
 
 ## Environment configuration
 
-Copy `.env.example` to `.env` for a local configuration. Offline mode requires no key. Live mode requires an OpenAI API key, `RESEARCH_PROVIDER=web`, and `ALLOW_NETWORK=true`; the application refuses live configuration without the explicit network switch. Set bounded limits such as `MAX_TURNS_PER_AGENT`, `REVISION_TIMEOUT_SECONDS`, `MAX_REWORK_PASSES`, `REWORK_TIMEOUT_SECONDS`, `MAX_SOURCES`, `MAX_BRANCH_RETRIES`, and `MAX_CONCURRENCY` for the deployment rather than relying on unbounded model behavior. If a live revision exceeds its timeout, the validated draft is retained and the run completes with an explicit caveat.
+Copy `.env.example` to `.env` for a local configuration. Offline mode requires no key. For CLI research, `ask --provider web` supplies the required provider and network settings while the API key is read from the environment. For direct `AppConfig` use and configuration-driven evaluation, set `RESEARCH_PROVIDER=web` and `ALLOW_NETWORK=true`; the application refuses that configuration without the explicit network switch. Set bounded limits such as `MAX_TURNS_PER_AGENT`, `REVISION_TIMEOUT_SECONDS`, `MAX_REWORK_PASSES`, `REWORK_TIMEOUT_SECONDS`, `MAX_SOURCES`, `MAX_BRANCH_RETRIES`, and `MAX_CONCURRENCY` for the deployment rather than relying on unbounded model behavior. If a live revision exceeds its timeout, the validated draft is retained and the run completes with an explicit caveat.
 
 Each run writes `audit_report.md` and `audit_report.json`. When deterministic validation flags a paragraph, executive summary, decision matrix, or other report component, the application creates a withheld representation and sends only the flagged targets to a bounded validation re-work specialist. The application merges only authorized target changes, validates again, and records the original content, withholding marker, final replacement, citation changes, repair attempts, and disposition. Unsupported content remains visibly withheld after the configured repair limit.
 
@@ -52,8 +124,8 @@ The specialist contract uses short internal source IDs and stores URLs separatel
 `ask` is interactive by default and asks only high-value clarification questions. Use `--fast` to accept transparent defaults:
 
 ```powershell
-housing-research ask "Should the United States permit alternative credit data in mortgage underwriting?" --fast --format both
-housing-research ask "How should a city reform zoning and land use to increase housing supply?" --format markdown
+housing-research ask "Should the United States permit alternative credit data in mortgage underwriting?" --fast
+housing-research ask "How should a city reform zoning and land use to increase housing supply?"
 ```
 
 Use `demo --offline` for the fixed mortgage-portability example. Markdown citations link to the run-local `sources.md` ledger; JSON contains the typed package and every intermediate boundary.
