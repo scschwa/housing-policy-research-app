@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/tabby.min.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.31">
+
+  <meta name="author" content="Housing Policy Research Network">
+  <meta name="dcterms.date" content="2026-08-15">
+  <title>Engineering a Traceable Multi-Agent Research System</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-864c5404f4710dceefb0a9fe440f50a1.css">
+  <link rel="stylesheet" href="styles.css">
+  <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="index_files/libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="index_files/libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="index_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Engineering a Traceable Multi-Agent Research System</h1>
+  <p class="subtitle">OpenAI Agents SDK, governed orchestration, and Promptfoo evaluation</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Housing Policy Research Network 
+</div>
+</div>
+</div>
+
+  <p class="date">2026-08-15</p>
+</section>
+<section id="the-core-thesis" class="slide level2 section-title">
+<h2>The core thesis</h2>
+<div class="kicker">
+<p>RELIABILITY COMES FROM THE SYSTEM AROUND THE MODEL</p>
+</div>
+<div class="big-idea">
+<p>Treat multi-agent research like a governed analytical pipeline, not a group chat.</p>
+</div>
+<div class="three-col top-gap">
+<div class="panel accent-top">
+<div class="panel-title">
+Control plane
+</div>
+<p>Python owns workflow state, concurrency, budgets, retries, validation, and release policy.</p>
+</div>
+<div class="panel">
+<div class="panel-title">
+Inference plane
+</div>
+<p>The OpenAI Agents SDK gives each role a bounded model loop, tools, typed output, and hosted traces.</p>
+</div>
+<div class="panel">
+<div class="panel-title">
+Evidence plane
+</div>
+<p>Source records, claims, artifacts, audit history, and eval results remain inspectable after the run.</p>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>docs/architecture.md</code> - <code>src/housing_policy_agents/workflows/research_workflow.py</code> - OpenAI Agents SDK, Agents: https://openai.github.io/openai-agents-python/agents/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-familiar-modeling-metaphor" class="slide level2">
+<h2>A familiar modeling metaphor</h2>
+<div class="two-col wide-left">
+<div class="panel no-pad">
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TB
+    Q["Policy question"] --&gt; X["Feature construction&lt;br/&gt;research plan"]
+    X --&gt; E1["Expert model&lt;br/&gt;government"]
+    X --&gt; E2["Expert model&lt;br/&gt;legal"]
+    X --&gt; E3["Expert model&lt;br/&gt;academic"]
+    E1 --&gt; M["Meta-estimator&lt;br/&gt;manager synthesis"]
+    E2 --&gt; M
+    E3 --&gt; M
+    M --&gt; D["Draft report"]
+    D --&gt; V["Diagnostics +&lt;br/&gt;constrained re-work"]
+    V --&gt; O["Released output&lt;br/&gt;plus audit trail"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="stack">
+<div class="callout-blue">
+<div class="panel-title">
+Mixture of experts
+</div>
+<p>Branches specialize by evidence domain. Managers reconcile authority, disagreement, and uncertainty.</p>
+</div>
+<div class="callout-gray">
+<div class="panel-title">
+No silent imputation
+</div>
+<p>A failed branch becomes explicit missingness with a typed status and limitation. It does not disappear.</p>
+</div>
+<div class="callout-gray">
+<div class="panel-title">
+Diagnostics before release
+</div>
+<p>Validation and adversarial review inspect the report after generation, when defects can be localized.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>docs/architecture.md</code> - <code>src/housing_policy_agents/agents/managers.py</code> - <code>src/housing_policy_agents/workflows/research_workflow.py</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="end-to-end-architecture" class="slide level2">
+<h2>End-to-end architecture</h2>
+<div class="architecture-map">
+<div class="arch-label">
+CONTROLLED RESEARCH
+</div>
+<div class="arch-row">
+<p><span>CLI request</span><i></i><span>Intake + plan</span><i></i><span>Specialist SDK runs</span><i></i><span>Source ledger</span><i></i><span>Manager reconciliation</span><i></i><span>Writer agent</span></p>
+</div>
+<div class="arch-turn">
+↓
+</div>
+<div class="arch-label">
+CONTROLLED RELEASE
+</div>
+<div class="arch-row release-row">
+<p><span>Validation</span><i></i><span>Re-work gate</span><i></i><span>Adversarial review</span><i></i><span>Final validation</span><i></i><span>Report + audit + usage + telemetry</span></p>
+</div>
+</div>
+<div class="flow-strip">
+<p><span>Plan</span><span>Research</span><span>Reconcile</span><span>Write</span><span>Challenge</span><span>Release</span></p>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/workflows/research_workflow.py</code> - <code>docs/architecture.md</code> - <code>docs/agent-contracts.md</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="who-controls-what" class="slide level2">
+<h2>Who controls what?</h2>
+<div class="two-col">
+<div class="panel accent-top">
+<div class="panel-title">
+Python workflow
+</div>
+<ul>
+<li>Selects branches and managers</li>
+<li>Starts concurrent tasks</li>
+<li>Enforces retries and time limits</li>
+<li>Carries run state and source IDs</li>
+<li>Applies deterministic validators</li>
+<li>Decides whether content is released or withheld</li>
+</ul>
+</div>
+<div class="panel">
+<div class="panel-title">
+Agents SDK runtime
+</div>
+<ul>
+<li>Executes the agent turn loop</li>
+<li>Calls hosted and local tools</li>
+<li>Validates structured model output</li>
+<li>Returns raw responses and usage</li>
+<li>Emits hosted trace spans and metadata</li>
+<li>Supports agents exposed as tools</li>
+</ul>
+</div>
+</div>
+<div class="principle">
+<p>The app keeps policy and reliability decisions in ordinary code. The SDK handles bounded agent execution.</p>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/workflows/research_workflow.py</code> - <code>src/housing_policy_agents/agents/factory.py</code> - OpenAI Agents SDK, Running agents: https://openai.github.io/openai-agents-python/running_agents/ - OpenAI Agents SDK, Tools: https://openai.github.io/openai-agents-python/tools/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-agent-topology-is-an-explicit-model-graph" class="slide level2">
+<h2>The agent topology is an explicit model graph</h2>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    subgraph SP["Specialist layer"]
+      G["Government sources"]
+      L["Legal and regulatory"]
+      T["Think tank and academic"]
+      C["Consumer and industry"]
+      A["Advocacy and equity"]
+      X["Global comparison"]
+    end
+    subgraph MG["Manager layer"]
+      PM["Policy manager"]
+      IM["Industry manager"]
+      AM["Advocacy manager"]
+      GM["Global manager"]
+    end
+    G --&gt; PM
+    L --&gt; PM
+    T --&gt; PM
+    C --&gt; IM
+    A --&gt; AM
+    X --&gt; GM
+    PM --&gt; WR["Synthesis writer"]
+    IM --&gt; WR
+    AM --&gt; WR
+    GM --&gt; WR
+    WR --&gt; RV["Reviewer and re-work"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div class="caption-bar">
+<p>Each edge is a typed handoff. Each node has a role definition, scope boundary, source preference, and response contract.</p>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/agents/factory.py</code> - <code>src/housing_policy_agents/agents/orchestrator.py</code> - <code>src/housing_policy_agents/prompts/specialist.md</code> - <code>src/housing_policy_agents/prompts/manager.md</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="typed-contracts-are-the-measurement-model" class="slide level2">
+<h2>Typed contracts are the measurement model</h2>
+<div class="two-col wide-right">
+<div class="stack">
+<div class="metric-card">
+<p><span class="metric-value">Input</span> <span class="metric-label">ResearchAssignment</span></p>
+</div>
+<div class="metric-card">
+<p><span class="metric-value">Output</span> <span class="metric-label">SpecialistFinding</span></p>
+</div>
+<div class="metric-card">
+<p><span class="metric-value">Join key</span> <span class="metric-label">source_id</span></p>
+</div>
+</div>
+<div class="panel">
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href=""></a>Agent(</span>
+<span id="cb1-2"><a href=""></a>    name<span class="op">=</span><span class="st">"Government Sources Researcher"</span>,</span>
+<span id="cb1-3"><a href=""></a>    instructions<span class="op">=</span>role_and_scope,</span>
+<span id="cb1-4"><a href=""></a>    model<span class="op">=</span>config.openai_model,</span>
+<span id="cb1-5"><a href=""></a>    tools<span class="op">=</span>[WebSearchTool(...)],</span>
+<span id="cb1-6"><a href=""></a>    output_type<span class="op">=</span>agent_output_schema(</span>
+<span id="cb1-7"><a href=""></a>        SpecialistFinding</span>
+<span id="cb1-8"><a href=""></a>    ),</span>
+<span id="cb1-9"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The schema turns prose generation into a measurable interface: claims, sources, confidence, uncertainty, limitations, and branch status.</p>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/agents/factory.py</code> - <code>src/housing_policy_agents/models/domain.py</code> - <code>docs/agent-contracts.md</code> - OpenAI Agents SDK, Agents: https://openai.github.io/openai-agents-python/agents/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-bounded-sdk-call-with-tools-and-trace-metadata" class="slide level2">
+<h2>A bounded SDK call, with tools and trace metadata</h2>
+<div class="two-col code-slide">
+<div class="panel">
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>agent <span class="op">=</span> build_specialist_agent(</span>
+<span id="cb2-2"><a href=""></a>    branch<span class="op">=</span>assignment.branch.value,</span>
+<span id="cb2-3"><a href=""></a>    config<span class="op">=</span>context.config,</span>
+<span id="cb2-4"><a href=""></a>    tools<span class="op">=</span>backend.agent_tools(),</span>
+<span id="cb2-5"><a href=""></a>)</span>
+<span id="cb2-6"><a href=""></a></span>
+<span id="cb2-7"><a href=""></a>result <span class="op">=</span> <span class="cf">await</span> Runner.run(</span>
+<span id="cb2-8"><a href=""></a>    agent,</span>
+<span id="cb2-9"><a href=""></a>    <span class="bu">input</span><span class="op">=</span>payload,</span>
+<span id="cb2-10"><a href=""></a>    max_turns<span class="op">=</span>config.max_turns_per_agent,</span>
+<span id="cb2-11"><a href=""></a>    run_config<span class="op">=</span>RunConfig(</span>
+<span id="cb2-12"><a href=""></a>        workflow_name<span class="op">=</span><span class="st">"housing-policy-research"</span>,</span>
+<span id="cb2-13"><a href=""></a>        trace_id<span class="op">=</span>context.trace_id,</span>
+<span id="cb2-14"><a href=""></a>        trace_metadata<span class="op">=</span>{</span>
+<span id="cb2-15"><a href=""></a>            <span class="st">"run_id"</span>: context.run_id,</span>
+<span id="cb2-16"><a href=""></a>            <span class="st">"branch"</span>: assignment.branch.value,</span>
+<span id="cb2-17"><a href=""></a>        },</span>
+<span id="cb2-18"><a href=""></a>    ),</span>
+<span id="cb2-19"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="stack">
+<div class="numbered-step">
+<p><b>1</b><span>Build the role from versioned instructions and a Pydantic output type.</span></p>
+</div>
+<div class="numbered-step">
+<p><b>2</b><span>Attach the hosted <code>WebSearchTool</code> only in live mode.</span></p>
+</div>
+<div class="numbered-step">
+<p><b>3</b><span>Bound the run with <code>max_turns</code> and workflow policy.</span></p>
+</div>
+<div class="numbered-step">
+<p><b>4</b><span>Group SDK spans with app run and branch metadata.</span></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/agents/specialists.py</code> - <code>src/housing_policy_agents/tools/research.py</code> - <code>src/housing_policy_agents/telemetry/interactions.py</code> - OpenAI Agents SDK, Tools: https://openai.github.io/openai-agents-python/tools/ - OpenAI Agents SDK, Running agents: https://openai.github.io/openai-agents-python/running_agents/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="concurrency-without-losing-failure-semantics" class="slide level2">
+<h2>Concurrency without losing failure semantics</h2>
+<div class="two-col wide-left">
+<div class="panel no-pad">
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    participant W as Workflow
+    participant S as Semaphore
+    participant A as Specialist A
+    participant B as Specialist B
+    participant C as Specialist C
+    W-&gt;&gt;S: gather assignments
+    S-&gt;&gt;A: acquire slot
+    S-&gt;&gt;B: acquire slot
+    S-&gt;&gt;C: wait
+    A--&gt;&gt;W: COMPLETED finding
+    B--xW: parse or tool failure
+    W-&gt;&gt;B: bounded retry
+    B--&gt;&gt;W: FAILED finding + limitation
+    S-&gt;&gt;C: acquire released slot
+    C--&gt;&gt;W: COMPLETED finding
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="stack">
+<div class="callout-blue">
+<div class="panel-title">
+Bounded parallelism
+</div>
+<p>An <code>asyncio.Semaphore</code> controls API pressure. <code>asyncio.gather</code> preserves branch-level results.</p>
+</div>
+<div class="callout-gray">
+<div class="panel-title">
+Failure as data
+</div>
+<p>Exceptions are converted to typed failed findings after retries. Managers see the missing branch and its reason.</p>
+</div>
+<div class="callout-gray">
+<div class="panel-title">
+Partial, never fabricated
+</div>
+<p>If no usable evidence reaches a manager, the fallback is partial coverage, not invented synthesis.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/workflows/research_workflow.py</code> - <code>src/housing_policy_agents/agents/specialists.py</code> - <code>src/housing_policy_agents/agents/managers.py</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-source-ledger-is-chain-of-custody" class="slide level2">
+<h2>The source ledger is chain of custody</h2>
+<div class="four-grid">
+<div class="panel mini">
+<div class="panel-title">
+01 | Acquire
+</div>
+<p>Specialists retrieve official, legal, academic, industry, advocacy, or comparative evidence.</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+02 | Normalize
+</div>
+<p>Every source becomes a <code>SourceRecord</code> with a short stable ID, URL, publisher, date, and source tier.</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+03 | Join
+</div>
+<p>Claims refer to source IDs. URLs stay in the source record, which keeps citations resolvable and deduplicated.</p>
+</div>
+<div class="panel mini accent-top">
+<div class="panel-title">
+04 | Validate
+</div>
+<p>The workflow rejects missing references, malformed comparisons, and unsupported report claims.</p>
+</div>
+</div>
+<div class="principle">
+<p>Think of the ledger as data lineage for qualitative evidence: every released claim must have a reproducible path back to a source record.</p>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/tools/source_store.py</code> - <code>src/housing_policy_agents/models/domain.py</code> - <code>docs/architecture.md</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="validation-and-re-work-are-residual-diagnostics" class="slide level2">
+<h2>Validation and re-work are residual diagnostics</h2>
+<div class="two-col">
+<div class="panel no-pad">
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TB
+    D["Draft report"] --&gt; V["Deterministic validation"]
+    V --&gt; R["Withhold + re-work&lt;br/&gt;flagged targets"]
+    R --&gt; C{"Defect cleared?"}
+    C -- "yes" --&gt; P["Replace target"]
+    C -- "no" --&gt; W["Keep withheld"]
+    P --&gt; A["Audit report"]
+    W --&gt; A
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="stack">
+<div class="callout-blue">
+<div class="panel-title">
+Constrained repair
+</div>
+<p>The re-work agent can change only flagged targets. It cannot silently rewrite healthy sections.</p>
+</div>
+<div class="callout-gray">
+<div class="panel-title">
+Auditable diff
+</div>
+<p>The audit records what failed, what was withheld, the attempted revision, and the final disposition.</p>
+</div>
+<div class="callout-gray">
+<div class="panel-title">
+Fail closed by section
+</div>
+<p>Unresolved unsupported content remains withheld while valid report sections can still be released.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/agents/rework.py</code> - <code>src/housing_policy_agents/prompts/rework.md</code> - <code>src/housing_policy_agents/tools/source_store.py</code> - <code>src/housing_policy_agents/workflows/research_workflow.py</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="adversarial-review-is-the-challenger-model" class="slide level2">
+<h2>Adversarial review is the challenger model</h2>
+<div class="two-col">
+<div class="panel accent-top">
+<div class="panel-title">
+Primary model
+</div>
+<p>The writer synthesizes manager outputs into a decision-oriented report with claims, caveats, alternatives, and source references.</p>
+</div>
+<div class="panel">
+<div class="panel-title">
+Challenger model
+</div>
+<p>The reviewer looks for overclaiming, omitted counterevidence, authority mismatches, weak country analogies, and unsupported recommendations.</p>
+</div>
+</div>
+<div class="flow-row">
+<p><span>Draft</span><i></i><span>Review findings</span><i></i><span>One bounded revision</span><i></i><span>Final validation</span></p>
+</div>
+<div class="principle">
+<p>Separation of roles matters: generation optimizes coherence; challenge optimizes defect discovery.</p>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/agents/writer.py</code> - <code>src/housing_policy_agents/agents/reviewer.py</code> - <code>src/housing_policy_agents/prompts/writer.md</code> - <code>src/housing_policy_agents/prompts/reviewer.md</code> - <code>docs/evaluation-design.md</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="traceability-has-three-independent-layers" class="slide level2">
+<h2>Traceability has three independent layers</h2>
+<div class="three-col">
+<div class="panel trace-card accent-top">
+<p><span class="trace-no">01</span></p>
+<div class="panel-title">
+Hosted SDK traces
+</div>
+<p>Agent runs, model calls, tool calls, and workflow metadata in the OpenAI trace viewer.</p>
+<p><span class="best-for">Best for runtime debugging</span></p>
+</div>
+<div class="panel trace-card">
+<p><span class="trace-no">02</span></p>
+<div class="panel-title">
+Interaction telemetry
+</div>
+<p>Redacted request, result, transcript, raw response metadata, usage, duration, status, and handoffs.</p>
+<p><span class="best-for">Best for agent forensics</span></p>
+</div>
+<div class="panel trace-card">
+<p><span class="trace-no">03</span></p>
+<div class="panel-title">
+Durable artifacts
+</div>
+<p>Plan, evidence ledger, report versions, audit, events, metrics, and usage summaries tied to one run ID.</p>
+<p><span class="best-for">Best for reproducibility</span></p>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/telemetry/interactions.py</code> - <code>src/housing_policy_agents/telemetry/metrics.py</code> - <code>src/housing_policy_agents/reporting/render.py</code> - OpenAI Agents SDK, Quickstart: https://openai.github.io/openai-agents-python/quickstart/ - OpenAI Agents SDK, Running agents: https://openai.github.io/openai-agents-python/running_agents/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-artifact-directory-is-a-computational-lab-notebook" class="slide level2">
+<h2>The artifact directory is a computational lab notebook</h2>
+<div class="two-col wide-left">
+<div class="panel artifact-tree">
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href=""></a>artifacts/run-&lt;id&gt;/</span>
+<span id="cb3-2"><a href=""></a>|-- brief.json              question + assumptions</span>
+<span id="cb3-3"><a href=""></a>|-- plan.json               branches + assignments</span>
+<span id="cb3-4"><a href=""></a>|-- sources.json            normalized evidence ledger</span>
+<span id="cb3-5"><a href=""></a>|-- draft_report.json       pre-review state</span>
+<span id="cb3-6"><a href=""></a>|-- review.json             challenger findings</span>
+<span id="cb3-7"><a href=""></a>|-- final_report.json       released structured report</span>
+<span id="cb3-8"><a href=""></a>|-- report.md               reader-facing report</span>
+<span id="cb3-9"><a href=""></a>|-- audit_report.md         flags, changes, withholding</span>
+<span id="cb3-10"><a href=""></a>|-- usage_report.md         time, tokens, cost estimate</span>
+<span id="cb3-11"><a href=""></a>|-- events.json             workflow state transitions</span>
+<span id="cb3-12"><a href=""></a>|-- interaction_summary.json</span>
+<span id="cb3-13"><a href=""></a>`-- sub-agent-telemetry/</span>
+<span id="cb3-14"><a href=""></a>    `-- 002-legal-regulatory-researcher/</span>
+<span id="cb3-15"><a href=""></a>        |-- request.json</span>
+<span id="cb3-16"><a href=""></a>        |-- result.json</span>
+<span id="cb3-17"><a href=""></a>        `-- transcript.json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="stack">
+<div class="callout-blue">
+<div class="panel-title">
+Reconstruct the run
+</div>
+<p>The plan explains intent. The ledger explains evidence. The transcript explains agent behavior. The audit explains release decisions.</p>
+</div>
+<div class="callout-gray">
+<div class="panel-title">
+Correlate across layers
+</div>
+<p><code>run_id</code>, <code>trace_id</code>, <code>interaction_id</code>, branch, agent, stage, and source ID form the join keys.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/reporting/render.py</code> - <code>src/housing_policy_agents/telemetry/interactions.py</code> - Example artifact directories under <code>artifacts/</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="usage-telemetry-turns-cost-into-a-model-diagnostic" class="slide level2">
+<h2>Usage telemetry turns cost into a model diagnostic</h2>
+<div class="two-col">
+<div class="panel">
+<div class="panel-title">
+What is measured
+</div>
+<ul>
+<li>Requests per interaction</li>
+<li>Input, cached input, output, and reasoning tokens</li>
+<li>Wall-clock duration per agent and stage</li>
+<li>Completed or failed status</li>
+<li>Model and pricing version</li>
+</ul>
+</div>
+<div class="panel accent-top">
+<div class="panel-title">
+What is estimated
+</div>
+<div class="cost-formula">
+C<sub>est</sub> = (t<sub>in</sub>r<sub>in</sub> + t<sub>cache</sub>r<sub>cache</sub> + t<sub>out</sub>r<sub>out</sub>) / 10<sup>6</sup>
+</div>
+<p>The estimate is useful for branch and architecture comparisons. It is explicitly labeled as an estimate, not an invoice.</p>
+</div>
+</div>
+<div class="warning-strip">
+<p>Hosted tool charges, service-tier adjustments, taxes, credits, and later pricing changes are outside this estimate.</p>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>src/housing_policy_agents/telemetry/usage.py</code> - <code>src/housing_policy_agents/telemetry/pricing.py</code> - <code>docs/model-pricing.md</code> - OpenAI API pricing: https://openai.com/api/pricing/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="promptfoo-is-the-experimental-design-matrix" class="slide level2">
+<h2>Promptfoo is the experimental design matrix</h2>
+<div class="four-grid formula-grid">
+<div class="panel mini accent-top">
+<div class="panel-title">
+Prompt
+</div>
+<p>What task and instructions are held constant?</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+Provider
+</div>
+<p>Which architecture or model variant is under test?</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+Test case
+</div>
+<p>Which scenario, ambiguity, or threat is introduced?</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+Assertion
+</div>
+<p>What observable condition constitutes success?</p>
+</div>
+</div>
+<div class="equation-strip">
+<p><b>Evaluation cell</b> = prompt x provider x test case x assertion</p>
+</div>
+<div class="two-col compact-code">
+<div class="panel">
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href=""></a><span class="fu">prompts</span><span class="kw">:</span></span>
+<span id="cb4-2"><a href=""></a><span class="at">  </span><span class="kw">-</span><span class="at"> file://prompts/research_request.txt</span></span>
+<span id="cb4-3"><a href=""></a><span class="fu">providers</span><span class="kw">:</span></span>
+<span id="cb4-4"><a href=""></a><span class="at">  </span><span class="kw">-</span><span class="at"> file://providers/hierarchical_provider.py</span></span>
+<span id="cb4-5"><a href=""></a><span class="at">  </span><span class="kw">-</span><span class="at"> file://providers/baseline_provider.py</span></span>
+<span id="cb4-6"><a href=""></a><span class="fu">tests</span><span class="kw">:</span><span class="at"> file://datasets/offline.yaml</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="panel">
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href=""></a><span class="fu">defaultTest</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href=""></a><span class="at">  </span><span class="fu">assert</span><span class="kw">:</span></span>
+<span id="cb5-3"><a href=""></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> python</span></span>
+<span id="cb5-4"><a href=""></a><span class="at">      </span><span class="fu">value</span><span class="kw">:</span><span class="at"> file://assertions/quality.py</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>evals/promptfooconfig.yaml</code> - <code>evals/assertions/quality.py</code> - Promptfoo configuration guide: https://www.promptfoo.dev/docs/configuration/guide/ - Promptfoo assertions: https://www.promptfoo.dev/docs/configuration/expected-outputs/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-python-provider-makes-the-whole-workflow-testable" class="slide level2">
+<h2>A Python provider makes the whole workflow testable</h2>
+<div class="two-col code-slide">
+<div class="panel">
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="kw">def</span> call_api(prompt, options, context):</span>
+<span id="cb6-2"><a href=""></a>    config <span class="op">=</span> AppConfig(</span>
+<span id="cb6-3"><a href=""></a>        research_provider<span class="op">=</span><span class="st">"offline"</span>,</span>
+<span id="cb6-4"><a href=""></a>        enable_manager_reconciliation<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb6-5"><a href=""></a>        enable_adversarial_review<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb6-6"><a href=""></a>    )</span>
+<span id="cb6-7"><a href=""></a>    request <span class="op">=</span> UserResearchRequest(</span>
+<span id="cb6-8"><a href=""></a>        question<span class="op">=</span>context[<span class="st">"vars"</span>][<span class="st">"question"</span>],</span>
+<span id="cb6-9"><a href=""></a>        mode<span class="op">=</span>RunMode.FAST,</span>
+<span id="cb6-10"><a href=""></a>        accept_defaults<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb6-11"><a href=""></a>    )</span>
+<span id="cb6-12"><a href=""></a>    package <span class="op">=</span> asyncio.run(</span>
+<span id="cb6-13"><a href=""></a>        ResearchWorkflow(config).run(request)</span>
+<span id="cb6-14"><a href=""></a>    )</span>
+<span id="cb6-15"><a href=""></a>    <span class="cf">return</span> {</span>
+<span id="cb6-16"><a href=""></a>        <span class="st">"output"</span>: package.model_dump_json(),</span>
+<span id="cb6-17"><a href=""></a>        <span class="st">"metadata"</span>: {<span class="st">"run_id"</span>: package.run_id},</span>
+<span id="cb6-18"><a href=""></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="stack">
+<div class="numbered-step">
+<p><b>1</b><span>Promptfoo calls a normal Python function.</span></p>
+</div>
+<div class="numbered-step">
+<p><b>2</b><span>The provider constructs the same application workflow used by the CLI.</span></p>
+</div>
+<div class="numbered-step">
+<p><b>3</b><span>The structured package becomes assertion input.</span></p>
+</div>
+<div class="numbered-step">
+<p><b>4</b><span>Run metadata links a failed eval back to artifacts and traces.</span></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>evals/providers/hierarchical_provider.py</code> - Promptfoo Python provider: https://www.promptfoo.dev/docs/providers/python/ - Promptfoo, evaluating OpenAI Agents Python: https://www.promptfoo.dev/docs/guides/evaluate-openai-agents-python/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="compare-architectures-then-ablate-mechanisms" class="slide level2">
+<h2>Compare architectures, then ablate mechanisms</h2>
+<div class="two-col wide-left">
+<div class="panel">
+<div class="panel-title">
+Baseline comparison
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Variant</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Full hierarchy</td>
+<td>Candidate production architecture</td>
+</tr>
+<tr class="even">
+<td>Shallow baseline</td>
+<td>Tests whether complexity earns its cost</td>
+</tr>
+</tbody>
+</table>
+<div class="panel-title">
+Factorial ablations
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Removed mechanism</th>
+<th>Question answered</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Legal branch</td>
+<td>Does legal evidence improve validity?</td>
+</tr>
+<tr class="even">
+<td>Manager reconciliation</td>
+<td>Does aggregation reduce contradictions?</td>
+</tr>
+<tr class="odd">
+<td>Adversarial review</td>
+<td>Does challenge improve defect recall?</td>
+</tr>
+<tr class="even">
+<td>Clarification</td>
+<td>Does better intake improve downstream quality?</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="stack">
+<div class="callout-blue">
+<div class="panel-title">
+Offline first
+</div>
+<p>Fixture-backed runs are deterministic and cheap. They test orchestration, schemas, assertions, and artifact production.</p>
+</div>
+<div class="callout-gray">
+<div class="panel-title">
+Live second
+</div>
+<p>Live evals add retrieval and model variance. Use them selectively for realism after the harness is stable.</p>
+</div>
+<div class="callout-gray">
+<div class="panel-title">
+Evaluate trajectories too
+</div>
+<p>SDK spans can be bridged to OTLP so Promptfoo can assert tool and agent trajectories, not only final text.</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>evals/promptfooconfig.ablation.yaml</code> - <code>evals/providers/baseline_provider.py</code> - <code>evals/providers/hierarchical_provider.py</code> - <code>docs/evaluation-design.md</code> - Promptfoo, evaluating OpenAI Agents Python: https://www.promptfoo.dev/docs/guides/evaluate-openai-agents-python/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="assertions-turn-architecture-goals-into-observables" class="slide level2">
+<h2>Assertions turn architecture goals into observables</h2>
+<div class="two-col">
+<div class="panel accent-top">
+<div class="panel-title">
+Structural correctness
+</div>
+<ul>
+<li>Output schema validates</li>
+<li>Required report sections exist</li>
+<li>Source IDs resolve</li>
+<li>Citation fabrication stays below threshold</li>
+<li>Seeded defects are recalled</li>
+</ul>
+</div>
+<div class="panel">
+<div class="panel-title">
+Research behavior
+</div>
+<ul>
+<li>Prompt injection is resisted</li>
+<li>Primary sources are represented</li>
+<li>Source diversity clears the floor</li>
+<li>Unnecessary agent activation stays bounded</li>
+<li>Review and audit artifacts are present</li>
+</ul>
+</div>
+</div>
+<div class="principle">
+<p>Good assertions inspect the structured product and its provenance. A fluent final paragraph is a weak test oracle.</p>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>evals/assertions/quality.py</code> - <code>evals/assertions/security.py</code> - <code>evals/thresholds.yaml</code> - <code>docs/evaluation-design.md</code> - Promptfoo assertions: https://www.promptfoo.dev/docs/configuration/expected-outputs/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="run-it-as-a-staged-research-experiment" class="slide level2">
+<h2>Run it as a staged research experiment</h2>
+<div class="timeline">
+<div class="timeline-step accent-top">
+<p><span>01</span></p>
+<div class="panel-title">
+Verify locally
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb7-1"><a href=""></a>python <span class="op">-</span>m pytest</span>
+<span id="cb7-2"><a href=""></a>npm run eval<span class="op">:</span>offline</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="timeline-step">
+<p><span>02</span></p>
+<div class="panel-title">
+Execute live
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb8-1"><a href=""></a>python <span class="op">-</span>m housing_policy_agents<span class="op">.</span><span class="fu">cli</span> ask `</span>
+<span id="cb8-2"><a href=""></a>  <span class="st">"&lt;question&gt;"</span> <span class="op">--</span>provider web <span class="op">--</span>fast</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="timeline-step">
+<p><span>03</span></p>
+<div class="panel-title">
+Inspect
+</div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb9-1"><a href=""></a><span class="fu">Get-ChildItem</span> artifacts\run-<span class="op">&lt;</span>id<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Review report, audit, usage, and sub-agent telemetry.</p>
+</div>
+<div class="timeline-step">
+<p><span>04</span></p>
+<div class="panel-title">
+Compare
+</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource powershell number-lines code-with-copy"><code class="sourceCode powershell"><span id="cb10-1"><a href=""></a>npm run eval<span class="op">:</span>ablation</span>
+<span id="cb10-2"><a href=""></a>npm run eval<span class="op">:</span>live</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>README.md</code> - <code>package.json</code> - <code>evals/README.md</code> - <code>src/housing_policy_agents/cli.py</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-practical-build-sequence" class="slide level2">
+<h2>A practical build sequence</h2>
+<div class="four-grid">
+<div class="panel mini accent-top">
+<div class="panel-title">
+1 | Contract first
+</div>
+<p>Define typed inputs, outputs, statuses, IDs, and failure representations before writing prompts.</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+2 | Control plane
+</div>
+<p>Implement workflow state, concurrency, retries, event recording, and deterministic release rules in code.</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+3 | Bounded agents
+</div>
+<p>Give each role a narrow objective, tools, source hierarchy, scope exclusions, and structured output type.</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+4 | Trace every edge
+</div>
+<p>Persist handoffs, results, durations, usage, source lineage, validation findings, and report revisions.</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+5 | Deterministic harness
+</div>
+<p>Create offline fixtures and assertions for the workflow before spending tokens on live evaluation.</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+6 | Comparative evals
+</div>
+<p>Test a shallow baseline, full system, and mechanism ablations against the same dataset.</p>
+</div>
+<div class="panel mini">
+<div class="panel-title">
+7 | Failure drills
+</div>
+<p>Inject parse failures, missing branches, bad citations, prompt attacks, and re-work failures.</p>
+</div>
+<div class="panel mini accent-top">
+<div class="panel-title">
+8 | Release policy
+</div>
+<p>Decide what is revised, withheld, or released, then make that decision auditable.</p>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>docs/architecture.md</code> - <code>docs/agent-contracts.md</code> - <code>docs/evaluation-design.md</code> - <code>docs/threat-model.md</code> - <code>docs/limitations.md</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="production-judgment-where-to-be-skeptical" class="slide level2">
+<h2>Production judgment: where to be skeptical</h2>
+<div class="two-col">
+<div class="panel">
+<div class="panel-title">
+This architecture improves
+</div>
+<ul>
+<li>Separation of research responsibilities</li>
+<li>Failure localization</li>
+<li>Citation and source traceability</li>
+<li>Reproducible evaluation</li>
+<li>Cost and latency attribution</li>
+<li>Selective withholding instead of all-or-nothing failure</li>
+</ul>
+</div>
+<div class="panel accent-top">
+<div class="panel-title">
+It does not eliminate
+</div>
+<ul>
+<li>Retrieval gaps and stale sources</li>
+<li>Model interpretation errors</li>
+<li>Correlated errors across agents</li>
+<li>Prompt and schema regressions</li>
+<li>Evaluation blind spots</li>
+<li>Need for human judgment on consequential policy conclusions</li>
+</ul>
+</div>
+</div>
+<div class="principle">
+<p>Multi-agent structure is useful only when it makes evidence, decisions, failures, and costs more legible.</p>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>docs/limitations.md</code> - <code>docs/threat-model.md</code> - <code>docs/evaluation-design.md</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-transferable-pattern" class="slide level2 section-title">
+<h2>The transferable pattern</h2>
+<div class="kicker">
+<p>MAKE STOCHASTIC SYSTEMS LEGIBLE</p>
+</div>
+<div class="big-idea">
+<p>Use agents for bounded judgment. Use code for governance. Use artifacts and evals for accountability.</p>
+</div>
+<div class="three-col top-gap">
+<div class="panel center-card accent-top">
+<div class="panel-title">
+Agents SDK
+</div>
+<p>Role execution, tools, typed output, traces</p>
+</div>
+<div class="panel center-card">
+<div class="panel-title">
+Application workflow
+</div>
+<p>State, policy, validation, repair, release</p>
+</div>
+<div class="panel center-card">
+<div class="panel-title">
+Promptfoo
+</div>
+<p>Baselines, assertions, ablations, regression tests</p>
+</div>
+</div>
+<aside class="notes">
+<p>[Sources] - <code>docs/architecture.md</code> - <code>docs/evaluation-design.md</code> - OpenAI Agents SDK documentation: https://openai.github.io/openai-agents-python/ - Promptfoo documentation: https://www.promptfoo.dev/docs/</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>Housing Policy Research Network | Technical walkthrough</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="index_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="index_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="index_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="index_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="index_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 5.5e-2,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

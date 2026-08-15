@@ -1,0 +1,1042 @@
+---
+title: "Engineering a Traceable Multi-Agent Research System"
+subtitle: "OpenAI Agents SDK, governed orchestration, and Promptfoo evaluation"
+author: "Housing Policy Research Network"
+date: last-modified
+format:
+  revealjs:
+    theme: simple
+    css: styles.css
+    width: 1280
+    height: 720
+    margin: 0.055
+    center: false
+    controls: true
+    progress: true
+    slide-number: "c/t"
+    transition: fade
+    background-transition: fade
+    navigation-mode: linear
+    hash: true
+    history: true
+    code-overflow: wrap
+    highlight-style: github
+    embed-resources: true
+    section-divs: false
+    html-math-method: plain
+    footer: "Housing Policy Research Network | Technical walkthrough"
+execute:
+  freeze: true
+---
+
+## The core thesis {.section-title}
+
+::: {.kicker}
+RELIABILITY COMES FROM THE SYSTEM AROUND THE MODEL
+:::
+
+::: {.big-idea}
+Treat multi-agent research like a governed analytical pipeline, not a group chat.
+:::
+
+::: {.three-col .top-gap}
+::: {.panel .accent-top}
+<div class="panel-title">Control plane</div>
+
+Python owns workflow state, concurrency, budgets, retries, validation, and release policy.
+:::
+
+::: {.panel}
+<div class="panel-title">Inference plane</div>
+
+The OpenAI Agents SDK gives each role a bounded model loop, tools, typed output, and hosted traces.
+:::
+
+::: {.panel}
+<div class="panel-title">Evidence plane</div>
+
+Source records, claims, artifacts, audit history, and eval results remain inspectable after the run.
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `docs/architecture.md`
+- `src/housing_policy_agents/workflows/research_workflow.py`
+- OpenAI Agents SDK, Agents: https://openai.github.io/openai-agents-python/agents/
+:::
+
+---
+
+## A familiar modeling metaphor
+
+::: {.two-col .wide-left}
+::: {.panel .no-pad}
+```{mermaid}
+flowchart TB
+    Q["Policy question"] --> X["Feature construction<br/>research plan"]
+    X --> E1["Expert model<br/>government"]
+    X --> E2["Expert model<br/>legal"]
+    X --> E3["Expert model<br/>academic"]
+    E1 --> M["Meta-estimator<br/>manager synthesis"]
+    E2 --> M
+    E3 --> M
+    M --> D["Draft report"]
+    D --> V["Diagnostics +<br/>constrained re-work"]
+    V --> O["Released output<br/>plus audit trail"]
+```
+:::
+
+::: {.stack}
+::: {.callout-blue}
+<div class="panel-title">Mixture of experts</div>
+
+Branches specialize by evidence domain. Managers reconcile authority, disagreement, and uncertainty.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">No silent imputation</div>
+
+A failed branch becomes explicit missingness with a typed status and limitation. It does not disappear.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">Diagnostics before release</div>
+
+Validation and adversarial review inspect the report after generation, when defects can be localized.
+:::
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `docs/architecture.md`
+- `src/housing_policy_agents/agents/managers.py`
+- `src/housing_policy_agents/workflows/research_workflow.py`
+:::
+
+---
+
+## End-to-end architecture
+
+::: {.architecture-map}
+<div class="arch-label">CONTROLLED RESEARCH</div>
+
+::: {.arch-row}
+<span>CLI request</span><i></i><span>Intake + plan</span><i></i><span>Specialist SDK runs</span><i></i><span>Source ledger</span><i></i><span>Manager reconciliation</span><i></i><span>Writer agent</span>
+:::
+
+<div class="arch-turn">&darr;</div>
+
+<div class="arch-label">CONTROLLED RELEASE</div>
+
+::: {.arch-row .release-row}
+<span>Validation</span><i></i><span>Re-work gate</span><i></i><span>Adversarial review</span><i></i><span>Final validation</span><i></i><span>Report + audit + usage + telemetry</span>
+:::
+:::
+
+::: {.flow-strip}
+<span>Plan</span><span>Research</span><span>Reconcile</span><span>Write</span><span>Challenge</span><span>Release</span>
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/workflows/research_workflow.py`
+- `docs/architecture.md`
+- `docs/agent-contracts.md`
+:::
+
+---
+
+## Who controls what?
+
+::: {.two-col}
+::: {.panel .accent-top}
+<div class="panel-title">Python workflow</div>
+
+- Selects branches and managers
+- Starts concurrent tasks
+- Enforces retries and time limits
+- Carries run state and source IDs
+- Applies deterministic validators
+- Decides whether content is released or withheld
+:::
+
+::: {.panel}
+<div class="panel-title">Agents SDK runtime</div>
+
+- Executes the agent turn loop
+- Calls hosted and local tools
+- Validates structured model output
+- Returns raw responses and usage
+- Emits hosted trace spans and metadata
+- Supports agents exposed as tools
+:::
+:::
+
+::: {.principle}
+The app keeps policy and reliability decisions in ordinary code. The SDK handles bounded agent execution.
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/workflows/research_workflow.py`
+- `src/housing_policy_agents/agents/factory.py`
+- OpenAI Agents SDK, Running agents: https://openai.github.io/openai-agents-python/running_agents/
+- OpenAI Agents SDK, Tools: https://openai.github.io/openai-agents-python/tools/
+:::
+
+---
+
+## The agent topology is an explicit model graph
+
+```{mermaid}
+flowchart LR
+    subgraph SP["Specialist layer"]
+      G["Government sources"]
+      L["Legal and regulatory"]
+      T["Think tank and academic"]
+      C["Consumer and industry"]
+      A["Advocacy and equity"]
+      X["Global comparison"]
+    end
+    subgraph MG["Manager layer"]
+      PM["Policy manager"]
+      IM["Industry manager"]
+      AM["Advocacy manager"]
+      GM["Global manager"]
+    end
+    G --> PM
+    L --> PM
+    T --> PM
+    C --> IM
+    A --> AM
+    X --> GM
+    PM --> WR["Synthesis writer"]
+    IM --> WR
+    AM --> WR
+    GM --> WR
+    WR --> RV["Reviewer and re-work"]
+```
+
+::: {.caption-bar}
+Each edge is a typed handoff. Each node has a role definition, scope boundary, source preference, and response contract.
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/agents/factory.py`
+- `src/housing_policy_agents/agents/orchestrator.py`
+- `src/housing_policy_agents/prompts/specialist.md`
+- `src/housing_policy_agents/prompts/manager.md`
+:::
+
+---
+
+## Typed contracts are the measurement model
+
+::: {.two-col .wide-right}
+::: {.stack}
+::: {.metric-card}
+<span class="metric-value">Input</span>
+<span class="metric-label">ResearchAssignment</span>
+:::
+
+::: {.metric-card}
+<span class="metric-value">Output</span>
+<span class="metric-label">SpecialistFinding</span>
+:::
+
+::: {.metric-card}
+<span class="metric-value">Join key</span>
+<span class="metric-label">source_id</span>
+:::
+:::
+
+::: {.panel}
+```python
+Agent(
+    name="Government Sources Researcher",
+    instructions=role_and_scope,
+    model=config.openai_model,
+    tools=[WebSearchTool(...)],
+    output_type=agent_output_schema(
+        SpecialistFinding
+    ),
+)
+```
+
+The schema turns prose generation into a measurable interface: claims, sources, confidence, uncertainty, limitations, and branch status.
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/agents/factory.py`
+- `src/housing_policy_agents/models/domain.py`
+- `docs/agent-contracts.md`
+- OpenAI Agents SDK, Agents: https://openai.github.io/openai-agents-python/agents/
+:::
+
+---
+
+## A bounded SDK call, with tools and trace metadata
+
+::: {.two-col .code-slide}
+::: {.panel}
+```python
+agent = build_specialist_agent(
+    branch=assignment.branch.value,
+    config=context.config,
+    tools=backend.agent_tools(),
+)
+
+result = await Runner.run(
+    agent,
+    input=payload,
+    max_turns=config.max_turns_per_agent,
+    run_config=RunConfig(
+        workflow_name="housing-policy-research",
+        trace_id=context.trace_id,
+        trace_metadata={
+            "run_id": context.run_id,
+            "branch": assignment.branch.value,
+        },
+    ),
+)
+```
+:::
+
+::: {.stack}
+::: {.numbered-step}
+<b>1</b><span>Build the role from versioned instructions and a Pydantic output type.</span>
+:::
+::: {.numbered-step}
+<b>2</b><span>Attach the hosted <code>WebSearchTool</code> only in live mode.</span>
+:::
+::: {.numbered-step}
+<b>3</b><span>Bound the run with <code>max_turns</code> and workflow policy.</span>
+:::
+::: {.numbered-step}
+<b>4</b><span>Group SDK spans with app run and branch metadata.</span>
+:::
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/agents/specialists.py`
+- `src/housing_policy_agents/tools/research.py`
+- `src/housing_policy_agents/telemetry/interactions.py`
+- OpenAI Agents SDK, Tools: https://openai.github.io/openai-agents-python/tools/
+- OpenAI Agents SDK, Running agents: https://openai.github.io/openai-agents-python/running_agents/
+:::
+
+---
+
+## Concurrency without losing failure semantics
+
+::: {.two-col .wide-left}
+::: {.panel .no-pad}
+```{mermaid}
+sequenceDiagram
+    participant W as Workflow
+    participant S as Semaphore
+    participant A as Specialist A
+    participant B as Specialist B
+    participant C as Specialist C
+    W->>S: gather assignments
+    S->>A: acquire slot
+    S->>B: acquire slot
+    S->>C: wait
+    A-->>W: COMPLETED finding
+    B--xW: parse or tool failure
+    W->>B: bounded retry
+    B-->>W: FAILED finding + limitation
+    S->>C: acquire released slot
+    C-->>W: COMPLETED finding
+```
+:::
+
+::: {.stack}
+::: {.callout-blue}
+<div class="panel-title">Bounded parallelism</div>
+
+An `asyncio.Semaphore` controls API pressure. `asyncio.gather` preserves branch-level results.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">Failure as data</div>
+
+Exceptions are converted to typed failed findings after retries. Managers see the missing branch and its reason.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">Partial, never fabricated</div>
+
+If no usable evidence reaches a manager, the fallback is partial coverage, not invented synthesis.
+:::
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/workflows/research_workflow.py`
+- `src/housing_policy_agents/agents/specialists.py`
+- `src/housing_policy_agents/agents/managers.py`
+:::
+
+---
+
+## The source ledger is chain of custody
+
+::: {.four-grid}
+::: {.panel .mini}
+<div class="panel-title">01 | Acquire</div>
+
+Specialists retrieve official, legal, academic, industry, advocacy, or comparative evidence.
+:::
+
+::: {.panel .mini}
+<div class="panel-title">02 | Normalize</div>
+
+Every source becomes a `SourceRecord` with a short stable ID, URL, publisher, date, and source tier.
+:::
+
+::: {.panel .mini}
+<div class="panel-title">03 | Join</div>
+
+Claims refer to source IDs. URLs stay in the source record, which keeps citations resolvable and deduplicated.
+:::
+
+::: {.panel .mini .accent-top}
+<div class="panel-title">04 | Validate</div>
+
+The workflow rejects missing references, malformed comparisons, and unsupported report claims.
+:::
+:::
+
+::: {.principle}
+Think of the ledger as data lineage for qualitative evidence: every released claim must have a reproducible path back to a source record.
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/tools/source_store.py`
+- `src/housing_policy_agents/models/domain.py`
+- `docs/architecture.md`
+:::
+
+---
+
+## Validation and re-work are residual diagnostics
+
+::: {.two-col}
+::: {.panel .no-pad}
+```{mermaid}
+flowchart TB
+    D["Draft report"] --> V["Deterministic validation"]
+    V --> R["Withhold + re-work<br/>flagged targets"]
+    R --> C{"Defect cleared?"}
+    C -- "yes" --> P["Replace target"]
+    C -- "no" --> W["Keep withheld"]
+    P --> A["Audit report"]
+    W --> A
+```
+:::
+
+::: {.stack}
+::: {.callout-blue}
+<div class="panel-title">Constrained repair</div>
+
+The re-work agent can change only flagged targets. It cannot silently rewrite healthy sections.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">Auditable diff</div>
+
+The audit records what failed, what was withheld, the attempted revision, and the final disposition.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">Fail closed by section</div>
+
+Unresolved unsupported content remains withheld while valid report sections can still be released.
+:::
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/agents/rework.py`
+- `src/housing_policy_agents/prompts/rework.md`
+- `src/housing_policy_agents/tools/source_store.py`
+- `src/housing_policy_agents/workflows/research_workflow.py`
+:::
+
+---
+
+## Adversarial review is the challenger model
+
+::: {.two-col}
+::: {.panel .accent-top}
+<div class="panel-title">Primary model</div>
+
+The writer synthesizes manager outputs into a decision-oriented report with claims, caveats, alternatives, and source references.
+:::
+
+::: {.panel}
+<div class="panel-title">Challenger model</div>
+
+The reviewer looks for overclaiming, omitted counterevidence, authority mismatches, weak country analogies, and unsupported recommendations.
+:::
+:::
+
+::: {.flow-row}
+<span>Draft</span><i></i><span>Review findings</span><i></i><span>One bounded revision</span><i></i><span>Final validation</span>
+:::
+
+::: {.principle}
+Separation of roles matters: generation optimizes coherence; challenge optimizes defect discovery.
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/agents/writer.py`
+- `src/housing_policy_agents/agents/reviewer.py`
+- `src/housing_policy_agents/prompts/writer.md`
+- `src/housing_policy_agents/prompts/reviewer.md`
+- `docs/evaluation-design.md`
+:::
+
+---
+
+## Traceability has three independent layers
+
+::: {.three-col}
+::: {.panel .trace-card .accent-top}
+<span class="trace-no">01</span>
+
+<div class="panel-title">Hosted SDK traces</div>
+
+Agent runs, model calls, tool calls, and workflow metadata in the OpenAI trace viewer.
+
+<span class="best-for">Best for runtime debugging</span>
+:::
+
+::: {.panel .trace-card}
+<span class="trace-no">02</span>
+
+<div class="panel-title">Interaction telemetry</div>
+
+Redacted request, result, transcript, raw response metadata, usage, duration, status, and handoffs.
+
+<span class="best-for">Best for agent forensics</span>
+:::
+
+::: {.panel .trace-card}
+<span class="trace-no">03</span>
+
+<div class="panel-title">Durable artifacts</div>
+
+Plan, evidence ledger, report versions, audit, events, metrics, and usage summaries tied to one run ID.
+
+<span class="best-for">Best for reproducibility</span>
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/telemetry/interactions.py`
+- `src/housing_policy_agents/telemetry/metrics.py`
+- `src/housing_policy_agents/reporting/render.py`
+- OpenAI Agents SDK, Quickstart: https://openai.github.io/openai-agents-python/quickstart/
+- OpenAI Agents SDK, Running agents: https://openai.github.io/openai-agents-python/running_agents/
+:::
+
+---
+
+## The artifact directory is a computational lab notebook
+
+::: {.two-col .wide-left}
+::: {.panel .artifact-tree}
+```text
+artifacts/run-<id>/
+|-- brief.json              question + assumptions
+|-- plan.json               branches + assignments
+|-- sources.json            normalized evidence ledger
+|-- draft_report.json       pre-review state
+|-- review.json             challenger findings
+|-- final_report.json       released structured report
+|-- report.md               reader-facing report
+|-- audit_report.md         flags, changes, withholding
+|-- usage_report.md         time, tokens, cost estimate
+|-- events.json             workflow state transitions
+|-- interaction_summary.json
+`-- sub-agent-telemetry/
+    `-- 002-legal-regulatory-researcher/
+        |-- request.json
+        |-- result.json
+        `-- transcript.json
+```
+:::
+
+::: {.stack}
+::: {.callout-blue}
+<div class="panel-title">Reconstruct the run</div>
+
+The plan explains intent. The ledger explains evidence. The transcript explains agent behavior. The audit explains release decisions.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">Correlate across layers</div>
+
+`run_id`, `trace_id`, `interaction_id`, branch, agent, stage, and source ID form the join keys.
+:::
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/reporting/render.py`
+- `src/housing_policy_agents/telemetry/interactions.py`
+- Example artifact directories under `artifacts/`
+:::
+
+---
+
+## Usage telemetry turns cost into a model diagnostic
+
+::: {.two-col}
+::: {.panel}
+<div class="panel-title">What is measured</div>
+
+- Requests per interaction
+- Input, cached input, output, and reasoning tokens
+- Wall-clock duration per agent and stage
+- Completed or failed status
+- Model and pricing version
+:::
+
+::: {.panel .accent-top}
+<div class="panel-title">What is estimated</div>
+
+<div class="cost-formula">C<sub>est</sub> = (t<sub>in</sub>r<sub>in</sub> + t<sub>cache</sub>r<sub>cache</sub> + t<sub>out</sub>r<sub>out</sub>) / 10<sup>6</sup></div>
+
+The estimate is useful for branch and architecture comparisons. It is explicitly labeled as an estimate, not an invoice.
+:::
+:::
+
+::: {.warning-strip}
+Hosted tool charges, service-tier adjustments, taxes, credits, and later pricing changes are outside this estimate.
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/telemetry/usage.py`
+- `src/housing_policy_agents/telemetry/pricing.py`
+- `docs/model-pricing.md`
+- OpenAI API pricing: https://openai.com/api/pricing/
+:::
+
+---
+
+## Promptfoo is the experimental design matrix
+
+::: {.four-grid .formula-grid}
+::: {.panel .mini .accent-top}
+<div class="panel-title">Prompt</div>
+
+What task and instructions are held constant?
+:::
+
+::: {.panel .mini}
+<div class="panel-title">Provider</div>
+
+Which architecture or model variant is under test?
+:::
+
+::: {.panel .mini}
+<div class="panel-title">Test case</div>
+
+Which scenario, ambiguity, or threat is introduced?
+:::
+
+::: {.panel .mini}
+<div class="panel-title">Assertion</div>
+
+What observable condition constitutes success?
+:::
+:::
+
+::: {.equation-strip}
+<b>Evaluation cell</b> = prompt x provider x test case x assertion
+:::
+
+::: {.two-col .compact-code}
+::: {.panel}
+```yaml
+prompts:
+  - file://prompts/research_request.txt
+providers:
+  - file://providers/hierarchical_provider.py
+  - file://providers/baseline_provider.py
+tests: file://datasets/offline.yaml
+```
+:::
+::: {.panel}
+```yaml
+defaultTest:
+  assert:
+    - type: python
+      value: file://assertions/quality.py
+```
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `evals/promptfooconfig.yaml`
+- `evals/assertions/quality.py`
+- Promptfoo configuration guide: https://www.promptfoo.dev/docs/configuration/guide/
+- Promptfoo assertions: https://www.promptfoo.dev/docs/configuration/expected-outputs/
+:::
+
+---
+
+## A Python provider makes the whole workflow testable
+
+::: {.two-col .code-slide}
+::: {.panel}
+```python
+def call_api(prompt, options, context):
+    config = AppConfig(
+        research_provider="offline",
+        enable_manager_reconciliation=True,
+        enable_adversarial_review=True,
+    )
+    request = UserResearchRequest(
+        question=context["vars"]["question"],
+        mode=RunMode.FAST,
+        accept_defaults=True,
+    )
+    package = asyncio.run(
+        ResearchWorkflow(config).run(request)
+    )
+    return {
+        "output": package.model_dump_json(),
+        "metadata": {"run_id": package.run_id},
+    }
+```
+:::
+
+::: {.stack}
+::: {.numbered-step}
+<b>1</b><span>Promptfoo calls a normal Python function.</span>
+:::
+::: {.numbered-step}
+<b>2</b><span>The provider constructs the same application workflow used by the CLI.</span>
+:::
+::: {.numbered-step}
+<b>3</b><span>The structured package becomes assertion input.</span>
+:::
+::: {.numbered-step}
+<b>4</b><span>Run metadata links a failed eval back to artifacts and traces.</span>
+:::
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `evals/providers/hierarchical_provider.py`
+- Promptfoo Python provider: https://www.promptfoo.dev/docs/providers/python/
+- Promptfoo, evaluating OpenAI Agents Python: https://www.promptfoo.dev/docs/guides/evaluate-openai-agents-python/
+:::
+
+---
+
+## Compare architectures, then ablate mechanisms
+
+::: {.two-col .wide-left}
+::: {.panel}
+<div class="panel-title">Baseline comparison</div>
+
+| Variant | Purpose |
+|---|---|
+| Full hierarchy | Candidate production architecture |
+| Shallow baseline | Tests whether complexity earns its cost |
+
+<div class="panel-title">Factorial ablations</div>
+
+| Removed mechanism | Question answered |
+|---|---|
+| Legal branch | Does legal evidence improve validity? |
+| Manager reconciliation | Does aggregation reduce contradictions? |
+| Adversarial review | Does challenge improve defect recall? |
+| Clarification | Does better intake improve downstream quality? |
+:::
+
+::: {.stack}
+::: {.callout-blue}
+<div class="panel-title">Offline first</div>
+
+Fixture-backed runs are deterministic and cheap. They test orchestration, schemas, assertions, and artifact production.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">Live second</div>
+
+Live evals add retrieval and model variance. Use them selectively for realism after the harness is stable.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">Evaluate trajectories too</div>
+
+SDK spans can be bridged to OTLP so Promptfoo can assert tool and agent trajectories, not only final text.
+:::
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `evals/promptfooconfig.ablation.yaml`
+- `evals/providers/baseline_provider.py`
+- `evals/providers/hierarchical_provider.py`
+- `docs/evaluation-design.md`
+- Promptfoo, evaluating OpenAI Agents Python: https://www.promptfoo.dev/docs/guides/evaluate-openai-agents-python/
+:::
+
+---
+
+## Assertions turn architecture goals into observables
+
+::: {.two-col}
+::: {.panel .accent-top}
+<div class="panel-title">Structural correctness</div>
+
+- Output schema validates
+- Required report sections exist
+- Source IDs resolve
+- Citation fabrication stays below threshold
+- Seeded defects are recalled
+:::
+
+::: {.panel}
+<div class="panel-title">Research behavior</div>
+
+- Prompt injection is resisted
+- Primary sources are represented
+- Source diversity clears the floor
+- Unnecessary agent activation stays bounded
+- Review and audit artifacts are present
+:::
+:::
+
+::: {.principle}
+Good assertions inspect the structured product and its provenance. A fluent final paragraph is a weak test oracle.
+:::
+
+::: {.notes}
+[Sources]
+- `evals/assertions/quality.py`
+- `evals/assertions/security.py`
+- `evals/thresholds.yaml`
+- `docs/evaluation-design.md`
+- Promptfoo assertions: https://www.promptfoo.dev/docs/configuration/expected-outputs/
+:::
+
+---
+
+## Run it as a staged research experiment
+
+::: {.timeline}
+::: {.timeline-step .accent-top}
+<span>01</span>
+
+<div class="panel-title">Verify locally</div>
+```powershell
+python -m pytest
+npm run eval:offline
+```
+:::
+
+::: {.timeline-step}
+<span>02</span>
+
+<div class="panel-title">Execute live</div>
+```powershell
+python -m housing_policy_agents.cli ask `
+  "<question>" --provider web --fast
+```
+:::
+
+::: {.timeline-step}
+<span>03</span>
+
+<div class="panel-title">Inspect</div>
+```powershell
+Get-ChildItem artifacts\run-<id>
+```
+Review report, audit, usage, and sub-agent telemetry.
+:::
+
+::: {.timeline-step}
+<span>04</span>
+
+<div class="panel-title">Compare</div>
+```powershell
+npm run eval:ablation
+npm run eval:live
+```
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `README.md`
+- `package.json`
+- `evals/README.md`
+- `src/housing_policy_agents/cli.py`
+:::
+
+---
+
+## A practical build sequence
+
+::: {.four-grid}
+::: {.panel .mini .accent-top}
+<div class="panel-title">1 | Contract first</div>
+
+Define typed inputs, outputs, statuses, IDs, and failure representations before writing prompts.
+:::
+
+::: {.panel .mini}
+<div class="panel-title">2 | Control plane</div>
+
+Implement workflow state, concurrency, retries, event recording, and deterministic release rules in code.
+:::
+
+::: {.panel .mini}
+<div class="panel-title">3 | Bounded agents</div>
+
+Give each role a narrow objective, tools, source hierarchy, scope exclusions, and structured output type.
+:::
+
+::: {.panel .mini}
+<div class="panel-title">4 | Trace every edge</div>
+
+Persist handoffs, results, durations, usage, source lineage, validation findings, and report revisions.
+:::
+
+::: {.panel .mini}
+<div class="panel-title">5 | Deterministic harness</div>
+
+Create offline fixtures and assertions for the workflow before spending tokens on live evaluation.
+:::
+
+::: {.panel .mini}
+<div class="panel-title">6 | Comparative evals</div>
+
+Test a shallow baseline, full system, and mechanism ablations against the same dataset.
+:::
+
+::: {.panel .mini}
+<div class="panel-title">7 | Failure drills</div>
+
+Inject parse failures, missing branches, bad citations, prompt attacks, and re-work failures.
+:::
+
+::: {.panel .mini .accent-top}
+<div class="panel-title">8 | Release policy</div>
+
+Decide what is revised, withheld, or released, then make that decision auditable.
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `docs/architecture.md`
+- `docs/agent-contracts.md`
+- `docs/evaluation-design.md`
+- `docs/threat-model.md`
+- `docs/limitations.md`
+:::
+
+---
+
+## Production judgment: where to be skeptical
+
+::: {.two-col}
+::: {.panel}
+<div class="panel-title">This architecture improves</div>
+
+- Separation of research responsibilities
+- Failure localization
+- Citation and source traceability
+- Reproducible evaluation
+- Cost and latency attribution
+- Selective withholding instead of all-or-nothing failure
+:::
+
+::: {.panel .accent-top}
+<div class="panel-title">It does not eliminate</div>
+
+- Retrieval gaps and stale sources
+- Model interpretation errors
+- Correlated errors across agents
+- Prompt and schema regressions
+- Evaluation blind spots
+- Need for human judgment on consequential policy conclusions
+:::
+:::
+
+::: {.principle}
+Multi-agent structure is useful only when it makes evidence, decisions, failures, and costs more legible.
+:::
+
+::: {.notes}
+[Sources]
+- `docs/limitations.md`
+- `docs/threat-model.md`
+- `docs/evaluation-design.md`
+:::
+
+---
+
+## The transferable pattern {.section-title}
+
+::: {.kicker}
+MAKE STOCHASTIC SYSTEMS LEGIBLE
+:::
+
+::: {.big-idea}
+Use agents for bounded judgment. Use code for governance. Use artifacts and evals for accountability.
+:::
+
+::: {.three-col .top-gap}
+::: {.panel .center-card .accent-top}
+<div class="panel-title">Agents SDK</div>
+
+Role execution, tools, typed output, traces
+:::
+
+::: {.panel .center-card}
+<div class="panel-title">Application workflow</div>
+
+State, policy, validation, repair, release
+:::
+
+::: {.panel .center-card}
+<div class="panel-title">Promptfoo</div>
+
+Baselines, assertions, ablations, regression tests
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `docs/architecture.md`
+- `docs/evaluation-design.md`
+- OpenAI Agents SDK documentation: https://openai.github.io/openai-agents-python/
+- Promptfoo documentation: https://www.promptfoo.dev/docs/
+:::
