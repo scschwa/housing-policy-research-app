@@ -128,6 +128,8 @@ housing-research ask "Should the United States permit alternative credit data in
 housing-research ask "How should a city reform zoning and land use to increase housing supply?"
 ```
 
+Research questions may contain up to 4,000 characters. The complete question is retained in the research brief and every specialist assignment. When a question exceeds the internal 500-character search-hint boundary, the planner creates a bounded head-and-tail search hint while preserving the full prompt for analysis.
+
 Use `demo --offline` for the fixed mortgage-portability example. Markdown citations link to the run-local `sources.md` ledger; JSON contains the typed package and every intermediate boundary.
 
 ## Agents-as-tools decision

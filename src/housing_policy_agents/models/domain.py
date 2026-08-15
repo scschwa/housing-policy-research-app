@@ -148,9 +148,13 @@ class ResearchProviderName(StrEnum):
     WEB = "web"
 
 
+MAX_RESEARCH_QUESTION_CHARS = 4_000
+MAX_SEARCH_QUERY_CHARS = 500
+
+
 class UserResearchRequest(StrictModel):
     request_id: str = Field(default_factory=lambda: f"req-{uuid4().hex[:12]}")
-    question: str = Field(min_length=20, max_length=4000)
+    question: str = Field(min_length=20, max_length=MAX_RESEARCH_QUESTION_CHARS)
     audience: str | None = Field(default=None, max_length=300)
     jurisdiction: str = "United States"
     policy_scope: str | None = Field(default=None, max_length=800)
@@ -195,7 +199,7 @@ class ResearchBrief(StrictModel):
 
 class SearchQuery(StrictModel):
     query_id: str = Field(default_factory=lambda: f"q-{uuid4().hex[:10]}")
-    text: str = Field(min_length=5, max_length=500)
+    text: str = Field(min_length=5, max_length=MAX_SEARCH_QUERY_CHARS)
     purpose: str
     branch: BranchName
     domains: list[str] = Field(default_factory=list)

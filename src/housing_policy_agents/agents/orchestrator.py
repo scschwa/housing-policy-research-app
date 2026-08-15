@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from ..models import (
+    MAX_SEARCH_QUERY_CHARS,
     BranchName,
     ClarificationQuestion,
     ManagerName,
@@ -554,6 +555,26 @@ def select_branches(question: str) -> list[BranchName]:
     return list(dict.fromkeys(branches))
 
 
+def _compact_search_query(question: str) -> str:
+    """Bound a search hint while preserving the full question in the assignment."""
+    normalized = " ".join(question.split())
+    if len(normalized) <= MAX_SEARCH_QUERY_CHARS:
+        return normalized
+
+    separator = " ... "
+    available = MAX_SEARCH_QUERY_CHARS - len(separator)
+    head_budget = (available * 2) // 3
+    tail_budget = available - head_budget
+    head = normalized[:head_budget].rsplit(" ", 1)[0] or normalized[:head_budget]
+    tail_fragment = normalized[-tail_budget:]
+    tail = (
+        tail_fragment.split(" ", 1)[1]
+        if " " in tail_fragment
+        else tail_fragment
+    )
+    return f"{head}{separator}{tail}"
+
+
 def _queries(branch: BranchName, question: str) -> list[SearchQuery]:
     purpose = {
         BranchName.GOVERNMENT: "current law, policy baseline, official analysis, and administrative data",
@@ -568,7 +589,14 @@ def _queries(branch: BranchName, question: str) -> list[SearchQuery]:
         BranchName.FINANCIAL_SUSTAINABILITY: "durability, adverse selection, moral hazard, fiscal exposure, and stress",
         BranchName.GLOBAL: "comparable foreign policy design, institutional differences, outcomes, and failures",
     }[branch]
-    return [SearchQuery(text=question, purpose=purpose, branch=branch, max_results=5)]
+    return [
+        SearchQuery(
+            text=_compact_search_query(question),
+            purpose=purpose,
+            branch=branch,
+            max_results=5,
+        )
+    ]
 
 
 def build_plan(brief: ResearchBrief) -> ResearchPlan:
