@@ -39,6 +39,7 @@ class AppConfig(BaseSettings):
     source_verification: bool = False
     openai_input_cost_per_million_usd: float | None = Field(default=None, ge=0)
     openai_cached_input_cost_per_million_usd: float | None = Field(default=None, ge=0)
+    openai_cache_write_cost_per_million_usd: float | None = Field(default=None, ge=0)
     openai_output_cost_per_million_usd: float | None = Field(default=None, ge=0)
     enable_clarification: bool = True
     enable_manager_reconciliation: bool = True

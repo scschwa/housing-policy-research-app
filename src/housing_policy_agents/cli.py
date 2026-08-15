@@ -166,15 +166,15 @@ def _display_usage_summary(package: FinalResearchPackage) -> None:
     if usage is None:
         return
     cost = (
-        f"${usage.approximate_cost_usd:.6f}"
+        f"${usage.approximate_cost_usd:.8f}"
         if usage.approximate_cost_usd is not None
-        else "not configured"
+        else "unavailable"
     )
     console.print(
         "\n[bold]Usage summary[/bold]: "
         f"requests={usage.requests}; input={usage.input_tokens:,}; "
         f"output={usage.output_tokens:,}; total={usage.total_tokens:,}; "
-        f"wall={usage.wall_clock_ms / 1000:.2f}s; approximate cost={cost}"
+        f"wall={usage.wall_clock_ms / 1000:.2f}s; estimated token cost={cost}"
     )
     if not usage.records:
         return
@@ -183,14 +183,14 @@ def _display_usage_summary(package: FinalResearchPackage) -> None:
     table.add_column("Stage")
     table.add_column("Tokens", justify="right")
     table.add_column("Time", justify="right")
-    table.add_column("Approx. cost", justify="right")
+    table.add_column("Est. token cost", justify="right")
     for record in sorted(
         usage.records,
         key=lambda item: (item.total_tokens, item.duration_ms),
         reverse=True,
     ):
         record_cost = (
-            f"${record.approximate_cost_usd:.6f}"
+            f"${record.approximate_cost_usd:.8f}"
             if record.approximate_cost_usd is not None
             else "n/a"
         )

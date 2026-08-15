@@ -128,7 +128,7 @@ def render_audit_report(audit: ReportAudit) -> str:
 
 def render_usage_report(usage: UsageReport) -> str:
     cost = (
-        f"${usage.approximate_cost_usd:.6f}"
+        f"${usage.approximate_cost_usd:.8f}"
         if usage.approximate_cost_usd is not None
         else "not available"
     )
@@ -146,7 +146,7 @@ def render_usage_report(usage: UsageReport) -> str:
         f"- **Total tokens:** {usage.total_tokens:,}",
         f"- **Wall-clock time:** {usage.wall_clock_ms / 1000:.2f} seconds",
         f"- **Cumulative agent time:** {usage.cumulative_agent_ms / 1000:.2f} seconds",
-        f"- **Approximate model cost:** {cost}",
+        f"- **Estimated token cost:** {cost}",
         "",
         usage.pricing_note,
         "",
@@ -154,12 +154,12 @@ def render_usage_report(usage: UsageReport) -> str:
         "",
         "## Agent and sub-agent breakdown",
         "",
-        "| Agent | Stage | Model | Status | Requests | Input | Cached | Output | Reasoning | Total | Time (s) | Approx. cost |",
-        "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "| Agent | Stage | Model | Status | Requests | Input | Cached | Cache write | Output | Reasoning | Total | Time (s) | Est. token cost |",
+        "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for record in usage.records:
         record_cost = (
-            f"${record.approximate_cost_usd:.6f}"
+            f"${record.approximate_cost_usd:.8f}"
             if record.approximate_cost_usd is not None
             else "n/a"
         )
@@ -174,6 +174,7 @@ def render_usage_report(usage: UsageReport) -> str:
                     str(record.requests),
                     f"{record.input_tokens:,}",
                     f"{record.cached_input_tokens:,}",
+                    f"{record.cache_write_tokens:,}",
                     f"{record.output_tokens:,}",
                     f"{record.reasoning_tokens:,}",
                     f"{record.total_tokens:,}",
@@ -183,6 +184,44 @@ def render_usage_report(usage: UsageReport) -> str:
             )
             + " |"
         )
+    priced_records = {
+        (
+            record.model or "n/a",
+            record.pricing_model or "n/a",
+            record.input_rate_per_million_usd,
+            record.cached_input_rate_per_million_usd,
+            record.cache_write_rate_per_million_usd,
+            record.output_rate_per_million_usd,
+            record.pricing_source_url,
+        )
+        for record in usage.records
+        if record.pricing_model is not None
+    }
+    if priced_records:
+        lines.extend(
+            [
+                "",
+                "## Pricing basis",
+                "",
+                "Rates are USD per one million tokens. Cache-write rates equal regular input rates where OpenAI does not publish a distinct write rate.",
+                "",
+                "| Requested model | Pricing model | Input | Cached input | Cache write | Output | Source |",
+                "| --- | --- | ---: | ---: | ---: | ---: | --- |",
+            ]
+        )
+        for requested, pricing_model, input_rate, cached_rate, write_rate, output_rate, source in sorted(
+            priced_records
+        ):
+            source_label = (
+                f"[official model page]({source})"
+                if source and source.startswith("https://")
+                else str(source or "configuration")
+            )
+            lines.append(
+                f"| {requested} | {pricing_model} | {input_rate:.3f} | "
+                f"{cached_rate:.3f} | {write_rate:.3f} | {output_rate:.3f} | "
+                f"{source_label} |"
+            )
     return "\n".join(lines).rstrip() + "\n"
 
 

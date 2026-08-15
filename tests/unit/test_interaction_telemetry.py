@@ -6,6 +6,7 @@ from uuid import uuid4
 
 from housing_policy_agents.config import AppConfig
 from housing_policy_agents.telemetry.interactions import InteractionTelemetry
+from housing_policy_agents.telemetry.pricing import resolve_model_pricing
 from housing_policy_agents.telemetry.usage import build_usage_report
 
 
@@ -134,8 +135,138 @@ def test_usage_report_aggregates_sdk_usage_and_configured_cost() -> None:
     assert report.requests == 1
     assert report.input_tokens == 1000
     assert report.cached_input_tokens == 200
+    assert report.cache_write_tokens == 50
     assert report.output_tokens == 500
     assert report.reasoning_tokens == 125
     assert report.total_tokens == 1500
     assert report.approximate_cost_usd == 0.0057
     assert report.records[0].model == "test-model"
+    assert report.records[0].pricing_model == "test-model"
+    assert report.records[0].cost_is_estimate is True
+
+
+def test_usage_report_uses_builtin_luna_pricing() -> None:
+    telemetry = InteractionTelemetry(run_id="run-luna-pricing")
+    interaction_id = telemetry.begin(
+        agent="government_sources_researcher",
+        stage="research",
+        input_payload={},
+        metadata={"model": "gpt-5.6-luna"},
+    )
+    usage = SimpleNamespace(
+        requests=1,
+        input_tokens=1000,
+        output_tokens=500,
+        total_tokens=1500,
+        input_tokens_details=SimpleNamespace(
+            cached_tokens=200,
+            cache_write_tokens=100,
+        ),
+        output_tokens_details=SimpleNamespace(reasoning_tokens=100),
+    )
+    telemetry.complete(
+        interaction_id,
+        SimpleNamespace(
+            final_output={"status": "ok"},
+            new_items=[],
+            raw_responses=[SimpleNamespace(usage=usage, response_id="resp-luna")],
+        ),
+    )
+
+    report = build_usage_report(
+        run_id="run-luna-pricing",
+        telemetry=telemetry,
+        config=AppConfig(openai_model="gpt-5.6-luna"),
+        wall_clock_ms=1000,
+    )
+
+    assert report.approximate_cost_usd == 0.000769
+    assert report.pricing_catalog_version == "2026-08-15"
+    assert report.cost_is_estimate is True
+    assert report.records[0].pricing_model == "gpt-5.6-luna"
+    assert report.records[0].cache_write_rate_per_million_usd == 0.25
+    assert report.records[0].long_context_pricing_applied is False
+    assert "not an invoice amount" in report.pricing_note
+
+
+def test_usage_report_applies_long_context_rate_per_response() -> None:
+    telemetry = InteractionTelemetry(run_id="run-long-context")
+    interaction_id = telemetry.begin(
+        agent="synthesis_writer",
+        stage="draft",
+        input_payload={},
+        metadata={"model": "gpt-5.6-luna"},
+    )
+    usage = SimpleNamespace(
+        requests=1,
+        input_tokens=300_000,
+        output_tokens=10_000,
+        total_tokens=310_000,
+        input_tokens_details=SimpleNamespace(cached_tokens=0, cache_write_tokens=0),
+        output_tokens_details=SimpleNamespace(reasoning_tokens=5_000),
+    )
+    telemetry.complete(
+        interaction_id,
+        SimpleNamespace(
+            final_output={"status": "ok"},
+            new_items=[],
+            raw_responses=[SimpleNamespace(usage=usage, response_id="resp-long")],
+        ),
+    )
+
+    report = build_usage_report(
+        run_id="run-long-context",
+        telemetry=telemetry,
+        config=AppConfig(openai_model="gpt-5.6-luna"),
+        wall_clock_ms=1000,
+    )
+
+    assert report.approximate_cost_usd == 0.138
+    assert report.records[0].long_context_pricing_applied is True
+
+
+def test_pricing_resolves_aliases_and_dated_snapshots() -> None:
+    alias = resolve_model_pricing("gpt-5.6")
+    snapshot = resolve_model_pricing("gpt-5-mini-2025-08-07")
+
+    assert alias is not None
+    assert alias.model == "gpt-5.6-sol"
+    assert snapshot is not None
+    assert snapshot.model == "gpt-5-mini"
+
+
+def test_unknown_token_bearing_model_has_no_unconfigured_estimate() -> None:
+    telemetry = InteractionTelemetry(run_id="run-unknown-model")
+    interaction_id = telemetry.begin(
+        agent="synthesis_writer",
+        stage="draft",
+        input_payload={},
+        metadata={"model": "custom-unknown-model"},
+    )
+    usage = SimpleNamespace(
+        requests=1,
+        input_tokens=100,
+        output_tokens=50,
+        total_tokens=150,
+        input_tokens_details=SimpleNamespace(cached_tokens=0, cache_write_tokens=0),
+        output_tokens_details=SimpleNamespace(reasoning_tokens=0),
+    )
+    telemetry.complete(
+        interaction_id,
+        SimpleNamespace(
+            final_output={"status": "ok"},
+            new_items=[],
+            raw_responses=[SimpleNamespace(usage=usage, response_id="resp-unknown")],
+        ),
+    )
+
+    report = build_usage_report(
+        run_id="run-unknown-model",
+        telemetry=telemetry,
+        config=AppConfig(openai_model="custom-unknown-model"),
+        wall_clock_ms=1000,
+    )
+
+    assert report.approximate_cost_usd is None
+    assert report.records[0].approximate_cost_usd is None
+    assert "custom-unknown-model" in report.pricing_note

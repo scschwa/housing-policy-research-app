@@ -164,6 +164,10 @@ class InteractionTelemetry:
                 "transcript": self._transcript(result),
                 "raw_responses": self._raw_responses(result),
                 "usage": _usage_payload(result),
+                "usage_by_response": [
+                    _usage_payload(SimpleNamespace(raw_responses=[response]))
+                    for response in getattr(result, "raw_responses", [])
+                ],
                 "response_ids": [
                     getattr(response, "response_id", None)
                     for response in getattr(result, "raw_responses", [])
@@ -198,6 +202,10 @@ class InteractionTelemetry:
                     getattr(response, "response_id", None) for response in captured_responses
                 ],
                 "usage": _usage_payload(response_holder),
+                "usage_by_response": [
+                    _usage_payload(SimpleNamespace(raw_responses=[response]))
+                    for response in captured_responses
+                ],
             }
         )
 
@@ -230,6 +238,7 @@ class InteractionTelemetry:
                 "raw_responses": [],
                 "response_ids": [],
                 "usage": _usage_payload(None),
+                "usage_by_response": [],
             }
         )
 

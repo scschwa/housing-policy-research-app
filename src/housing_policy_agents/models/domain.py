@@ -708,6 +708,15 @@ class AgentUsageRecord(StrictModel):
     total_tokens: int = 0
     duration_ms: int = 0
     approximate_cost_usd: float | None = None
+    pricing_model: str | None = None
+    pricing_source_url: str | None = None
+    pricing_verified_on: str | None = None
+    input_rate_per_million_usd: float | None = None
+    cached_input_rate_per_million_usd: float | None = None
+    cache_write_rate_per_million_usd: float | None = None
+    output_rate_per_million_usd: float | None = None
+    long_context_pricing_applied: bool = False
+    cost_is_estimate: bool = True
 
 
 class UsageReport(StrictModel):
@@ -725,6 +734,9 @@ class UsageReport(StrictModel):
     cumulative_agent_ms: int = 0
     approximate_cost_usd: float | None = None
     pricing_note: str
+    pricing_catalog_version: str | None = None
+    pricing_source_url: str | None = None
+    cost_is_estimate: bool = True
     concurrency_note: str = (
         "Agent durations are cumulative and may exceed wall-clock time because branches run concurrently."
     )
