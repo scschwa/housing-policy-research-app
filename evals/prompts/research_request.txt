@@ -1,0 +1,5 @@
+You are evaluating a housing-policy research request. Return the complete structured research package for this question:
+
+{{question}}
+
+Use the configured offline fixture provider. Preserve branch status, source IDs, citations, disagreements, uncertainty, and safety findings.

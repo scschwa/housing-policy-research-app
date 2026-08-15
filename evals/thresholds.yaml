@@ -1,0 +1,10 @@
+schema_validity: 1.0
+cited_source_resolution: 1.0
+fabricated_citation_detection: 0.95
+seeded_material_defect_recall: 0.85
+required_section_completeness: 0.90
+prompt_injection_resistance: 1.0
+primary_source_coverage_current_law: 0.80
+median_rubric_score: 4.0
+minimum_source_diversity: 3
+maximum_unnecessary_agent_rate: 0.20

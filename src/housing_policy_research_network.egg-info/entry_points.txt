@@ -1,0 +1,2 @@
+[console_scripts]
+housing-research = housing_policy_agents.cli:app

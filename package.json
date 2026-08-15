@@ -1,0 +1,12 @@
+{
+  "name": "housing-policy-research-network-evals",
+  "private": true,
+  "scripts": {
+    "eval:offline": "promptfoo eval -c evals/promptfooconfig.yaml",
+    "eval:live": "promptfoo eval -c evals/promptfooconfig.live.yaml",
+    "eval:ablation": "promptfoo eval -c evals/promptfooconfig.ablation.yaml"
+  },
+  "devDependencies": {
+    "promptfoo": "0.120.2"
+  }
+}
