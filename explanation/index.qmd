@@ -388,6 +388,346 @@ If no usable evidence reaches a manager, the fallback is partial coverage, not i
 
 ---
 
+## Worked example: one rental-AVM question becomes a 16-call workflow
+
+::: {.case-question}
+“What are the advantages, disadvantages, and adverse externalities of allowing borrowers to document rental income using rental AVMs instead of proof of rental-income receipts?”
+:::
+
+::: {.case-flow}
+<span>Brief + plan</span><i></i><span>10 specialists</span><i></i><span>3 managers</span><i></i><span>Writer</span><i></i><span>Reviewer</span><i></i><span>Writer revision</span>
+:::
+
+::: {.case-stats}
+<div><b>16</b><span>model calls</span></div>
+<div><b>55</b><span>sources in ledger</span></div>
+<div><b>6</b><span>recorded handoffs</span></div>
+<div><b>232 s</b><span>wall-clock time</span></div>
+<div><b>$2.01</b><span>estimated token cost</span></div>
+:::
+
+::: {.persona-strip}
+<b>Control-plane role</b> Deterministic workflow coordinator. It owns state, routing, parallel execution, and release gates; it does not make policy claims.
+:::
+
+::: {.notes}
+[Sources]
+- `artifacts/run-474190fbc7be/brief.json`
+- `artifacts/run-474190fbc7be/interaction_summary.json`
+- `artifacts/run-474190fbc7be/usage_report.json`
+- `artifacts/run-474190fbc7be/sources.json`
+:::
+
+---
+
+## The initial plan is deterministic in this implementation
+
+::: {.two-col .wide-left}
+::: {.panel .no-pad}
+```{mermaid}
+flowchart LR
+    Q["User question"] --> G["Guardrail check"]
+    G --> B["build_brief()"]
+    B --> P["build_plan()"]
+    P --> A["10 typed<br/>assignments"]
+```
+:::
+
+::: {.stack}
+::: {.callout-blue}
+<div class="panel-title">What the brief adds</div>
+
+U.S. jurisdiction, sophisticated policy audience, balanced stakeholders, and a current plus 5-to-10-year horizon.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">What the plan adds</div>
+
+Branch objective, manager destination, scope boundaries, preferred sources, required questions, and typed handoff rules.
+:::
+:::
+:::
+
+::: {.principle}
+No planning-agent model call occurred in this run. Python called `build_brief()` and `build_plan()` directly, which makes initial routing reproducible and testable.
+:::
+
+::: {.persona-strip}
+<b>Planner behavior</b> A deterministic router, not an LLM persona. Its “instructions” are code-level branch-selection rules and Pydantic contracts.
+:::
+
+::: {.notes}
+[Sources]
+- `src/housing_policy_agents/workflows/research_workflow.py`
+- `src/housing_policy_agents/agents/orchestrator.py`
+- `artifacts/run-474190fbc7be/brief.json`
+- `artifacts/run-474190fbc7be/plan.json`
+:::
+
+---
+
+## Ten specialist personas turn one question into distinct evidence lenses
+
+::: {.specialist-intro}
+<b>Shared specialist persona:</b> careful, curious, skeptical evidence accountant. State what evidence establishes, suggests, and cannot answer; never act as advocate, lawyer, or general explainer.
+:::
+
+::: {.portfolio-grid}
+::: {.portfolio-column .accent-top}
+<div class="portfolio-title">Policy portfolio</div>
+<p><b>Government sources</b><br><span>Official baseline, public authority, administrative evidence</span></p>
+<p><b>Legal and regulatory</b><br><span>Controlling law, agency interpretation, unresolved legal questions</span></p>
+<p><b>Think tank and academic</b><br><span>Methods, mechanisms, magnitude, contrary empirical evidence</span></p>
+:::
+
+::: {.portfolio-column}
+<div class="portfolio-title">Industry portfolio</div>
+<p><b>Consumer</b><br><span>Access, affordability, terms, default, borrower welfare</span></p>
+<p><b>Loan originator</b><br><span>Underwriting operations, incentives, cost, feasibility</span></p>
+<p><b>Servicing</b><br><span>Transfers, disputes, loss mitigation, post-close operations</span></p>
+<p><b>Secondary market</b><br><span>Pricing, liquidity, capital, credit-risk transfer</span></p>
+:::
+
+::: {.portfolio-column}
+<div class="portfolio-title">Advocacy portfolio</div>
+<p><b>Consumer advocacy</b><br><span>Transparency, contestability, fees, remedies</span></p>
+<p><b>Disadvantaged communities</b><br><span>Distribution by geography, income, race, tenure, rurality</span></p>
+<p><b>Financial sustainability</b><br><span>Stress, adverse selection, moral hazard, public exposure</span></p>
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `artifacts/run-474190fbc7be/plan.json`
+- `src/housing_policy_agents/agents/orchestrator.py`
+- `src/housing_policy_agents/prompts/specialist.md`
+:::
+
+---
+
+## A specialist handoff is a bounded research contract
+
+::: {.two-col .wide-right}
+::: {.persona-card}
+<div class="persona-label">AGENT PERSONA</div>
+<div class="persona-name">Government Sources Researcher</div>
+
+Skeptical public-sector evidence accountant. Prefer statutes, regulations, agency documents, official evaluations, and administrative data. Separate current policy from proposals and inference.
+
+<div class="persona-rule">Out of scope: general industry commentary unless an official record summarizes it.</div>
+:::
+
+::: {.handoff-contract}
+<div class="contract-row"><b>Objective</b><span>Establish current policy, authority, implementation requirements, public evidence, and unresolved issues.</span></div>
+<div class="contract-row"><b>Context</b><span>One branch of a larger workflow; a manager will compare it with legal and academic siblings.</span></div>
+<div class="contract-row"><b>Scope</b><span>Official baseline, policy history, government analysis, documented effects.</span></div>
+<div class="contract-row"><b>Questions</b><span>What is established? What is contested? What should siblings or implementers answer?</span></div>
+<div class="contract-row"><b>Source rule</b><span>Use stable source IDs; complete URLs stay only in source records.</span></div>
+<div class="contract-row"><b>Output rule</b><span>Return only the typed finding object, with no preamble or Markdown fence.</span></div>
+:::
+:::
+
+::: {.principle}
+The sub-agent receives enough downstream context to be useful, but no authority to expand the question or write the final report.
+:::
+
+::: {.notes}
+[Sources]
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/001-government-sources-researcher/request.json`
+- `artifacts/run-474190fbc7be/plan.json`
+- `src/housing_policy_agents/prompts/specialist.md`
+:::
+
+---
+
+## The specialist returns typed evidence, not a free-form memo
+
+::: {.two-col .wide-left}
+::: {.panel}
+<div class="result-metrics">
+<div><b>6</b><span>claims</span></div>
+<div><b>7</b><span>sources</span></div>
+<div><b>47 s</b><span>duration</span></div>
+<div><b>43,950</b><span>tokens</span></div>
+</div>
+
+<div class="finding-quote">“A rental AVM estimates market rent for a property; it does not by itself evidence that this borrower receives, or will receive, that income.”</div>
+
+<div class="finding-bottom"><b>Bounded conclusion:</b> explore a tightly controlled pilot, not wholesale replacement of borrower-specific evidence.</div>
+:::
+
+::: {.stack}
+::: {.persona-card .compact-persona}
+<div class="persona-label">AGENT PERSONA</div>
+<div class="persona-name">Government Sources Researcher</div>
+Report claim-level evidence, contrary evidence, uncertainty, and limitations for the manager. Do not issue legal advice or a general narrative.
+:::
+
+::: {.typed-output}
+<span>branch + status</span>
+<span>summary</span>
+<span>claims[]</span>
+<span>discovered_sources[]</span>
+<span>contradictions[]</span>
+<span>limitations[]</span>
+:::
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/001-government-sources-researcher/result.json`
+- `artifacts/run-474190fbc7be/usage_report.json`
+:::
+
+---
+
+## Three managers reconcile evidence without false consensus
+
+::: {.manager-grid}
+::: {.manager-column .accent-top}
+<div class="persona-label">POLICY RESEARCH MANAGER</div>
+<div class="manager-persona">Calm, skeptical policy integrator. Reconcile authority, baseline, empirical mechanisms, and uncertainty.</div>
+<div class="manager-input">3 branches → 9 reconciled claims</div>
+<p><b>Preserved uncertainty:</b> no direct study resolves whether an AVM-plus workflow satisfies consumer-specific verification.</p>
+:::
+
+::: {.manager-column}
+<div class="persona-label">INDUSTRY RESEARCH MANAGER</div>
+<div class="manager-persona">Operations-minded market integrator. Compare consumer, origination, servicing, and risk-transfer evidence.</div>
+<div class="manager-input">4 branches → 10 reconciled claims</div>
+<p><b>Preserved uncertainty:</b> no direct estimate of approval, default, servicing, CRT, or taxpayer effects.</p>
+:::
+
+::: {.manager-column}
+<div class="persona-label">ADVOCACY RESEARCH MANAGER</div>
+<div class="manager-persona">Equity-conscious, evidence-disciplined integrator. Identify who benefits, who bears risk, and where evidence is thin.</div>
+<div class="manager-input">3 branches → 8 reconciled claims</div>
+<p><b>Preserved uncertainty:</b> aggregate paperwork reduction does not establish equitable benefit.</p>
+:::
+:::
+
+::: {.principle}
+All three managers agreed on a bounded use case and the absence of direct outcome evidence, while retaining different legal, operational, and distributional concerns.
+:::
+
+::: {.notes}
+[Sources]
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/011-policy-research-manager/result.json`
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/012-industry-research-manager/result.json`
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/013-advocacy-research-manager/result.json`
+- `src/housing_policy_agents/agents/factory.py`
+- `src/housing_policy_agents/prompts/manager.md`
+:::
+
+---
+
+## The writer composes from manager packages, not raw search output
+
+::: {.two-col}
+::: {.persona-card}
+<div class="persona-label">AGENT PERSONA</div>
+<div class="persona-name">Synthesis Writer</div>
+
+Lucid, disciplined policy writer. Turn reconciled evidence into a decision-ready report without smoothing away disagreement or uncertainty. Never generate new facts or act as lobbyist or legal adviser.
+
+<div class="persona-rule">Input contract: 3 manager syntheses, 55 source IDs, the policy brief, handoff context, and quality requirements.</div>
+:::
+
+::: {.panel .accent-top}
+<div class="panel-title">What the first draft produced</div>
+
+- 6 report sections plus executive summary and decision matrix
+- Explicit evidence gaps and limitations
+- A recommendation against nationwide AVM-only replacement
+- A conditional, reversible evaluation only after legal clearance
+
+<div class="finding-bottom"><b>Key distinction:</b> estimated market rent is a forecast; borrower-specific records seek to establish actual or supportable cash flow.</div>
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/014-synthesis-writer/request.json`
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/014-synthesis-writer/result.json`
+- `src/housing_policy_agents/prompts/writer.md`
+:::
+
+---
+
+## Reviewer flags defects; writer owns the revision
+
+::: {.review-loop}
+::: {.persona-card .reviewer-card}
+<div class="persona-label">ADVERSARIAL REVIEWER PERSONA</div>
+<div class="persona-name">Exacting, constructive challenger</div>
+Inspect grounding, citations, legal calibration, causal claims, missing counterarguments, and security. Identify corrections; do not silently rewrite the report.
+:::
+
+<div class="review-arrow">7 findings →</div>
+
+::: {.revision-example}
+<div class="example-label">HIGH-SEVERITY FINDING F1</div>
+<p><b>Flag:</b> existing GSE market-rent workflows could be read as authorizing an AVM-based method.</p>
+<p><b>Required correction:</b> state that current precedent is limited to appraisal-supported workflows and that AVM use needs independent legal and program approval.</p>
+:::
+:::
+
+::: {.persona-strip}
+<b>Revision-writer persona</b> Same disciplined synthesis writer, now constrained by the review package: revise only material issues, retain valid citations, and invent no evidence.
+:::
+
+::: {.score-row}
+<span><b>0.84</b> grounding</span><span><b>0.93</b> balance</span><span><b>0.88</b> calibration</span><span><b>1.00</b> security</span><span><b>1</b> revision</span>
+:::
+
+::: {.notes}
+[Sources]
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/015-adversarial-reviewer/request.json`
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/015-adversarial-reviewer/result.json`
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/016-synthesis-writer-revision/request.json`
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/016-synthesis-writer-revision/result.json`
+- `src/housing_policy_agents/prompts/reviewer.md`
+- `src/housing_policy_agents/prompts/writer.md`
+:::
+
+---
+
+## Six recorded handoffs make the whole run replayable
+
+::: {.handoff-ledger}
+<div><b>1</b><span>Specialists → Policy manager</span><small>3 findings, no failed branches</small></div>
+<div><b>2</b><span>Specialists → Industry manager</span><small>4 findings, no failed branches</small></div>
+<div><b>3</b><span>Specialists → Advocacy manager</span><small>3 findings, no failed branches</small></div>
+<div><b>4</b><span>Managers → Writer</span><small>3 packages, 55 source records</small></div>
+<div><b>5</b><span>Writer → Reviewer</span><small>6 sections, evidence package attached</small></div>
+<div><b>6</b><span>Reviewer → Writer</span><small>7 targeted findings, bounded revision</small></div>
+:::
+
+::: {.two-col .top-gap-small}
+::: {.callout-blue}
+<div class="panel-title">Interaction telemetry</div>
+
+Every model call has a request, result, transcript, usage, duration, model, and status.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">Report audit</div>
+
+Deterministic validation found 0 errors. Adversarial review still required one evidence-calibration revision.
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `artifacts/run-474190fbc7be/sub-agent-telemetry/index.json`
+- `artifacts/run-474190fbc7be/interaction_summary.json`
+- `artifacts/run-474190fbc7be/audit_report.md`
+- `artifacts/run-474190fbc7be/metrics.json`
+:::
+
+---
+
 ## The source ledger is chain of custody
 
 ::: {.four-grid}
@@ -641,70 +981,122 @@ Hosted tool charges, service-tier adjustments, taxes, credits, and later pricing
 
 ---
 
-## Promptfoo is the experimental design matrix
+## Promptfoo is a test runner outside the research workflow
 
-::: {.four-grid .formula-grid}
+::: {.eval-lanes}
+::: {.eval-lane .accent-top}
+<div class="lane-label">Normal research run</div>
+
+<div class="lane-flow"><span>User question</span><i></i><span>Application workflow</span><i></i><span>Artifacts</span></div>
+
+The CLI starts the agents and writes the report, audit trail, telemetry, and usage report. <b>Promptfoo is not called.</b>
+:::
+
+::: {.eval-lane}
+<div class="lane-label">Evaluation run</div>
+
+<div class="lane-flow"><span>Promptfoo</span><i></i><span>Python provider</span><i></i><span>Workflow output</span><i></i><span>Assertions</span></div>
+
+Promptfoo repeatedly invokes configured variants, scores their structured outputs, and shows which test cells passed or failed.
+:::
+:::
+
+::: {.principle}
+Promptfoo compares and regression-tests the architecture. Python and the Agents SDK orchestrate production research.
+:::
+
+::: {.notes}
+[Sources]
+- `package.json`
+- `evals/promptfooconfig.yaml`
+- `src/housing_policy_agents/workflow.py`
+- Promptfoo configuration guide: https://www.promptfoo.dev/docs/configuration/guide/
+:::
+
+---
+
+## Four Promptfoo terms, using this application
+
+::: {.four-grid .term-grid}
 ::: {.panel .mini .accent-top}
+<div class="term-number">01</div>
 <div class="panel-title">Prompt</div>
 
-What task and instructions are held constant?
+The task template held constant across tests, such as the research request instructions.
 :::
 
 ::: {.panel .mini}
+<div class="term-number">02</div>
 <div class="panel-title">Provider</div>
 
-Which architecture or model variant is under test?
+An adapter that runs one candidate system, such as the full hierarchy or shallow baseline.
 :::
 
 ::: {.panel .mini}
+<div class="term-number">03</div>
 <div class="panel-title">Test case</div>
 
-Which scenario, ambiguity, or threat is introduced?
+One scenario and its input variables, such as a legal-policy question or injection attempt.
 :::
 
 ::: {.panel .mini}
+<div class="term-number">04</div>
 <div class="panel-title">Assertion</div>
 
-What observable condition constitutes success?
+A rule that scores the result, such as “all cited source IDs must resolve.”
 :::
 :::
 
 ::: {.equation-strip}
-<b>Evaluation cell</b> = prompt x provider x test case x assertion
-:::
-
-::: {.two-col .compact-code}
-::: {.panel}
-```yaml
-prompts:
-  - file://prompts/research_request.txt
-providers:
-  - file://providers/hierarchical_provider.py
-  - file://providers/baseline_provider.py
-tests: file://datasets/offline.yaml
-```
-:::
-::: {.panel}
-```yaml
-defaultTest:
-  assert:
-    - type: python
-      value: file://assertions/quality.py
-```
-:::
+<b>One evaluation cell</b> = one prompt x one provider x one test case, checked by one or more assertions
 :::
 
 ::: {.notes}
 [Sources]
 - `evals/promptfooconfig.yaml`
+- `evals/datasets/offline.yaml`
 - `evals/assertions/quality.py`
-- Promptfoo configuration guide: https://www.promptfoo.dev/docs/configuration/guide/
 - Promptfoo assertions: https://www.promptfoo.dev/docs/configuration/expected-outputs/
 :::
 
 ---
 
-## A Python provider makes the whole workflow testable
+## Offline evaluation creates 52 comparable test cells
+
+::: {.eval-steps}
+::: {.eval-step .accent-top}
+<b>1</b><span><strong>Load one prompt template</strong><small>The research request is kept consistent.</small></span>
+:::
+::: {.eval-step}
+<b>2</b><span><strong>Load 26 scenarios</strong><small>Cases cover quality, ambiguity, and security behavior.</small></span>
+:::
+::: {.eval-step}
+<b>3</b><span><strong>Run two providers</strong><small>Full hierarchy and shallow baseline process every case.</small></span>
+:::
+::: {.eval-step}
+<b>4</b><span><strong>Apply Python assertions</strong><small>Each structured result receives pass, fail, score, and reason.</small></span>
+:::
+:::
+
+::: {.matrix-equation}
+<span class="matrix-number">26</span><span>test cases</span><b>x</b><span class="matrix-number">2</span><span>providers</span><b>=</b><span class="matrix-number blue">52</span><span>evaluation cells</span>
+:::
+
+::: {.warning-strip}
+The offline provider uses fixtures, so this run is deterministic and makes no live OpenAI API calls.
+:::
+
+::: {.notes}
+[Sources]
+- `evals/promptfooconfig.yaml`
+- `evals/datasets/offline.yaml`
+- `evals/providers/hierarchical_provider.py`
+- `evals/providers/baseline_provider.py`
+:::
+
+---
+
+## The Python provider is an adapter around ResearchWorkflow
 
 ::: {.two-col .code-slide}
 ::: {.panel}
@@ -723,25 +1115,22 @@ def call_api(prompt, options, context):
     package = asyncio.run(
         ResearchWorkflow(config).run(request)
     )
-    return {
-        "output": package.model_dump_json(),
-        "metadata": {"run_id": package.run_id},
-    }
+    return {"output": package.model_dump_json()}
 ```
 :::
 
 ::: {.stack}
 ::: {.numbered-step}
-<b>1</b><span>Promptfoo calls a normal Python function.</span>
+<b>1</b><span>Promptfoo passes one test case to a normal Python function.</span>
 :::
 ::: {.numbered-step}
-<b>2</b><span>The provider constructs the same application workflow used by the CLI.</span>
+<b>2</b><span>The provider builds the same workflow class used by the CLI, configured for fixtures.</span>
 :::
 ::: {.numbered-step}
-<b>3</b><span>The structured package becomes assertion input.</span>
+<b>3</b><span>The workflow returns the complete typed research package as JSON.</span>
 :::
 ::: {.numbered-step}
-<b>4</b><span>Run metadata links a failed eval back to artifacts and traces.</span>
+<b>4</b><span>Promptfoo sends that JSON to the configured assertion functions.</span>
 :::
 :::
 :::
@@ -750,90 +1139,85 @@ def call_api(prompt, options, context):
 [Sources]
 - `evals/providers/hierarchical_provider.py`
 - Promptfoo Python provider: https://www.promptfoo.dev/docs/providers/python/
-- Promptfoo, evaluating OpenAI Agents Python: https://www.promptfoo.dev/docs/guides/evaluate-openai-agents-python/
+- Promptfoo Python integration: https://www.promptfoo.dev/docs/integrations/python/
 :::
 
 ---
 
-## Compare architectures, then ablate mechanisms
+## An ablation removes one mechanism to test whether it matters
 
-::: {.two-col .wide-left}
-::: {.panel}
-<div class="panel-title">Baseline comparison</div>
-
-| Variant | Purpose |
-|---|---|
-| Full hierarchy | Candidate production architecture |
-| Shallow baseline | Tests whether complexity earns its cost |
-
-<div class="panel-title">Factorial ablations</div>
-
-| Removed mechanism | Question answered |
-|---|---|
-| Legal branch | Does legal evidence improve validity? |
-| Manager reconciliation | Does aggregation reduce contradictions? |
-| Adversarial review | Does challenge improve defect recall? |
-| Clarification | Does better intake improve downstream quality? |
+::: {.ablation-definition}
+<div class="definition-word">Ablation</div>
+<div class="definition-text">A controlled experiment that removes one component while holding the dataset and scoring rules constant.</div>
 :::
 
-::: {.stack}
-::: {.callout-blue}
-<div class="panel-title">Offline first</div>
+::: {.ablation-grid}
+::: {.ablation-card .accent-top}
+<div class="panel-title">Full system</div>
 
-Fixture-backed runs are deterministic and cheap. They test orchestration, schemas, assertions, and artifact production.
+Reference result with every configured mechanism enabled.
+:::
+::: {.ablation-card}
+<div class="panel-title">No legal branch</div>
+
+Does legal research improve validity and issue spotting?
+:::
+::: {.ablation-card}
+<div class="panel-title">No manager reconciliation</div>
+
+Does manager synthesis reduce contradictions and improve integration?
+:::
+::: {.ablation-card}
+<div class="panel-title">No adversarial review</div>
+
+Does challenge-and-revision improve defect recall and calibration?
+:::
+::: {.ablation-card}
+<div class="panel-title">Shallow baseline</div>
+
+Does the full hierarchy earn its added latency and complexity?
+:::
 :::
 
-::: {.callout-gray}
-<div class="panel-title">Live second</div>
-
-Live evals add retrieval and model variance. Use them selectively for realism after the harness is stable.
-:::
-
-::: {.callout-gray}
-<div class="panel-title">Evaluate trajectories too</div>
-
-SDK spans can be bridged to OTLP so Promptfoo can assert tool and agent trajectories, not only final text.
-:::
-:::
+::: {.equation-strip}
+The current matrix runs <b>26 cases x 8 variants = 208 cells</b>, including additional “no global,” “no advocacy,” and “no clarification” variants.
 :::
 
 ::: {.notes}
 [Sources]
 - `evals/promptfooconfig.ablation.yaml`
-- `evals/providers/baseline_provider.py`
 - `evals/providers/hierarchical_provider.py`
-- `docs/evaluation-design.md`
-- Promptfoo, evaluating OpenAI Agents Python: https://www.promptfoo.dev/docs/guides/evaluate-openai-agents-python/
+- `evals/providers/baseline_provider.py`
 :::
 
 ---
 
-## Assertions turn architecture goals into observables
+## What Promptfoo checks today, and what it does not
 
-::: {.two-col}
+::: {.two-col .boundary-grid}
 ::: {.panel .accent-top}
-<div class="panel-title">Structural correctness</div>
+<div class="boundary-label implemented">Implemented now</div>
 
 - Output schema validates
 - Required report sections exist
-- Source IDs resolve
-- Citation fabrication stays below threshold
-- Seeded defects are recalled
+- Referenced source IDs resolve
+- Citation coverage clears the current rule
+- Review output is present when required
+- Dedicated cases exercise injection resistance
 :::
 
 ::: {.panel}
-<div class="panel-title">Research behavior</div>
+<div class="boundary-label future">Not currently wired into Promptfoo</div>
 
-- Prompt injection is resisted
-- Primary sources are represented
-- Source diversity clears the floor
-- Unnecessary agent activation stays bounded
-- Review and audit artifacts are present
+- SDK trajectory or OTLP span assertions
+- Accurate application token and cost reporting
+- Every metric listed in `thresholds.yaml`
+- Human grading of policy rigor or factual sufficiency
 :::
 :::
 
 ::: {.principle}
-Good assertions inspect the structured product and its provenance. A fluent final paragraph is a weak test oracle.
+Promptfoo catches repeatable structural regressions. The application’s own artifacts and usage report remain the source for detailed traces, agent interactions, tokens, time, and estimated cost.
 :::
 
 ::: {.notes}
@@ -841,53 +1225,55 @@ Good assertions inspect the structured product and its provenance. A fluent fina
 - `evals/assertions/quality.py`
 - `evals/assertions/security.py`
 - `evals/thresholds.yaml`
-- `docs/evaluation-design.md`
-- Promptfoo assertions: https://www.promptfoo.dev/docs/configuration/expected-outputs/
+- `evals/providers/hierarchical_provider.py`
+- `src/housing_policy_agents/telemetry/usage.py`
 :::
 
 ---
 
-## Run it as a staged research experiment
+## Choose the command that answers your question
 
 ::: {.timeline}
 ::: {.timeline-step .accent-top}
 <span>01</span>
 
-<div class="panel-title">Verify locally</div>
+<div class="panel-title">Verify code and fixtures</div>
 ```powershell
 python -m pytest
 npm run eval:offline
 ```
+Use this first for deterministic regression testing.
 :::
 
 ::: {.timeline-step}
 <span>02</span>
 
-<div class="panel-title">Execute live</div>
+<div class="panel-title">Compare mechanisms</div>
 ```powershell
-python -m housing_policy_agents.cli ask `
-  "<question>" --provider web --fast
+npm run eval:ablation
 ```
+Use this to estimate which architectural components improve measured quality.
 :::
 
 ::: {.timeline-step}
 <span>03</span>
 
-<div class="panel-title">Inspect</div>
+<div class="panel-title">Generate real research</div>
 ```powershell
-Get-ChildItem artifacts\run-<id>
+python -m housing_policy_agents.cli ask `
+  "<question>" --provider web --fast
 ```
-Review report, audit, usage, and sub-agent telemetry.
+Use this for a live report and complete artifact directory.
 :::
 
 ::: {.timeline-step}
 <span>04</span>
 
-<div class="panel-title">Compare</div>
+<div class="panel-title">Evaluate live behavior</div>
 ```powershell
-npm run eval:ablation
 npm run eval:live
 ```
+Use selectively because model and retrieval variance add cost and noise.
 :::
 :::
 
