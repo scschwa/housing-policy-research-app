@@ -1,0 +1,22 @@
+{
+  "request_id": "req-b1ee1796a1f1",
+  "question": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+  "audience": "a sophisticated policy decision-maker",
+  "jurisdiction": "United States",
+  "policy_scope": "U.S. policy design, implementation, effects, trade-offs, and uncertainty",
+  "time_horizon": "current baseline and a 5-to-10-year policy horizon",
+  "stakeholder_perspective": "balanced treatment of affected stakeholders",
+  "mode": "fast",
+  "defaults_applied": [
+    "audience",
+    "scope",
+    "time_horizon",
+    "stakeholders"
+  ],
+  "clarification_questions": [],
+  "safety_disclosures": [
+    "Research assistance only; not legal advice.",
+    "Sources must be verified before formal reliance.",
+    "Synthetic offline fixtures are not verified live evidence."
+  ]
+}

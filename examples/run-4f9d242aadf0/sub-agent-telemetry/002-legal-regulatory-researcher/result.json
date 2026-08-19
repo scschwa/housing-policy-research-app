@@ -1,0 +1,441 @@
+{
+  "interaction_id": "interaction-0002",
+  "agent": "legal_regulatory_researcher",
+  "stage": "research",
+  "status": "completed",
+  "started_at": 1787103494.8091793,
+  "finished_at": 1787103537.5864174,
+  "duration_ms": 42777,
+  "final_output": {
+    "branch": "legal_regulatory",
+    "agent_name": "legal_regulatory_researcher",
+    "status": "completed",
+    "summary": "For covered consumer-purpose dwelling-secured mortgages, an AVM estimate of a property's market rent cannot by itself replace evidence of the borrower's actual or reasonably expected rental income when that income is used for the federal ability-to-repay determination: Regulation Z requires reasonably reliable third-party records specific to the individual consumer. The GSEs already permit appraiser-developed comparable-rent schedules in defined cases, but pair them with transaction, borrower-experience, documentation, and income-use limits. A broader GSE policy would be an underwriting-guide/conservatorship-governance change, not clearly a statutory amendment; it would require an FHFA-approved risk and compliance design. The principal legal risk is not a categorical ban on using market-rent evidence, but unsupported reliance on a property-level estimate as proof that a particular borrower will receive rent.",
+    "claims": [
+      {
+        "claim_id": "c1",
+        "text": "Federal ATR rules permit creditors to consider rental income, including reasonably expected rental income, but require verification of relied-on income with reasonably reliable third-party records; the official interpretation says records must be specific to the individual consumer, and geographic average-income records are insufficient.",
+        "claim_type": "fact",
+        "why_it_matters": "A rental AVM normally estimates market rent for a property rather than documenting rent paid or contractually owed to this borrower. That distinction creates a compliance boundary if the estimate is the only support for qualifying income.",
+        "manager_implication": "Treat a pure AVM-only substitute for borrower-specific rental-income evidence as legally high risk for covered mortgages. If explored, require a documented pathway showing why the AVM output is reliable evidence of expected income for the particular borrower and transaction, plus exceptions and audit controls.",
+        "supporting_source_ids": [
+          "s_atr_reg",
+          "s_atr_interp"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.93,
+        "geographic_scope": "United States; covered dwelling-secured consumer credit transactions under Regulation Z",
+        "applicable_period": "Current as accessed 2026-08-19",
+        "material_limitations": [
+          "Whether a particular transaction is covered depends on loan purpose, occupancy, creditor status, and other regulatory exclusions.",
+          "The regulation does not enumerate every permissible third-party record or expressly address rental AVMs."
+        ],
+        "originating_agent": "legal_regulatory_researcher"
+      },
+      {
+        "claim_id": "c2",
+        "text": "The legal standard is flexible as to method, not outcome: expected income may be used only when its availability for repayment is reasonable and verified with reasonably reliable third-party records. A creditor need verify only income on which it relies.",
+        "claim_type": "interpretation",
+        "why_it_matters": "This permits narrowly designed alternatives to receipts in some cases, but it does not make any automated estimate sufficient. A policy using AVMs only for reporting, collateral review, or income not used to qualify has a materially different legal profile from AVM-supported qualifying income.",
+        "manager_implication": "Separate policy use cases: (1) delivery/reporting or collateral analytics, (2) rental income that only offsets a property payment, and (3) rental income that expands total qualifying income. Apply the strongest corroboration and validation requirements to category 3.",
+        "supporting_source_ids": [
+          "s_atr_interp",
+          "s_atr_reg"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.9,
+        "geographic_scope": "United States; covered mortgages",
+        "applicable_period": "Current as accessed 2026-08-19",
+        "material_limitations": [
+          "This is a regulatory interpretation, not an adjudicated holding on rental AVMs.",
+          "The reasonableness determination remains fact-specific."
+        ],
+        "originating_agent": "legal_regulatory_researcher"
+      },
+      {
+        "claim_id": "c3",
+        "text": "Current Fannie Mae policy already allows appraiser-derived market-rent documentation in limited rental-income scenarios. For a subject property generating qualifying rental income, Form 1007 or Form 1025 is required; where a lease or market-rent form is used, qualifying rent is generally limited to 75% of gross rent, with the remaining 25% attributed to vacancy and ongoing maintenance. A lease amount must also be supported by the appraisal rent form or specified evidence that the lease has gone into effect.",
+        "claim_type": "fact",
+        "why_it_matters": "The baseline is not receipt-only. Existing GSE practice recognizes estimated market rent, but embeds a haircut and cross-checks intended to contain vacancy, maintenance, lease-performance, and valuation risk.",
+        "manager_implication": "A proposed expansion should be framed as changing GSE Seller Guide eligibility and controls, not as creating an entirely new legal category. Preserve or empirically recalibrate vacancy/maintenance haircuts and require a conflict-resolution protocol where AVM and lease/tax evidence diverge.",
+        "supporting_source_ids": [
+          "s_fnma_rental"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.92,
+        "geographic_scope": "Fannie Mae eligible single-family loans",
+        "applicable_period": "Selling Guide version dated 2025-10-08, accessed 2026-08-19",
+        "material_limitations": [
+          "Fannie Mae Form 1007/1025 market-rent opinions are appraiser-supported comparable-rent analyses, not necessarily algorithmic rental AVMs.",
+          "Guide requirements may change and do not govern loans held outside Fannie Mae channels."
+        ],
+        "originating_agent": "legal_regulatory_researcher"
+      },
+      {
+        "claim_id": "c4",
+        "text": "Freddie Mac similarly permits Form 72 or Form 1000 comparable-rent documentation in specified newly acquired or newly placed-in-service cases, while restricting use of the income. Its current guide requires analysis of rental-market viability and income-producing potential, review of whether market rents support reported rents, and written explanation plus additional support when rents do not reasonably align.",
+        "claim_type": "fact",
+        "why_it_matters": "Freddie Mac's rule design demonstrates that comparable-rent evidence can be used within secondary-market underwriting only with targeted eligibility limits, lender analysis, and documented treatment of discrepancies\u2014not as an unqualified proxy for received income.",
+        "manager_implication": "If considering AVMs, require equivalent controls: property eligibility, recency and geographic-data sufficiency rules, human or documented automated discrepancy review, borrower property-management constraints, and restrictions on the amount of income usable for DTI.",
+        "supporting_source_ids": [
+          "s_freddie_rental",
+          "s_freddie_bulletin"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.91,
+        "geographic_scope": "Freddie Mac eligible single-family loans",
+        "applicable_period": "Current Guide accessed 2026-08-19; 2025 bulletin history",
+        "material_limitations": [
+          "The cited Guide provisions concern comparable-rent forms prepared in appraisal contexts, not a generic third-party rental AVM.",
+          "The bulletin describes an implemented guide change; it is not independent statutory authority."
+        ],
+        "originating_agent": "legal_regulatory_researcher"
+      },
+      {
+        "claim_id": "c5",
+        "text": "A GSE expansion of acceptable rental-income evidence appears operationally permissible within their mortgage-purchase standard-setting role, but it remains constrained by statutory soundness requirements and FHFA conservatorship oversight. Fannie Mae's charter confines operations, so far as practicable, to mortgages of quality, type, and class generally meeting private institutional purchase standards; historical FHFA conservatorship policy has stated that it would not permit new products or lines of business while focusing the Enterprises on core business and loss minimization.",
+        "claim_type": "synthesis",
+        "why_it_matters": "A policy change may not require Congress if it is a revision of underwriting documentation for an existing product, but it cannot be assumed to be self-executing or insulated from FHFA conservatorship/risk-governance review.",
+        "manager_implication": "Classify the proposal as a potential Enterprise underwriting-guide change requiring FHFA engagement and a documented safety-and-soundness case. Ask FHFA/GSE counsel whether the specific scope would be treated as a material product or credit-policy change under current conservatorship governance.",
+        "supporting_source_ids": [
+          "s_fnma_charter",
+          "s_fhfa_conservatorship"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "moderate",
+        "confidence": 0.76,
+        "geographic_scope": "Fannie Mae and, by analogy, Freddie Mac secondary-market programs",
+        "applicable_period": "Current statutes accessed 2026-08-19; FHFA testimony reflects historical conservatorship policy",
+        "material_limitations": [
+          "The cited FHFA statement is historical and does not establish the current internal approval process.",
+          "No public source identified here resolves whether a particular AVM documentation change is deemed a new product or material policy change."
+        ],
+        "originating_agent": "legal_regulatory_researcher"
+      },
+      {
+        "claim_id": "c6",
+        "text": "The most salient adverse-externality pathway with legal relevance is systematic overstatement or uneven accuracy of market rents: it can inflate verified qualifying income, produce unreasonable ATR determinations, and shift losses to borrowers, lenders, mortgage insurers, and GSE/taxpayer-supported secondary-market channels. Existing GSE rules' 75% haircut, documentation alternatives, and discrepancy-analysis requirements are direct evidence that market-rent estimates alone pose recognized stability and operational-risk concerns.",
+        "claim_type": "synthesis",
+        "why_it_matters": "The relevant legal question is not whether an AVM is technologically available, but whether its use produces a record sufficient for a reasonable, good-faith, borrower-specific repayment determination and conforms to applicable investor requirements.",
+        "manager_implication": "Do not treat estimated rent as equivalent to cash receipts across all properties. Require validation segmented by market, property type, rental density, lease status, and borrower experience; set conservative fallbacks where comparable-rent data are thin; and monitor disparate denial/approval and default outcomes.",
+        "supporting_source_ids": [
+          "s_atr_reg",
+          "s_fnma_rental",
+          "s_freddie_rental"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "moderate",
+        "confidence": 0.83,
+        "geographic_scope": "United States; especially GSE-eligible covered mortgages",
+        "applicable_period": "Current baseline",
+        "material_limitations": [
+          "The legal sources establish safeguards and verification standards, not the empirical magnitude of AVM bias, default effects, or disparate impact.",
+          "Quantification should be requested from sibling research branches or pilot data."
+        ],
+        "originating_agent": "legal_regulatory_researcher"
+      }
+    ],
+    "discovered_sources": [
+      {
+        "source_id": "s_atr_reg",
+        "title": "12 CFR 1026.43, Minimum standards for transactions secured by a dwelling",
+        "url": "https://www.consumerfinance.gov/rules-policy/regulations/1026/43/",
+        "publisher": "Consumer Financial Protection Bureau",
+        "access_date": "2026-08-19",
+        "source_type": "regulation",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "A creditor must verify information relied upon in determining repayment ability using reasonably reliable third-party records. Official interpretation states that records used for verification must be specific to the individual consumer; records concerning average incomes in a geographic location are not sufficient.",
+        "metadata_status": "Current regulation and official interpretation page accessed; publication date not displayed",
+        "synthetic": false,
+        "retrieved_by": [
+          "legal_regulatory_researcher"
+        ],
+        "used_by": [
+          "legal_regulatory_researcher"
+        ],
+        "supports_claim_ids": [
+          "c1",
+          "c2",
+          "c6"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_atr_interp",
+        "title": "Official Interpretations to Regulation Z, Comment 1026.43(c)(2)(i)-1 and -3",
+        "url": "https://www.consumerfinance.gov/rules-policy/regulations/1026/interp-43/",
+        "publisher": "Consumer Financial Protection Bureau",
+        "access_date": "2026-08-19",
+        "source_type": "agency_guidance",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "The commentary identifies rental income as a type of current or reasonably expected income that may be considered. If expected income exceeds current income, expected availability must be reasonable and verified with third-party records providing reasonably reliable evidence of expected income.",
+        "metadata_status": "Current official interpretation page accessed; publication date not displayed",
+        "synthetic": false,
+        "retrieved_by": [
+          "legal_regulatory_researcher"
+        ],
+        "used_by": [
+          "legal_regulatory_researcher"
+        ],
+        "supports_claim_ids": [
+          "c1",
+          "c2"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_fnma_rental",
+        "title": "Fannie Mae Selling Guide B3-3.8-01, Rental Income",
+        "url": "https://selling-guide.fanniemae.com/sel/b3-3.8-01/rental-income",
+        "publisher": "Fannie Mae",
+        "publication_date": "2025-10-08",
+        "access_date": "2026-08-19",
+        "source_type": "agency_guidance",
+        "tier": 2,
+        "jurisdiction": "United States; Fannie Mae eligible loans",
+        "excerpt": "For qualifying subject-property rental income, Form 1007 or Form 1025 supports income-earning potential. When current leases or market rents on those forms are used, lenders use 75% of gross monthly rent, with 25% absorbed by vacancy losses and ongoing maintenance. A lease must be supported by the form or specified evidence that payments or deposits occurred.",
+        "metadata_status": "Current guide content accessed",
+        "synthetic": false,
+        "retrieved_by": [
+          "legal_regulatory_researcher"
+        ],
+        "used_by": [
+          "legal_regulatory_researcher"
+        ],
+        "supports_claim_ids": [
+          "c3",
+          "c6"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_freddie_rental",
+        "title": "Freddie Mac Single-Family Seller/Servicer Guide Section 5306.1",
+        "url": "https://guide.freddiemac.com/app/guide/section/5306.1",
+        "publisher": "Freddie Mac",
+        "access_date": "2026-08-19",
+        "source_type": "agency_guidance",
+        "tier": 2,
+        "jurisdiction": "United States; Freddie Mac eligible loans",
+        "excerpt": "Comparable-rent analysis using Forms 72 and 1000 must address rental-market viability and income-producing potential. If market rents do not reasonably support Schedule E or lease rents, the seller must determine whether further documentation is needed and provide written analysis justifying stability and expected continuation.",
+        "metadata_status": "Current guide content accessed; publication date not displayed",
+        "synthetic": false,
+        "retrieved_by": [
+          "legal_regulatory_researcher"
+        ],
+        "used_by": [
+          "legal_regulatory_researcher"
+        ],
+        "supports_claim_ids": [
+          "c4",
+          "c6"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_freddie_bulletin",
+        "title": "Freddie Mac Guide Bulletin 2025-1",
+        "url": "https://guide.freddiemac.com/app/guide/bulletin/2025-1/highlight/https%3A",
+        "publisher": "Freddie Mac",
+        "publication_date": "2025-01-01",
+        "access_date": "2026-08-19",
+        "source_type": "agency_guidance",
+        "tier": 2,
+        "jurisdiction": "United States; Freddie Mac eligible loans",
+        "excerpt": "For certain non-subject investment properties purchased within 45 days of the note date and not yet rented, Form 72 or Form 1000 may document and calculate rental income, subject to borrower primary-residence and property-management-experience limits; otherwise the income may only offset the monthly property payment.",
+        "metadata_status": "Publication year and bulletin label available; exact issuance date not confirmed from retrieved page",
+        "synthetic": false,
+        "retrieved_by": [
+          "legal_regulatory_researcher"
+        ],
+        "used_by": [
+          "legal_regulatory_researcher"
+        ],
+        "supports_claim_ids": [
+          "c4"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": [
+          "publication_date_is_approximate"
+        ]
+      },
+      {
+        "source_id": "s_fnma_charter",
+        "title": "12 U.S.C. 1719, Secondary market operations",
+        "url": "https://uscode.house.gov/view.xhtml?req=%28title%3A12+section%3A1719+edition%3Aprelim%29",
+        "publisher": "Office of the Law Revision Counsel, U.S. House of Representatives",
+        "access_date": "2026-08-19",
+        "source_type": "statute",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "Fannie Mae operations are confined, so far as practicable, to mortgages deemed by the corporation to be of quality, type, and class generally meeting purchase standards imposed by private institutional mortgage investors, and prices are to assure sound operation.",
+        "metadata_status": "Current U.S. Code page accessed; publication date not displayed",
+        "synthetic": false,
+        "retrieved_by": [
+          "legal_regulatory_researcher"
+        ],
+        "used_by": [
+          "legal_regulatory_researcher"
+        ],
+        "supports_claim_ids": [
+          "c5"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_fhfa_conservatorship",
+        "title": "Oversight of the Federal Housing Finance Agency",
+        "url": "https://www.fhfa.gov/news/testimony/oversight-of-the-federal-housing-finance-agency",
+        "publisher": "Federal Housing Finance Agency",
+        "publication_date": "2011-05-25",
+        "access_date": "2026-08-19",
+        "source_type": "official_speech",
+        "tier": 2,
+        "jurisdiction": "United States",
+        "excerpt": "FHFA testimony stated that, as conservator, it was focusing the Enterprises on existing core business and loss minimization and was not permitting new products or new lines of business.",
+        "metadata_status": "Historical testimony; not evidence of current internal approval practice",
+        "synthetic": false,
+        "retrieved_by": [
+          "legal_regulatory_researcher"
+        ],
+        "used_by": [
+          "legal_regulatory_researcher"
+        ],
+        "supports_claim_ids": [
+          "c5"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": [
+          "historical_policy_statement"
+        ]
+      }
+    ],
+    "country_comparisons": [],
+    "contradictions": [],
+    "source_ids": [
+      "s_atr_reg",
+      "s_atr_interp",
+      "s_fnma_rental",
+      "s_freddie_rental",
+      "s_freddie_bulletin",
+      "s_fnma_charter",
+      "s_fhfa_conservatorship"
+    ],
+    "missing_perspectives": [
+      "Current FHFA conservatorship approval procedures or nonpublic directives governing a material change to Enterprise rental-income documentation.",
+      "Whether any rental-AVM vendor produces borrower-specific, auditable records sufficiently reliable for Regulation Z verification; this requires product documentation, model-validation evidence, and legal/compliance review.",
+      "Empirical evidence on AVM error, disparate impact, fraud, delinquency, and loss severity by geography and property type; request from government_sources and think_tank_academic branches.",
+      "State-law analysis is not developed because the proposal concerns underwriting documentation rather than title, lien perfection, foreclosure, or servicing. State consumer-protection, appraisal, data/privacy, and licensing issues may become material depending on vendor workflow and lender implementation."
+    ],
+    "limitations": [
+      "This finding maps federal mortgage and GSE underwriting constraints, not legal advice for a particular loan or lender.",
+      "No controlling court decision was identified that specifically determines whether a rental AVM alone is a reasonably reliable third-party record under 12 CFR 1026.43.",
+      "Fannie Mae and Freddie Mac Guides are investor eligibility rules, not statutes or regulations; they can impose stricter requirements than federal ATR law.",
+      "The historical FHFA testimony does not establish FHFA's current policy or approval process as of 2026-08-19."
+    ],
+    "prompt_injection_flags": [],
+    "started_at": "2026-08-19T00:00:00Z",
+    "finished_at": "2026-08-19T00:00:00Z"
+  },
+  "raw_responses": [
+    {
+      "output": [
+        {
+          "id": "ws_0ee280e0e4a082ac006a85090a09e081a181c76a19fc4b379b",
+          "action": {
+            "type": "search",
+            "queries": [
+              "site:guide.freddiemac.com rental income lease appraisal Form 1000 rental income documentation",
+              "site:selling-guide.fanniemae.com rental income documentation lease appraisal market rent",
+              "site:ecfr.gov 12 CFR 1026 rental income verification ability to repay documentation",
+              "site:fhfa.gov rental income AVM appraisal rental income GSE"
+            ],
+            "query": "site:guide.freddiemac.com rental income lease appraisal Form 1000 rental income documentation"
+          },
+          "status": "completed",
+          "type": "web_search_call"
+        },
+        {
+          "id": "ws_0ee280e0e4a082ac006a85090cbb2081a184604cce8034e498",
+          "action": {
+            "type": "search",
+            "queries": [
+              "site:ecfr.gov/current/title-12 chapter X part 1026 1026.43 verify income assets ability repay records",
+              "site:consumerfinance.gov ability-to-repay rule verify income rental income third party records",
+              "site:fhfa.gov Enterprises conservatorship approval new products 12 USC 4513 4515",
+              "site:uscode.house.gov 12 USC 1454 1719 mortgages purchase Fannie Freddie charter rental income underwriting"
+            ],
+            "query": "site:ecfr.gov/current/title-12 chapter X part 1026 1026.43 verify income assets ability repay records"
+          },
+          "status": "completed",
+          "type": "web_search_call"
+        },
+        {
+          "id": "msg_0ee280e0e4a082ac006a85090fc10c81a186a71612e7e37342",
+          "content": [
+            {
+              "annotations": [],
+              "text": "{\"branch\":\"legal_regulatory\",\"agent_name\":\"legal_regulatory_researcher\",\"status\":\"completed\",\"summary\":\"For covered consumer-purpose dwelling-secured mortgages, an AVM estimate of a property's market rent cannot by itself replace evidence of the borrower's actual or reasonably expected rental income when that income is used for the federal ability-to-repay determination: Regulation Z requires reasonably reliable third-party records specific to the individual consumer. The GSEs already permit appraiser-developed comparable-rent schedules in defined cases, but pair them with transaction, borrower-experience, documentation, and income-use limits. A broader GSE policy would be an underwriting-guide/conservatorship-governance change, not clearly a statutory amendment; it would require an FHFA-approved risk and compliance design. The principal legal risk is not a categorical ban on using market-rent evidence, but unsupported reliance on a property-level estimate as proof that a particular borrower will receive rent.\",\"claims\":[{\"claim_id\":\"c1\",\"text\":\"Federal ATR rules permit creditors to consider rental income, including reasonably expected rental income, but require verification of relied-on income with reasonably reliable third-party records; the official interpretation says records must be specific to the individual consumer, and geographic average-income records are insufficient.\",\"claim_type\":\"fact\",\"why_it_matters\":\"A rental AVM normally estimates market rent for a property rather than documenting rent paid or contractually owed to this borrower. That distinction creates a compliance boundary if the estimate is the only support for qualifying income.\",\"manager_implication\":\"Treat a pure AVM-only substitute for borrower-specific rental-income evidence as legally high risk for covered mortgages. If explored, require a documented pathway showing why the AVM output is reliable evidence of expected income for the particular borrower and transaction, plus exceptions and audit controls.\",\"supporting_source_ids\":[\"s_atr_reg\",\"s_atr_interp\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.93,\"geographic_scope\":\"United States; covered dwelling-secured consumer credit transactions under Regulation Z\",\"applicable_period\":\"Current as accessed 2026-08-19\",\"material_limitations\":[\"Whether a particular transaction is covered depends on loan purpose, occupancy, creditor status, and other regulatory exclusions.\",\"The regulation does not enumerate every permissible third-party record or expressly address rental AVMs.\"],\"originating_agent\":\"legal_regulatory_researcher\"},{\"claim_id\":\"c2\",\"text\":\"The legal standard is flexible as to method, not outcome: expected income may be used only when its availability for repayment is reasonable and verified with reasonably reliable third-party records. A creditor need verify only income on which it relies.\",\"claim_type\":\"interpretation\",\"why_it_matters\":\"This permits narrowly designed alternatives to receipts in some cases, but it does not make any automated estimate sufficient. A policy using AVMs only for reporting, collateral review, or income not used to qualify has a materially different legal profile from AVM-supported qualifying income.\",\"manager_implication\":\"Separate policy use cases: (1) delivery/reporting or collateral analytics, (2) rental income that only offsets a property payment, and (3) rental income that expands total qualifying income. Apply the strongest corroboration and validation requirements to category 3.\",\"supporting_source_ids\":[\"s_atr_interp\",\"s_atr_reg\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.9,\"geographic_scope\":\"United States; covered mortgages\",\"applicable_period\":\"Current as accessed 2026-08-19\",\"material_limitations\":[\"This is a regulatory interpretation, not an adjudicated holding on rental AVMs.\",\"The reasonableness determination remains fact-specific.\"],\"originating_agent\":\"legal_regulatory_researcher\"},{\"claim_id\":\"c3\",\"text\":\"Current Fannie Mae policy already allows appraiser-derived market-rent documentation in limited rental-income scenarios. For a subject property generating qualifying rental income, Form 1007 or Form 1025 is required; where a lease or market-rent form is used, qualifying rent is generally limited to 75% of gross rent, with the remaining 25% attributed to vacancy and ongoing maintenance. A lease amount must also be supported by the appraisal rent form or specified evidence that the lease has gone into effect.\",\"claim_type\":\"fact\",\"why_it_matters\":\"The baseline is not receipt-only. Existing GSE practice recognizes estimated market rent, but embeds a haircut and cross-checks intended to contain vacancy, maintenance, lease-performance, and valuation risk.\",\"manager_implication\":\"A proposed expansion should be framed as changing GSE Seller Guide eligibility and controls, not as creating an entirely new legal category. Preserve or empirically recalibrate vacancy/maintenance haircuts and require a conflict-resolution protocol where AVM and lease/tax evidence diverge.\",\"supporting_source_ids\":[\"s_fnma_rental\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.92,\"geographic_scope\":\"Fannie Mae eligible single-family loans\",\"applicable_period\":\"Selling Guide version dated 2025-10-08, accessed 2026-08-19\",\"material_limitations\":[\"Fannie Mae Form 1007/1025 market-rent opinions are appraiser-supported comparable-rent analyses, not necessarily algorithmic rental AVMs.\",\"Guide requirements may change and do not govern loans held outside Fannie Mae channels.\"],\"originating_agent\":\"legal_regulatory_researcher\"},{\"claim_id\":\"c4\",\"text\":\"Freddie Mac similarly permits Form 72 or Form 1000 comparable-rent documentation in specified newly acquired or newly placed-in-service cases, while restricting use of the income. Its current guide requires analysis of rental-market viability and income-producing potential, review of whether market rents support reported rents, and written explanation plus additional support when rents do not reasonably align.\",\"claim_type\":\"fact\",\"why_it_matters\":\"Freddie Mac's rule design demonstrates that comparable-rent evidence can be used within secondary-market underwriting only with targeted eligibility limits, lender analysis, and documented treatment of discrepancies\u2014not as an unqualified proxy for received income.\",\"manager_implication\":\"If considering AVMs, require equivalent controls: property eligibility, recency and geographic-data sufficiency rules, human or documented automated discrepancy review, borrower property-management constraints, and restrictions on the amount of income usable for DTI.\",\"supporting_source_ids\":[\"s_freddie_rental\",\"s_freddie_bulletin\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.91,\"geographic_scope\":\"Freddie Mac eligible single-family loans\",\"applicable_period\":\"Current Guide accessed 2026-08-19; 2025 bulletin history\",\"material_limitations\":[\"The cited Guide provisions concern comparable-rent forms prepared in appraisal contexts, not a generic third-party rental AVM.\",\"The bulletin describes an implemented guide change; it is not independent statutory authority.\"],\"originating_agent\":\"legal_regulatory_researcher\"},{\"claim_id\":\"c5\",\"text\":\"A GSE expansion of acceptable rental-income evidence appears operationally permissible within their mortgage-purchase standard-setting role, but it remains constrained by statutory soundness requirements and FHFA conservatorship oversight. Fannie Mae's charter confines operations, so far as practicable, to mortgages of quality, type, and class generally meeting private institutional purchase standards; historical FHFA conservatorship policy has stated that it would not permit new products or lines of business while focusing the Enterprises on core business and loss minimization.\",\"claim_type\":\"synthesis\",\"why_it_matters\":\"A policy change may not require Congress if it is a revision of underwriting documentation for an existing product, but it cannot be assumed to be self-executing or insulated from FHFA conservatorship/risk-governance review.\",\"manager_implication\":\"Classify the proposal as a potential Enterprise underwriting-guide change requiring FHFA engagement and a documented safety-and-soundness case. Ask FHFA/GSE counsel whether the specific scope would be treated as a material product or credit-policy change under current conservatorship governance.\",\"supporting_source_ids\":[\"s_fnma_charter\",\"s_fhfa_conservatorship\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"moderate\",\"confidence\":0.76,\"geographic_scope\":\"Fannie Mae and, by analogy, Freddie Mac secondary-market programs\",\"applicable_period\":\"Current statutes accessed 2026-08-19; FHFA testimony reflects historical conservatorship policy\",\"material_limitations\":[\"The cited FHFA statement is historical and does not establish the current internal approval process.\",\"No public source identified here resolves whether a particular AVM documentation change is deemed a new product or material policy change.\"],\"originating_agent\":\"legal_regulatory_researcher\"},{\"claim_id\":\"c6\",\"text\":\"The most salient adverse-externality pathway with legal relevance is systematic overstatement or uneven accuracy of market rents: it can inflate verified qualifying income, produce unreasonable ATR determinations, and shift losses to borrowers, lenders, mortgage insurers, and GSE/taxpayer-supported secondary-market channels. Existing GSE rules' 75% haircut, documentation alternatives, and discrepancy-analysis requirements are direct evidence that market-rent estimates alone pose recognized stability and operational-risk concerns.\",\"claim_type\":\"synthesis\",\"why_it_matters\":\"The relevant legal question is not whether an AVM is technologically available, but whether its use produces a record sufficient for a reasonable, good-faith, borrower-specific repayment determination and conforms to applicable investor requirements.\",\"manager_implication\":\"Do not treat estimated rent as equivalent to cash receipts across all properties. Require validation segmented by market, property type, rental density, lease status, and borrower experience; set conservative fallbacks where comparable-rent data are thin; and monitor disparate denial/approval and default outcomes.\",\"supporting_source_ids\":[\"s_atr_reg\",\"s_fnma_rental\",\"s_freddie_rental\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"moderate\",\"confidence\":0.83,\"geographic_scope\":\"United States; especially GSE-eligible covered mortgages\",\"applicable_period\":\"Current baseline\",\"material_limitations\":[\"The legal sources establish safeguards and verification standards, not the empirical magnitude of AVM bias, default effects, or disparate impact.\",\"Quantification should be requested from sibling research branches or pilot data.\"],\"originating_agent\":\"legal_regulatory_researcher\"}],\"discovered_sources\":[{\"source_id\":\"s_atr_reg\",\"title\":\"12 CFR 1026.43, Minimum standards for transactions secured by a dwelling\",\"url\":\"https://www.consumerfinance.gov/rules-policy/regulations/1026/43/\",\"publisher\":\"Consumer Financial Protection Bureau\",\"author\":null,\"publication_date\":null,\"access_date\":\"2026-08-19\",\"source_type\":\"regulation\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"A creditor must verify information relied upon in determining repayment ability using reasonably reliable third-party records. Official interpretation states that records used for verification must be specific to the individual consumer; records concerning average incomes in a geographic location are not sufficient.\",\"metadata_status\":\"Current regulation and official interpretation page accessed; publication date not displayed\",\"synthetic\":false,\"retrieved_by\":[\"legal_regulatory_researcher\"],\"used_by\":[\"legal_regulatory_researcher\"],\"supports_claim_ids\":[\"c1\",\"c2\",\"c6\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_atr_interp\",\"title\":\"Official Interpretations to Regulation Z, Comment 1026.43(c)(2)(i)-1 and -3\",\"url\":\"https://www.consumerfinance.gov/rules-policy/regulations/1026/interp-43/\",\"publisher\":\"Consumer Financial Protection Bureau\",\"author\":null,\"publication_date\":null,\"access_date\":\"2026-08-19\",\"source_type\":\"agency_guidance\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"The commentary identifies rental income as a type of current or reasonably expected income that may be considered. If expected income exceeds current income, expected availability must be reasonable and verified with third-party records providing reasonably reliable evidence of expected income.\",\"metadata_status\":\"Current official interpretation page accessed; publication date not displayed\",\"synthetic\":false,\"retrieved_by\":[\"legal_regulatory_researcher\"],\"used_by\":[\"legal_regulatory_researcher\"],\"supports_claim_ids\":[\"c1\",\"c2\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_fnma_rental\",\"title\":\"Fannie Mae Selling Guide B3-3.8-01, Rental Income\",\"url\":\"https://selling-guide.fanniemae.com/sel/b3-3.8-01/rental-income\",\"publisher\":\"Fannie Mae\",\"author\":null,\"publication_date\":\"2025-10-08\",\"access_date\":\"2026-08-19\",\"source_type\":\"agency_guidance\",\"tier\":2,\"jurisdiction\":\"United States; Fannie Mae eligible loans\",\"excerpt\":\"For qualifying subject-property rental income, Form 1007 or Form 1025 supports income-earning potential. When current leases or market rents on those forms are used, lenders use 75% of gross monthly rent, with 25% absorbed by vacancy losses and ongoing maintenance. A lease must be supported by the form or specified evidence that payments or deposits occurred.\",\"metadata_status\":\"Current guide content accessed\",\"synthetic\":false,\"retrieved_by\":[\"legal_regulatory_researcher\"],\"used_by\":[\"legal_regulatory_researcher\"],\"supports_claim_ids\":[\"c3\",\"c6\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_freddie_rental\",\"title\":\"Freddie Mac Single-Family Seller/Servicer Guide Section 5306.1\",\"url\":\"https://guide.freddiemac.com/app/guide/section/5306.1\",\"publisher\":\"Freddie Mac\",\"author\":null,\"publication_date\":null,\"access_date\":\"2026-08-19\",\"source_type\":\"agency_guidance\",\"tier\":2,\"jurisdiction\":\"United States; Freddie Mac eligible loans\",\"excerpt\":\"Comparable-rent analysis using Forms 72 and 1000 must address rental-market viability and income-producing potential. If market rents do not reasonably support Schedule E or lease rents, the seller must determine whether further documentation is needed and provide written analysis justifying stability and expected continuation.\",\"metadata_status\":\"Current guide content accessed; publication date not displayed\",\"synthetic\":false,\"retrieved_by\":[\"legal_regulatory_researcher\"],\"used_by\":[\"legal_regulatory_researcher\"],\"supports_claim_ids\":[\"c4\",\"c6\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_freddie_bulletin\",\"title\":\"Freddie Mac Guide Bulletin 2025-1\",\"url\":\"https://guide.freddiemac.com/app/guide/bulletin/2025-1/highlight/https%3A\",\"publisher\":\"Freddie Mac\",\"author\":null,\"publication_date\":\"2025-01-01\",\"access_date\":\"2026-08-19\",\"source_type\":\"agency_guidance\",\"tier\":2,\"jurisdiction\":\"United States; Freddie Mac eligible loans\",\"excerpt\":\"For certain non-subject investment properties purchased within 45 days of the note date and not yet rented, Form 72 or Form 1000 may document and calculate rental income, subject to borrower primary-residence and property-management-experience limits; otherwise the income may only offset the monthly property payment.\",\"metadata_status\":\"Publication year and bulletin label available; exact issuance date not confirmed from retrieved page\",\"synthetic\":false,\"retrieved_by\":[\"legal_regulatory_researcher\"],\"used_by\":[\"legal_regulatory_researcher\"],\"supports_claim_ids\":[\"c4\"],\"contradicts_claim_ids\":[],\"safety_flags\":[\"publication_date_is_approximate\"],\"content_hash\":null},{\"source_id\":\"s_fnma_charter\",\"title\":\"12 U.S.C. 1719, Secondary market operations\",\"url\":\"https://uscode.house.gov/view.xhtml?req=%28title%3A12+section%3A1719+edition%3Aprelim%29\",\"publisher\":\"Office of the Law Revision Counsel, U.S. House of Representatives\",\"author\":null,\"publication_date\":null,\"access_date\":\"2026-08-19\",\"source_type\":\"statute\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"Fannie Mae operations are confined, so far as practicable, to mortgages deemed by the corporation to be of quality, type, and class generally meeting purchase standards imposed by private institutional mortgage investors, and prices are to assure sound operation.\",\"metadata_status\":\"Current U.S. Code page accessed; publication date not displayed\",\"synthetic\":false,\"retrieved_by\":[\"legal_regulatory_researcher\"],\"used_by\":[\"legal_regulatory_researcher\"],\"supports_claim_ids\":[\"c5\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_fhfa_conservatorship\",\"title\":\"Oversight of the Federal Housing Finance Agency\",\"url\":\"https://www.fhfa.gov/news/testimony/oversight-of-the-federal-housing-finance-agency\",\"publisher\":\"Federal Housing Finance Agency\",\"author\":null,\"publication_date\":\"2011-05-25\",\"access_date\":\"2026-08-19\",\"source_type\":\"official_speech\",\"tier\":2,\"jurisdiction\":\"United States\",\"excerpt\":\"FHFA testimony stated that, as conservator, it was focusing the Enterprises on existing core business and loss minimization and was not permitting new products or new lines of business.\",\"metadata_status\":\"Historical testimony; not evidence of current internal approval practice\",\"synthetic\":false,\"retrieved_by\":[\"legal_regulatory_researcher\"],\"used_by\":[\"legal_regulatory_researcher\"],\"supports_claim_ids\":[\"c5\"],\"contradicts_claim_ids\":[],\"safety_flags\":[\"historical_policy_statement\"],\"content_hash\":null}],\"country_comparisons\":[],\"contradictions\":[],\"source_ids\":[\"s_atr_reg\",\"s_atr_interp\",\"s_fnma_rental\",\"s_freddie_rental\",\"s_freddie_bulletin\",\"s_fnma_charter\",\"s_fhfa_conservatorship\"],\"missing_perspectives\":[\"Current FHFA conservatorship approval procedures or nonpublic directives governing a material change to Enterprise rental-income documentation.\",\"Whether any rental-AVM vendor produces borrower-specific, auditable records sufficiently reliable for Regulation Z verification; this requires product documentation, model-validation evidence, and legal/compliance review.\",\"Empirical evidence on AVM error, disparate impact, fraud, delinquency, and loss severity by geography and property type; request from government_sources and think_tank_academic branches.\",\"State-law analysis is not developed because the proposal concerns underwriting documentation rather than title, lien perfection, foreclosure, or servicing. State consumer-protection, appraisal, data/privacy, and licensing issues may become material depending on vendor workflow and lender implementation.\"],\"limitations\":[\"This finding maps federal mortgage and GSE underwriting constraints, not legal advice for a particular loan or lender.\",\"No controlling court decision was identified that specifically determines whether a rental AVM alone is a reasonably reliable third-party record under 12 CFR 1026.43.\",\"Fannie Mae and Freddie Mac Guides are investor eligibility rules, not statutes or regulations; they can impose stricter requirements than federal ATR law.\",\"The historical FHFA testimony does not establish FHFA's current policy or approval process as of 2026-08-19.\"],\"prompt_injection_flags\":[],\"error\":null,\"started_at\":\"2026-08-19T00:00:00Z\",\"finished_at\":\"2026-08-19T00:00:00Z\"}",
+              "type": "output_text",
+              "logprobs": []
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message",
+          "phase": "final_answer"
+        }
+      ],
+      "usage": {
+        "requests": 1,
+        "input_tokens": 24306,
+        "input_tokens_details": {
+          "cache_write_tokens": 8130,
+          "cached_tokens": 0
+        },
+        "output_tokens": 4282,
+        "output_tokens_details": {
+          "reasoning_tokens": 219
+        },
+        "total_tokens": 28588,
+        "request_usage_entries": []
+      },
+      "response_id": "resp_0ee280e0e4a082ac006a850909688481a19f89a06344bceb2c",
+      "request_id": "req_3e8b3df51adf4bd086dd8d708f029c8f"
+    }
+  ],
+  "usage": {
+    "requests": 1,
+    "input_tokens": 24306,
+    "cached_input_tokens": 0,
+    "cache_write_tokens": 8130,
+    "output_tokens": 4282,
+    "reasoning_tokens": 219,
+    "total_tokens": 28588
+  },
+  "usage_by_response": [
+    {
+      "requests": 1,
+      "input_tokens": 24306,
+      "cached_input_tokens": 0,
+      "cache_write_tokens": 8130,
+      "output_tokens": 4282,
+      "reasoning_tokens": 219,
+      "total_tokens": 28588
+    }
+  ],
+  "response_ids": [
+    "resp_0ee280e0e4a082ac006a850909688481a19f89a06344bceb2c"
+  ]
+}

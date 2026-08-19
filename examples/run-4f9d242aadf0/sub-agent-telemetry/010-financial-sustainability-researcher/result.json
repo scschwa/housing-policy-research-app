@@ -1,0 +1,479 @@
+{
+  "interaction_id": "interaction-0010",
+  "agent": "financial_sustainability_researcher",
+  "stage": "research",
+  "status": "completed",
+  "started_at": 1787103546.8401809,
+  "finished_at": 1787103605.076113,
+  "duration_ms": 58235,
+  "final_output": {
+    "branch": "financial_sustainability",
+    "agent_name": "Financial Sustainability Researcher",
+    "status": "completed",
+    "summary": "The relevant baseline is narrower than a general replacement of rent receipts with rental AVMs: Freddie Mac already permits appraisal/comparable-rent documentation only for defined newly acquired, currently unrented properties and applies limits on how projected net rent may qualify a borrower. Evidence supports potential processing and access benefits from alternative/automated underwriting inputs, but does not establish that rental AVMs alone predict realized rental cash flow or default performance well enough to replace receipts broadly. A broader policy could create correlated underwriting error, adverse selection, and taxpayer/guarantor exposure unless it is bounded, independently validated, monitored by cohort, and subject to automatic rollback triggers.",
+    "claims": [
+      {
+        "claim_id": "c1",
+        "text": "A limited form of market-rent documentation is already current Freddie Mac policy, but it is not a broad authorization to replace realized rent receipts for all borrowers. For certain non-subject investment properties purchased within 45 days of the note date and not yet rented, Freddie Mac allows Form 72 or Form 1000 comparable-rent documentation; net rent generally may only offset the monthly payment unless a borrower has at least one year of investment-property management experience.",
+        "claim_type": "fact",
+        "why_it_matters": "This is a materially narrower risk posture than using an AVM to substantiate income on occupied properties. It recognizes that no lease or receipts exist for a newly acquired vacant property while limiting incremental repayment capacity credit for inexperienced landlords.",
+        "manager_implication": "Frame any proposed expansion as a departure from an existing, constrained exception. Preserve or tighten eligibility, occupancy/lease-status, seasoning, and income-use limits rather than describing the proposal as routine current practice.",
+        "supporting_source_ids": [
+          "s_freddie_bulletin_2025_1"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.95,
+        "geographic_scope": "United States; Freddie Mac single-family seller requirements",
+        "applicable_period": "Effective February 2025; source accessed 2026-08-19",
+        "material_limitations": [
+          "This source establishes policy requirements, not loan-performance effects.",
+          "The question does not specify investor, product, property type, or whether AVM means a proprietary rent-estimate model or appraisal comparable-rent schedule."
+        ],
+        "originating_agent": "Financial Sustainability Researcher"
+      },
+      {
+        "claim_id": "c2",
+        "text": "The principal durability risk of a broader rental-AVM substitution is measurement error in projected rent being converted into qualifying income: an overstated estimate can lower the effective debt burden used in underwriting even when the property ultimately rents more slowly, at a lower rate, or incurs higher vacancy and operating costs. This risk is likely to be concentrated where rental comparables are sparse or nonrepresentative, and it can become correlated across borrowers if a common model systematically misses a market downturn.",
+        "claim_type": "synthesis",
+        "why_it_matters": "The loss channel is not merely an individual documentation error. If standardized estimates are optimistic in the same locations or property segments, originations may be jointly weakened just before rents soften, increasing defaults and loss severity for lenders, guarantors, or taxpayers.",
+        "manager_implication": "Do not treat an AVM estimate as equivalent to realized cash flow absent out-of-sample validation. Require confidence intervals or coverage thresholds, geographic/property-type exclusions, conservative rent haircuts, explicit vacancy/expense assumptions, and periodic back-testing against actual leases, collections, and defaults.",
+        "supporting_source_ids": [
+          "s_freddie_bulletin_2025_1",
+          "s_gao_proptech_2025"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "moderate",
+        "confidence": 0.82,
+        "geographic_scope": "United States",
+        "applicable_period": "Current policy baseline and 5-to-10-year design horizon",
+        "material_limitations": [
+          "No located official study directly estimates default effects of substituting rental AVMs for rent receipts.",
+          "GAO's discussion concerns property-value AVMs and automated underwriting generally, not rental-income AVMs specifically."
+        ],
+        "originating_agent": "Financial Sustainability Researcher"
+      },
+      {
+        "claim_id": "c3",
+        "text": "Automation and alternative data can reduce processing friction and may improve access or risk prediction when they identify information not captured in conventional underwriting, but GAO characterizes those benefits as potential rather than demonstrated for a particular rent-estimation policy. GAO also reports that alternative-data use in mortgage underwriting was limited in the period it examined, and that access and pricing effects depend on whether the data improve qualification and default-risk prediction.",
+        "claim_type": "fact",
+        "why_it_matters": "Faster underwriting and fewer documentation burdens are plausible advantages, particularly where conventional records are unavailable, but they do not by themselves demonstrate safe risk expansion or lower taxpayer exposure.",
+        "manager_implication": "Require a pilot evaluation with a matched receipt/lease-documented comparison group and pre-specified performance measures before granting full qualifying-income credit. Separate time-to-close and approval-rate gains from repayment-performance evidence.",
+        "supporting_source_ids": [
+          "s_gao_altdata_2021",
+          "s_gao_proptech_2025"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "moderate",
+        "confidence": 0.9,
+        "geographic_scope": "United States mortgage underwriting",
+        "applicable_period": "GAO data years 2016-2020; report published 2021 and 2025",
+        "material_limitations": [
+          "Alternative data such as tenants' payment histories are distinct from a model's estimate of future rental income.",
+          "GAO did not test rental-AVM underwriting performance."
+        ],
+        "originating_agent": "Financial Sustainability Researcher"
+      },
+      {
+        "claim_id": "c4",
+        "text": "Adverse selection and moral hazard are credible design risks if projected-rent underwriting is more permissive than receipt-based underwriting. Borrowers, brokers, and sellers with properties whose expected realized rents are weak relative to model estimates would have the strongest incentive to use the AVM pathway; originators may retain less incentive to verify performance if credit risk is transferred to a secondary-market guarantor. Freddie Mac's existing constraints\u2014recent acquisition, no available lease, borrower housing-history condition, and limits on using net rent beyond payment offset for inexperienced landlords\u2014function as partial guards against those incentives.",
+        "claim_type": "interpretation",
+        "why_it_matters": "The proposal could shift selection toward the loans for which the model is least informative, while the resulting losses may be dispersed through securitization or public backstops.",
+        "manager_implication": "Make the AVM path a controlled exception rather than an applicant-selected, universally more favorable option. Require lender representations and repurchase exposure for noncompliance; prohibit estimate shopping; use independent or standardized models; retain audit files; and apply differentiated caps/haircuts for inexperienced landlords and higher-risk segments.",
+        "supporting_source_ids": [
+          "s_freddie_bulletin_2025_1",
+          "s_fhfa_ercf"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "moderate",
+        "confidence": 0.8,
+        "geographic_scope": "United States; secondary-market mortgage finance",
+        "applicable_period": "Current baseline and 5-to-10-year design horizon",
+        "material_limitations": [
+          "This is an incentive-based inference rather than a measured causal estimate of adverse selection under rental AVMs.",
+          "Whether risk is retained by a lender, insurer, GSE, private investor, or taxpayer depends on the program channel."
+        ],
+        "originating_agent": "Financial Sustainability Researcher"
+      },
+      {
+        "claim_id": "c5",
+        "text": "Existing federal AVM quality-control rules do not directly validate rental-income AVMs. The 2024 interagency rule applies to AVMs used to determine the value of a consumer principal dwelling serving as mortgage collateral and requires controls for confidence, data manipulation, conflicts, random testing, and nondiscrimination. Those safeguards are highly relevant by analogy, but a rental-income AVM needs its own governance because its target is expected income rather than collateral value and may cover transactions outside the rule's scope.",
+        "claim_type": "fact",
+        "why_it_matters": "A policy designer cannot assume that compliance with collateral-AVM controls establishes reliability of projected rental income for ability-to-repay underwriting.",
+        "manager_implication": "Adopt an explicit rental-AVM model-risk standard: target-definition and data-lineage documentation; independent validation; drift and error monitoring; random file review against signed leases and receipts when available; manipulation controls; fair-lending testing; vendor-change approval; and a manual-review override/escalation process.",
+        "supporting_source_ids": [
+          "s_interagency_avm_rule_2024",
+          "s_gao_proptech_2025"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.94,
+        "geographic_scope": "United States",
+        "applicable_period": "Rule effective 2025-10-01; accessed 2026-08-19",
+        "material_limitations": [
+          "The rule is limited to collateral-value AVMs and principally to consumer principal-dwelling collateral; it is not a rental-income underwriting rule.",
+          "Transferability to investment-property or non-owner-occupied transactions is an analogy, not a legal conclusion."
+        ],
+        "originating_agent": "Financial Sustainability Researcher"
+      },
+      {
+        "claim_id": "c6",
+        "text": "For loans ultimately sold to the Enterprises, policy expansion has fiscal relevance even without a defensible single-point cost estimate. FHFA's capital framework is designed for safety and soundness through the cycle and includes granular credit-risk capital, countercyclical elements, buffers, and risk transfer; FHFA also requires annual severely adverse stress testing to identify potential sources of loss. A rental-AVM policy would therefore require separate cohort identification and stress assumptions rather than being assumed neutral within existing capital calibration.",
+        "claim_type": "fact",
+        "why_it_matters": "If the policy changes loan-selection or default behavior, existing capital and stress results may not capture the new exposure unless the data field, model treatment, and stress scenarios explicitly distinguish AVM-qualified loans.",
+        "manager_implication": "Before scaling, require the relevant guarantor or insurer to report AVM-path volume, estimated-versus-realized rent error, delinquency/default/prepayment, losses, geographic/property concentration, and performance by borrower and lender cohort. Stress scenarios should include rent declines, vacancy increases, house-price declines, rate/payment shocks where applicable, and model-error correlation; establish expansion, pause, and sunset triggers tied to those indicators.",
+        "supporting_source_ids": [
+          "s_fhfa_ercf",
+          "s_fhfa_dfast_2025"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.91,
+        "geographic_scope": "United States; Fannie Mae and Freddie Mac context",
+        "applicable_period": "Current framework; 5-to-10-year policy horizon",
+        "material_limitations": [
+          "FHFA materials do not assess rental-AVM policy directly.",
+          "This does not quantify taxpayer exposure or establish that a given design would fail a stress test."
+        ],
+        "originating_agent": "Financial Sustainability Researcher"
+      },
+      {
+        "claim_id": "c7",
+        "text": "The central empirical question remains unresolved: the located evidence does not establish whether a specified rental AVM, after haircuts and controls, predicts realized lease income and mortgage performance as well as\u2014or sufficiently close to\u2014proof of rental receipts for the intended borrower/property population. Results will depend on the model's data coverage, refresh rate, definition of rent, treatment of concessions and vacancy, local market liquidity, borrower experience, loan leverage, and the investor or guarantor channel.",
+        "claim_type": "synthesis",
+        "why_it_matters": "Without this validation, claims of either safety or excessive risk are conditional. A nationwide permanent expansion would be relying on untested calibration rather than demonstrated equivalence.",
+        "manager_implication": "Explore only as a staged pilot or narrow exception. Request a transparent validation protocol, historical and prospective holdout testing, adverse-selection analysis, independent model audit, and a pre-registered decision rule for continuation, tightening, or termination.",
+        "supporting_source_ids": [
+          "s_gao_altdata_2021",
+          "s_gao_proptech_2025",
+          "s_freddie_bulletin_2025_1"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.96,
+        "geographic_scope": "United States",
+        "applicable_period": "Current evidence base",
+        "material_limitations": [
+          "Evidence gap is specific to rental-income AVMs replacing receipts; it does not imply all automated underwriting or comparable-rent analysis lacks value."
+        ],
+        "originating_agent": "Financial Sustainability Researcher"
+      }
+    ],
+    "discovered_sources": [
+      {
+        "source_id": "s_freddie_bulletin_2025_1",
+        "title": "Freddie Mac Guide Bulletin 2025-1: Selling Updates",
+        "url": "https://guide.freddiemac.com/ci/okcsFattach/get/1009804_7",
+        "publisher": "Freddie Mac",
+        "publication_date": "2025-02-12",
+        "access_date": "2026-08-19",
+        "source_type": "agency_guidance",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "For certain recently acquired, currently unrented non-subject investment properties, Form 72 or Form 1000 may document and calculate rent; the property must have been purchased within 45 days, each borrower must currently own or rent a primary residence, and net rent generally may only offset the payment unless a borrower has one year of investment-property management experience. The bulletin also states that sellers must analyze comparable rent data to support rental-income stability.",
+        "metadata_status": "validated",
+        "synthetic": false,
+        "retrieved_by": [
+          "Financial Sustainability Researcher"
+        ],
+        "used_by": [
+          "c1",
+          "c2",
+          "c4",
+          "c7"
+        ],
+        "supports_claim_ids": [
+          "c1",
+          "c2",
+          "c4",
+          "c7"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_gao_altdata_2021",
+        "title": "Mortgage Lending: Use of Alternative Data Is Limited but Has Potential Benefits (GAO-22-104380)",
+        "url": "https://www.gao.gov/products/gao-22-104380",
+        "publisher": "U.S. Government Accountability Office",
+        "publication_date": "2021-11-16",
+        "access_date": "2026-08-19",
+        "source_type": "government_report",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "GAO found that alternative data may expand access and improve pricing if it improves default-risk prediction, but outcomes depend on whether the data help consumers qualify and predict risk. GAO also identifies fair-lending and privacy risks and reports limited use of alternative data in the period reviewed.",
+        "metadata_status": "validated",
+        "synthetic": false,
+        "retrieved_by": [
+          "Financial Sustainability Researcher"
+        ],
+        "used_by": [
+          "c3",
+          "c7"
+        ],
+        "supports_claim_ids": [
+          "c3",
+          "c7"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_gao_proptech_2025",
+        "title": "Property Technology for Homebuying: Products Present Benefits and Risks Amid Evolving Federal Oversight (GAO-25-107201)",
+        "url": "https://files.gao.gov/reports/GAO-25-107201/index.html",
+        "publisher": "U.S. Government Accountability Office",
+        "publication_date": "2025-09-18",
+        "access_date": "2026-08-19",
+        "source_type": "government_report",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "GAO reports that automated underwriting tools may speed document review and that alternative data may improve risk prediction and access, but describes these as potential benefits. It also documents differing company approaches to AI governance and notes FHFA examinations of Enterprise models.",
+        "metadata_status": "validated",
+        "synthetic": false,
+        "retrieved_by": [
+          "Financial Sustainability Researcher"
+        ],
+        "used_by": [
+          "c2",
+          "c3",
+          "c5",
+          "c7"
+        ],
+        "supports_claim_ids": [
+          "c2",
+          "c3",
+          "c5",
+          "c7"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_interagency_avm_rule_2024",
+        "title": "Quality Control Standards for Automated Valuation Models",
+        "url": "https://public-inspection.federalregister.gov/2024-16197.pdf",
+        "publisher": "Office of the Comptroller of the Currency, Federal Reserve Board, FDIC, NCUA, CFPB, and FHFA",
+        "publication_date": "2024-08-07",
+        "access_date": "2026-08-19",
+        "source_type": "regulation",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "The final rule requires mortgage originators and secondary-market issuers using covered collateral AVMs to maintain controls designed to ensure confidence in estimates, protect against data manipulation, seek to avoid conflicts, require random testing and review, and comply with nondiscrimination laws. It applies to AVMs determining the value of principal-dwelling collateral, not rental-income estimates.",
+        "metadata_status": "validated",
+        "synthetic": false,
+        "retrieved_by": [
+          "Financial Sustainability Researcher"
+        ],
+        "used_by": [
+          "c5"
+        ],
+        "supports_claim_ids": [
+          "c5"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_fhfa_ercf",
+        "title": "Enterprise Capital Requirements",
+        "url": "https://www.fhfa.gov/supervision/fannie-mae-and-freddie-mac/capital-requirements",
+        "publisher": "Federal Housing Finance Agency",
+        "access_date": "2026-08-19",
+        "source_type": "agency_guidance",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "FHFA describes the Enterprise Regulatory Capital Framework as a going-concern framework for stability and liquidity across the economic cycle, particularly under financial stress. It includes risk-based and leverage requirements, capital buffers, granular credit-risk requirements, a countercyclical adjustment, and credit-risk-transfer treatment.",
+        "metadata_status": "validated",
+        "synthetic": false,
+        "retrieved_by": [
+          "Financial Sustainability Researcher"
+        ],
+        "used_by": [
+          "c4",
+          "c6"
+        ],
+        "supports_claim_ids": [
+          "c4",
+          "c6"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_fhfa_dfast_2025",
+        "title": "2025 Dodd-Frank Act Stress Test Results - Severely Adverse Scenario",
+        "url": "https://www.fhfa.gov/reports/stress-tests-report/2025",
+        "publisher": "Federal Housing Finance Agency",
+        "publication_date": "2025-08-15",
+        "access_date": "2026-08-19",
+        "source_type": "government_report",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "FHFA requires Fannie Mae and Freddie Mac to conduct annual stress tests to assess whether they have capital to absorb losses under severely adverse economic conditions; the tests provide information on potential sources of losses, though Enterprise internal models and management actions can differ.",
+        "metadata_status": "validated",
+        "synthetic": false,
+        "retrieved_by": [
+          "Financial Sustainability Researcher"
+        ],
+        "used_by": [
+          "c6"
+        ],
+        "supports_claim_ids": [
+          "c6"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      }
+    ],
+    "country_comparisons": [],
+    "contradictions": [
+      {
+        "contradiction_id": "x1",
+        "claim_id": "c3",
+        "supporting_source_ids": [
+          "s_gao_altdata_2021",
+          "s_gao_proptech_2025"
+        ],
+        "contradicting_source_ids": [
+          "s_freddie_bulletin_2025_1"
+        ],
+        "description": "Automation and alternative data may improve access and efficiency, whereas Freddie Mac's limited comparable-rent policy shows that the secondary-market baseline still uses restrictive eligibility and income-use conditions rather than assuming estimates substitute fully for realized rent. This is not a factual conflict: it reflects a difference between potential general benefits and current risk-limited policy design.",
+        "resolution_status": "resolved",
+        "manager_commentary": "Report access and speed as conditional benefits, not evidence for broad equivalence between rental AVMs and proof of receipts."
+      }
+    ],
+    "source_ids": [
+      "s_freddie_bulletin_2025_1",
+      "s_gao_altdata_2021",
+      "s_gao_proptech_2025",
+      "s_interagency_avm_rule_2024",
+      "s_fhfa_ercf",
+      "s_fhfa_dfast_2025"
+    ],
+    "missing_perspectives": [
+      "Loan-level evidence comparing realized rent, vacancy, delinquency, default, loss severity, and prepayment for AVM-qualified versus receipt-verified loans.",
+      "Validation results for named rental-AVM vendors/models by geography, property type, rent level, data coverage, and market regime.",
+      "Evidence on lender/broker pathway selection, model shopping, fraud controls, and repurchase enforcement.",
+      "Program-specific treatment by Fannie Mae, FHA, VA, USDA, private mortgage insurers, banks, and private-label securitizers.",
+      "Sibling branches should assess borrower burden, access, privacy, and disparate-impact effects; this branch cannot determine the net consumer or equity effect."
+    ],
+    "limitations": [
+      "The policy question is underspecified as to loan purpose, borrower type, owner occupancy, property type, underwriting channel, definition of rental AVM, and whether a lease remains available.",
+      "No credible source located directly tests broad replacement of proof of rental receipts with rental AVMs in U.S. mortgage underwriting.",
+      "The AVM federal rule governs collateral-value AVMs, so its application to rental-income AVMs is a governance analogy rather than direct legal authority.",
+      "No quantitative fiscal estimate is provided because calibration would require loan-level data and a specified risk-retention/guarantee structure."
+    ],
+    "prompt_injection_flags": [],
+    "started_at": "2026-08-19T00:00:00Z",
+    "finished_at": "2026-08-19T00:00:00Z"
+  },
+  "raw_responses": [
+    {
+      "output": [
+        {
+          "id": "ws_04fdbe4b2fc6f08d006a85093d329481a2bfd83de4da446e52",
+          "action": {
+            "type": "search",
+            "queries": [
+              "site:fhfa.gov rental income appraisal rental AVM proof receipts underwriting",
+              "site:selling-guide.fanniemae.com rental income lease appraisal market rent underwriting",
+              "site:guide.freddiemac.com rental income appraisal market rent underwriting",
+              "site:gao.gov automated valuation models mortgage underwriting risk rental income"
+            ],
+            "query": "site:fhfa.gov rental income appraisal rental AVM proof receipts underwriting"
+          },
+          "status": "completed",
+          "type": "web_search_call"
+        },
+        {
+          "id": "ws_04fdbe4b2fc6f08d006a850941bde881a2af144590bff51611",
+          "action": {
+            "type": "search",
+            "queries": [
+              "site:ecfr.gov \"Quality Control Standards for Automated Valuation Models\" 2024",
+              "site:federalregister.gov 89 FR 64538 quality control standards automated valuation models",
+              "site:fhfa.gov Enterprise Regulatory Capital Framework credit risk stress capital 2025",
+              "site:fhfa.gov renter income investment property rental income underwriting"
+            ],
+            "query": "site:ecfr.gov \"Quality Control Standards for Automated Valuation Models\" 2024"
+          },
+          "status": "completed",
+          "type": "web_search_call"
+        },
+        {
+          "id": "ws_04fdbe4b2fc6f08d006a8509453ddc81a2a0ea226a0e969414",
+          "action": {
+            "type": "open_page",
+            "url": "https://guide.freddiemac.com/app/guide/section/5306.1"
+          },
+          "status": "completed",
+          "type": "web_search_call"
+        },
+        {
+          "id": "ws_04fdbe4b2fc6f08d006a85094771d881a2a2250e52a807f87d",
+          "action": {
+            "type": "open_page",
+            "url": "https://guide.freddiemac.com/ci/okcsFattach/get/1009804_7"
+          },
+          "status": "completed",
+          "type": "web_search_call"
+        },
+        {
+          "id": "msg_04fdbe4b2fc6f08d006a850949ed0881a2bd018f905090d920",
+          "content": [
+            {
+              "annotations": [],
+              "text": "{\"branch\":\"financial_sustainability\",\"agent_name\":\"Financial Sustainability Researcher\",\"status\":\"completed\",\"summary\":\"The relevant baseline is narrower than a general replacement of rent receipts with rental AVMs: Freddie Mac already permits appraisal/comparable-rent documentation only for defined newly acquired, currently unrented properties and applies limits on how projected net rent may qualify a borrower. Evidence supports potential processing and access benefits from alternative/automated underwriting inputs, but does not establish that rental AVMs alone predict realized rental cash flow or default performance well enough to replace receipts broadly. A broader policy could create correlated underwriting error, adverse selection, and taxpayer/guarantor exposure unless it is bounded, independently validated, monitored by cohort, and subject to automatic rollback triggers.\",\"claims\":[{\"claim_id\":\"c1\",\"text\":\"A limited form of market-rent documentation is already current Freddie Mac policy, but it is not a broad authorization to replace realized rent receipts for all borrowers. For certain non-subject investment properties purchased within 45 days of the note date and not yet rented, Freddie Mac allows Form 72 or Form 1000 comparable-rent documentation; net rent generally may only offset the monthly payment unless a borrower has at least one year of investment-property management experience.\",\"claim_type\":\"fact\",\"why_it_matters\":\"This is a materially narrower risk posture than using an AVM to substantiate income on occupied properties. It recognizes that no lease or receipts exist for a newly acquired vacant property while limiting incremental repayment capacity credit for inexperienced landlords.\",\"manager_implication\":\"Frame any proposed expansion as a departure from an existing, constrained exception. Preserve or tighten eligibility, occupancy/lease-status, seasoning, and income-use limits rather than describing the proposal as routine current practice.\",\"supporting_source_ids\":[\"s_freddie_bulletin_2025_1\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.95,\"geographic_scope\":\"United States; Freddie Mac single-family seller requirements\",\"applicable_period\":\"Effective February 2025; source accessed 2026-08-19\",\"material_limitations\":[\"This source establishes policy requirements, not loan-performance effects.\",\"The question does not specify investor, product, property type, or whether AVM means a proprietary rent-estimate model or appraisal comparable-rent schedule.\"],\"originating_agent\":\"Financial Sustainability Researcher\"},{\"claim_id\":\"c2\",\"text\":\"The principal durability risk of a broader rental-AVM substitution is measurement error in projected rent being converted into qualifying income: an overstated estimate can lower the effective debt burden used in underwriting even when the property ultimately rents more slowly, at a lower rate, or incurs higher vacancy and operating costs. This risk is likely to be concentrated where rental comparables are sparse or nonrepresentative, and it can become correlated across borrowers if a common model systematically misses a market downturn.\",\"claim_type\":\"synthesis\",\"why_it_matters\":\"The loss channel is not merely an individual documentation error. If standardized estimates are optimistic in the same locations or property segments, originations may be jointly weakened just before rents soften, increasing defaults and loss severity for lenders, guarantors, or taxpayers.\",\"manager_implication\":\"Do not treat an AVM estimate as equivalent to realized cash flow absent out-of-sample validation. Require confidence intervals or coverage thresholds, geographic/property-type exclusions, conservative rent haircuts, explicit vacancy/expense assumptions, and periodic back-testing against actual leases, collections, and defaults.\",\"supporting_source_ids\":[\"s_freddie_bulletin_2025_1\",\"s_gao_proptech_2025\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"moderate\",\"confidence\":0.82,\"geographic_scope\":\"United States\",\"applicable_period\":\"Current policy baseline and 5-to-10-year design horizon\",\"material_limitations\":[\"No located official study directly estimates default effects of substituting rental AVMs for rent receipts.\",\"GAO's discussion concerns property-value AVMs and automated underwriting generally, not rental-income AVMs specifically.\"],\"originating_agent\":\"Financial Sustainability Researcher\"},{\"claim_id\":\"c3\",\"text\":\"Automation and alternative data can reduce processing friction and may improve access or risk prediction when they identify information not captured in conventional underwriting, but GAO characterizes those benefits as potential rather than demonstrated for a particular rent-estimation policy. GAO also reports that alternative-data use in mortgage underwriting was limited in the period it examined, and that access and pricing effects depend on whether the data improve qualification and default-risk prediction.\",\"claim_type\":\"fact\",\"why_it_matters\":\"Faster underwriting and fewer documentation burdens are plausible advantages, particularly where conventional records are unavailable, but they do not by themselves demonstrate safe risk expansion or lower taxpayer exposure.\",\"manager_implication\":\"Require a pilot evaluation with a matched receipt/lease-documented comparison group and pre-specified performance measures before granting full qualifying-income credit. Separate time-to-close and approval-rate gains from repayment-performance evidence.\",\"supporting_source_ids\":[\"s_gao_altdata_2021\",\"s_gao_proptech_2025\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"moderate\",\"confidence\":0.9,\"geographic_scope\":\"United States mortgage underwriting\",\"applicable_period\":\"GAO data years 2016-2020; report published 2021 and 2025\",\"material_limitations\":[\"Alternative data such as tenants' payment histories are distinct from a model's estimate of future rental income.\",\"GAO did not test rental-AVM underwriting performance.\"],\"originating_agent\":\"Financial Sustainability Researcher\"},{\"claim_id\":\"c4\",\"text\":\"Adverse selection and moral hazard are credible design risks if projected-rent underwriting is more permissive than receipt-based underwriting. Borrowers, brokers, and sellers with properties whose expected realized rents are weak relative to model estimates would have the strongest incentive to use the AVM pathway; originators may retain less incentive to verify performance if credit risk is transferred to a secondary-market guarantor. Freddie Mac's existing constraints\u2014recent acquisition, no available lease, borrower housing-history condition, and limits on using net rent beyond payment offset for inexperienced landlords\u2014function as partial guards against those incentives.\",\"claim_type\":\"interpretation\",\"why_it_matters\":\"The proposal could shift selection toward the loans for which the model is least informative, while the resulting losses may be dispersed through securitization or public backstops.\",\"manager_implication\":\"Make the AVM path a controlled exception rather than an applicant-selected, universally more favorable option. Require lender representations and repurchase exposure for noncompliance; prohibit estimate shopping; use independent or standardized models; retain audit files; and apply differentiated caps/haircuts for inexperienced landlords and higher-risk segments.\",\"supporting_source_ids\":[\"s_freddie_bulletin_2025_1\",\"s_fhfa_ercf\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"moderate\",\"confidence\":0.8,\"geographic_scope\":\"United States; secondary-market mortgage finance\",\"applicable_period\":\"Current baseline and 5-to-10-year design horizon\",\"material_limitations\":[\"This is an incentive-based inference rather than a measured causal estimate of adverse selection under rental AVMs.\",\"Whether risk is retained by a lender, insurer, GSE, private investor, or taxpayer depends on the program channel.\"],\"originating_agent\":\"Financial Sustainability Researcher\"},{\"claim_id\":\"c5\",\"text\":\"Existing federal AVM quality-control rules do not directly validate rental-income AVMs. The 2024 interagency rule applies to AVMs used to determine the value of a consumer principal dwelling serving as mortgage collateral and requires controls for confidence, data manipulation, conflicts, random testing, and nondiscrimination. Those safeguards are highly relevant by analogy, but a rental-income AVM needs its own governance because its target is expected income rather than collateral value and may cover transactions outside the rule's scope.\",\"claim_type\":\"fact\",\"why_it_matters\":\"A policy designer cannot assume that compliance with collateral-AVM controls establishes reliability of projected rental income for ability-to-repay underwriting.\",\"manager_implication\":\"Adopt an explicit rental-AVM model-risk standard: target-definition and data-lineage documentation; independent validation; drift and error monitoring; random file review against signed leases and receipts when available; manipulation controls; fair-lending testing; vendor-change approval; and a manual-review override/escalation process.\",\"supporting_source_ids\":[\"s_interagency_avm_rule_2024\",\"s_gao_proptech_2025\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.94,\"geographic_scope\":\"United States\",\"applicable_period\":\"Rule effective 2025-10-01; accessed 2026-08-19\",\"material_limitations\":[\"The rule is limited to collateral-value AVMs and principally to consumer principal-dwelling collateral; it is not a rental-income underwriting rule.\",\"Transferability to investment-property or non-owner-occupied transactions is an analogy, not a legal conclusion.\"],\"originating_agent\":\"Financial Sustainability Researcher\"},{\"claim_id\":\"c6\",\"text\":\"For loans ultimately sold to the Enterprises, policy expansion has fiscal relevance even without a defensible single-point cost estimate. FHFA's capital framework is designed for safety and soundness through the cycle and includes granular credit-risk capital, countercyclical elements, buffers, and risk transfer; FHFA also requires annual severely adverse stress testing to identify potential sources of loss. A rental-AVM policy would therefore require separate cohort identification and stress assumptions rather than being assumed neutral within existing capital calibration.\",\"claim_type\":\"fact\",\"why_it_matters\":\"If the policy changes loan-selection or default behavior, existing capital and stress results may not capture the new exposure unless the data field, model treatment, and stress scenarios explicitly distinguish AVM-qualified loans.\",\"manager_implication\":\"Before scaling, require the relevant guarantor or insurer to report AVM-path volume, estimated-versus-realized rent error, delinquency/default/prepayment, losses, geographic/property concentration, and performance by borrower and lender cohort. Stress scenarios should include rent declines, vacancy increases, house-price declines, rate/payment shocks where applicable, and model-error correlation; establish expansion, pause, and sunset triggers tied to those indicators.\",\"supporting_source_ids\":[\"s_fhfa_ercf\",\"s_fhfa_dfast_2025\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.91,\"geographic_scope\":\"United States; Fannie Mae and Freddie Mac context\",\"applicable_period\":\"Current framework; 5-to-10-year policy horizon\",\"material_limitations\":[\"FHFA materials do not assess rental-AVM policy directly.\",\"This does not quantify taxpayer exposure or establish that a given design would fail a stress test.\"],\"originating_agent\":\"Financial Sustainability Researcher\"},{\"claim_id\":\"c7\",\"text\":\"The central empirical question remains unresolved: the located evidence does not establish whether a specified rental AVM, after haircuts and controls, predicts realized lease income and mortgage performance as well as\u2014or sufficiently close to\u2014proof of rental receipts for the intended borrower/property population. Results will depend on the model's data coverage, refresh rate, definition of rent, treatment of concessions and vacancy, local market liquidity, borrower experience, loan leverage, and the investor or guarantor channel.\",\"claim_type\":\"synthesis\",\"why_it_matters\":\"Without this validation, claims of either safety or excessive risk are conditional. A nationwide permanent expansion would be relying on untested calibration rather than demonstrated equivalence.\",\"manager_implication\":\"Explore only as a staged pilot or narrow exception. Request a transparent validation protocol, historical and prospective holdout testing, adverse-selection analysis, independent model audit, and a pre-registered decision rule for continuation, tightening, or termination.\",\"supporting_source_ids\":[\"s_gao_altdata_2021\",\"s_gao_proptech_2025\",\"s_freddie_bulletin_2025_1\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.96,\"geographic_scope\":\"United States\",\"applicable_period\":\"Current evidence base\",\"material_limitations\":[\"Evidence gap is specific to rental-income AVMs replacing receipts; it does not imply all automated underwriting or comparable-rent analysis lacks value.\"],\"originating_agent\":\"Financial Sustainability Researcher\"}],\"discovered_sources\":[{\"source_id\":\"s_freddie_bulletin_2025_1\",\"title\":\"Freddie Mac Guide Bulletin 2025-1: Selling Updates\",\"url\":\"https://guide.freddiemac.com/ci/okcsFattach/get/1009804_7\",\"publisher\":\"Freddie Mac\",\"author\":null,\"publication_date\":\"2025-02-12\",\"access_date\":\"2026-08-19\",\"source_type\":\"agency_guidance\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"For certain recently acquired, currently unrented non-subject investment properties, Form 72 or Form 1000 may document and calculate rent; the property must have been purchased within 45 days, each borrower must currently own or rent a primary residence, and net rent generally may only offset the payment unless a borrower has one year of investment-property management experience. The bulletin also states that sellers must analyze comparable rent data to support rental-income stability.\",\"metadata_status\":\"validated\",\"synthetic\":false,\"retrieved_by\":[\"Financial Sustainability Researcher\"],\"used_by\":[\"c1\",\"c2\",\"c4\",\"c7\"],\"supports_claim_ids\":[\"c1\",\"c2\",\"c4\",\"c7\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_gao_altdata_2021\",\"title\":\"Mortgage Lending: Use of Alternative Data Is Limited but Has Potential Benefits (GAO-22-104380)\",\"url\":\"https://www.gao.gov/products/gao-22-104380\",\"publisher\":\"U.S. Government Accountability Office\",\"author\":null,\"publication_date\":\"2021-11-16\",\"access_date\":\"2026-08-19\",\"source_type\":\"government_report\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"GAO found that alternative data may expand access and improve pricing if it improves default-risk prediction, but outcomes depend on whether the data help consumers qualify and predict risk. GAO also identifies fair-lending and privacy risks and reports limited use of alternative data in the period reviewed.\",\"metadata_status\":\"validated\",\"synthetic\":false,\"retrieved_by\":[\"Financial Sustainability Researcher\"],\"used_by\":[\"c3\",\"c7\"],\"supports_claim_ids\":[\"c3\",\"c7\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_gao_proptech_2025\",\"title\":\"Property Technology for Homebuying: Products Present Benefits and Risks Amid Evolving Federal Oversight (GAO-25-107201)\",\"url\":\"https://files.gao.gov/reports/GAO-25-107201/index.html\",\"publisher\":\"U.S. Government Accountability Office\",\"author\":null,\"publication_date\":\"2025-09-18\",\"access_date\":\"2026-08-19\",\"source_type\":\"government_report\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"GAO reports that automated underwriting tools may speed document review and that alternative data may improve risk prediction and access, but describes these as potential benefits. It also documents differing company approaches to AI governance and notes FHFA examinations of Enterprise models.\",\"metadata_status\":\"validated\",\"synthetic\":false,\"retrieved_by\":[\"Financial Sustainability Researcher\"],\"used_by\":[\"c2\",\"c3\",\"c5\",\"c7\"],\"supports_claim_ids\":[\"c2\",\"c3\",\"c5\",\"c7\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_interagency_avm_rule_2024\",\"title\":\"Quality Control Standards for Automated Valuation Models\",\"url\":\"https://public-inspection.federalregister.gov/2024-16197.pdf\",\"publisher\":\"Office of the Comptroller of the Currency, Federal Reserve Board, FDIC, NCUA, CFPB, and FHFA\",\"author\":null,\"publication_date\":\"2024-08-07\",\"access_date\":\"2026-08-19\",\"source_type\":\"regulation\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"The final rule requires mortgage originators and secondary-market issuers using covered collateral AVMs to maintain controls designed to ensure confidence in estimates, protect against data manipulation, seek to avoid conflicts, require random testing and review, and comply with nondiscrimination laws. It applies to AVMs determining the value of principal-dwelling collateral, not rental-income estimates.\",\"metadata_status\":\"validated\",\"synthetic\":false,\"retrieved_by\":[\"Financial Sustainability Researcher\"],\"used_by\":[\"c5\"],\"supports_claim_ids\":[\"c5\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_fhfa_ercf\",\"title\":\"Enterprise Capital Requirements\",\"url\":\"https://www.fhfa.gov/supervision/fannie-mae-and-freddie-mac/capital-requirements\",\"publisher\":\"Federal Housing Finance Agency\",\"author\":null,\"publication_date\":null,\"access_date\":\"2026-08-19\",\"source_type\":\"agency_guidance\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"FHFA describes the Enterprise Regulatory Capital Framework as a going-concern framework for stability and liquidity across the economic cycle, particularly under financial stress. It includes risk-based and leverage requirements, capital buffers, granular credit-risk requirements, a countercyclical adjustment, and credit-risk-transfer treatment.\",\"metadata_status\":\"validated\",\"synthetic\":false,\"retrieved_by\":[\"Financial Sustainability Researcher\"],\"used_by\":[\"c4\",\"c6\"],\"supports_claim_ids\":[\"c4\",\"c6\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_fhfa_dfast_2025\",\"title\":\"2025 Dodd-Frank Act Stress Test Results - Severely Adverse Scenario\",\"url\":\"https://www.fhfa.gov/reports/stress-tests-report/2025\",\"publisher\":\"Federal Housing Finance Agency\",\"author\":null,\"publication_date\":\"2025-08-15\",\"access_date\":\"2026-08-19\",\"source_type\":\"government_report\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"FHFA requires Fannie Mae and Freddie Mac to conduct annual stress tests to assess whether they have capital to absorb losses under severely adverse economic conditions; the tests provide information on potential sources of losses, though Enterprise internal models and management actions can differ.\",\"metadata_status\":\"validated\",\"synthetic\":false,\"retrieved_by\":[\"Financial Sustainability Researcher\"],\"used_by\":[\"c6\"],\"supports_claim_ids\":[\"c6\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null}],\"country_comparisons\":[],\"contradictions\":[{\"contradiction_id\":\"x1\",\"claim_id\":\"c3\",\"supporting_source_ids\":[\"s_gao_altdata_2021\",\"s_gao_proptech_2025\"],\"contradicting_source_ids\":[\"s_freddie_bulletin_2025_1\"],\"description\":\"Automation and alternative data may improve access and efficiency, whereas Freddie Mac's limited comparable-rent policy shows that the secondary-market baseline still uses restrictive eligibility and income-use conditions rather than assuming estimates substitute fully for realized rent. This is not a factual conflict: it reflects a difference between potential general benefits and current risk-limited policy design.\",\"resolution_status\":\"resolved\",\"manager_commentary\":\"Report access and speed as conditional benefits, not evidence for broad equivalence between rental AVMs and proof of receipts.\"}],\"source_ids\":[\"s_freddie_bulletin_2025_1\",\"s_gao_altdata_2021\",\"s_gao_proptech_2025\",\"s_interagency_avm_rule_2024\",\"s_fhfa_ercf\",\"s_fhfa_dfast_2025\"],\"missing_perspectives\":[\"Loan-level evidence comparing realized rent, vacancy, delinquency, default, loss severity, and prepayment for AVM-qualified versus receipt-verified loans.\",\"Validation results for named rental-AVM vendors/models by geography, property type, rent level, data coverage, and market regime.\",\"Evidence on lender/broker pathway selection, model shopping, fraud controls, and repurchase enforcement.\",\"Program-specific treatment by Fannie Mae, FHA, VA, USDA, private mortgage insurers, banks, and private-label securitizers.\",\"Sibling branches should assess borrower burden, access, privacy, and disparate-impact effects; this branch cannot determine the net consumer or equity effect.\"],\"limitations\":[\"The policy question is underspecified as to loan purpose, borrower type, owner occupancy, property type, underwriting channel, definition of rental AVM, and whether a lease remains available.\",\"No credible source located directly tests broad replacement of proof of rental receipts with rental AVMs in U.S. mortgage underwriting.\",\"The AVM federal rule governs collateral-value AVMs, so its application to rental-income AVMs is a governance analogy rather than direct legal authority.\",\"No quantitative fiscal estimate is provided because calibration would require loan-level data and a specified risk-retention/guarantee structure.\"],\"prompt_injection_flags\":[],\"error\":null,\"started_at\":\"2026-08-19T00:00:00Z\",\"finished_at\":\"2026-08-19T00:00:00Z\"}",
+              "type": "output_text",
+              "logprobs": []
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message",
+          "phase": "final_answer"
+        }
+      ],
+      "usage": {
+        "requests": 1,
+        "input_tokens": 41091,
+        "input_tokens_details": {
+          "cache_write_tokens": 8021,
+          "cached_tokens": 0
+        },
+        "output_tokens": 4699,
+        "output_tokens_details": {
+          "reasoning_tokens": 293
+        },
+        "total_tokens": 45790,
+        "request_usage_entries": []
+      },
+      "response_id": "resp_04fdbe4b2fc6f08d006a85093c849c81a2ab12aabb641d0844",
+      "request_id": "req_95f529b16b3843cdb34f33593c1fbb79"
+    }
+  ],
+  "usage": {
+    "requests": 1,
+    "input_tokens": 41091,
+    "cached_input_tokens": 0,
+    "cache_write_tokens": 8021,
+    "output_tokens": 4699,
+    "reasoning_tokens": 293,
+    "total_tokens": 45790
+  },
+  "usage_by_response": [
+    {
+      "requests": 1,
+      "input_tokens": 41091,
+      "cached_input_tokens": 0,
+      "cache_write_tokens": 8021,
+      "output_tokens": 4699,
+      "reasoning_tokens": 293,
+      "total_tokens": 45790
+    }
+  ],
+  "response_ids": [
+    "resp_04fdbe4b2fc6f08d006a85093c849c81a2ab12aabb641d0844"
+  ]
+}

@@ -1,0 +1,608 @@
+{
+  "report_id": "req-b1abad6c1788-report",
+  "title": "Potential Consequences of GSE Purchase and Guarantee of Manufactured-Housing Chattel Loans",
+  "executive_summary": "The policy counterfactual is a new Fannie Mae and/or Freddie Mac channel to purchase, securitize, or guarantee loans secured by manufactured homes as personal property rather than real estate. This is not a documented feature of current Enterprise Duty to Serve plans, which focus on real-property manufactured-home lending and related community financing. Federal law, regulation, and charter language appear to provide a possible pathway, but not a mandate or automatic authority for a broad nationwide program. FHFA conservatorship and safety-and-soundness oversight would remain decisive.\n\nThe favorable case is conditional. A credible GSE execution could give lenders a more dependable funding outlet, encourage standardized underwriting and servicing, attract entrants, and increase competitive pressure on pricing or availability. These effects could benefit households for whom chattel financing is the practical route to manufactured-home ownership, including some lower-income and rural borrowers. But no supplied evidence estimates the effect of an actual GSE chattel guarantee on rates, approvals, volumes, borrower welfare, capital, or taxpayer exposure. The observed difference between chattel and mortgage pricing is not a reliable estimate of savings because the products and borrowers differ materially.\n\nThe central risk is that public-backed liquidity would scale a product whose collateral, title, repossession, land-tenure, servicing, and consumer-protection conditions differ substantially from mortgage lending and vary by state. Prior Enterprise chattel pilots reportedly failed to meet intended outcomes in part because data were insufficient; FHFA identifies underwriting, risk-management, and securitization infrastructure as prerequisites. A scale-first program could therefore misprice credit risk, concentrate losses in vulnerable communities, permit lender or retailer-linked channels to retain funding gains, and steer mortgage-eligible households into costlier chattel debt.\n\nThe decision implication is not a supported case for immediate nationwide deployment. The record supports a tightly bounded, FHFA-approved pilot only if it is paired with state-level legal-operational readiness, enforceable consumer-protection overlays, independent loan-level data, conservative risk limits, risk sharing, and pre-specified expansion and termination gates. A decision to scale should depend on demonstrated pass-through, fair access, servicing performance, recoveries, and stress-tested capital adequacy.",
+  "sections": [
+    {
+      "section_id": "s1",
+      "title": "Policy baseline and the relevant counterfactual",
+      "paragraphs": [
+        {
+          "paragraph_id": "s1p1",
+          "text": "Neither Enterprise is publicly documented as currently operating a Duty to Serve chattel-loan purchase or guarantee channel. The available 2025\u20132027 plans instead emphasize manufactured-home lending involving real property and community-financing activity. A chattel program would consequently be a new product, servicing, data, and capital-management intervention rather than an incremental extension of an established Enterprise execution. That distinction matters because anticipated benefits cannot safely be inferred from the Enterprises\u2019 conventional mortgage platforms.",
+          "citation_ids": [
+            "s_current_plans",
+            "s_fannie_2025_plan",
+            "s_freddie_2025_plan"
+          ],
+          "claim_ids": [
+            "rc1"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s1p2",
+          "text": "Federal Duty to Serve law and regulation, together with Enterprise charter language, provide a possible route for personal-property manufactured-home activity, but they do not require broad chattel acquisitions or guarantees. Product permissibility is therefore separate from FHFA approval of a particular guarantee, security, seller-servicer framework, or nationwide operating model. The proposed FHFA rule referenced in the evidence package is not final policy, and charter language does not resolve every question associated with lien, leasehold, repossession, servicing, or securitization structures.",
+          "citation_ids": [
+            "s_dts_statute",
+            "s_dts_rule",
+            "s_dts_fact_sheet",
+            "s_fannie_charter",
+            "s_freddie_charter",
+            "s_fhfa_proposed_rule"
+          ],
+          "claim_ids": [
+            "rc2"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s1p3",
+          "text": "Because the Enterprises remain under conservatorship, FHFA safety-and-soundness oversight is a binding practical constraint even if a structure is legally available. FHFA could condition, narrow, defer, or reject activity based on risk, capital, liquidity, operational readiness, and mission considerations. The supplied record does not identify a PSPA term that independently authorizes or bars chattel purchases, so the more defensible baseline is supervisory discretion and product-specific review rather than a simple statutory yes-or-no conclusion.",
+          "citation_ids": [
+            "s_capital_conservatorship",
+            "s_current_plans",
+            "s_treasury_pspa_2025"
+          ],
+          "claim_ids": [
+            "rc3"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        }
+      ]
+    },
+    {
+      "section_id": "s2",
+      "title": "Potential liquidity, competition, and affordability effects",
+      "paragraphs": [
+        {
+          "paragraph_id": "s2p1",
+          "text": "The strongest favorable mechanism is indirect: a dependable GSE purchase or guarantee execution could improve lender funding liquidity, establish common loan standards, and lower barriers to entry or expansion by lenders that otherwise retain chattel credit in portfolio. If lenders compete for borrowers and can reliably transfer qualifying loans, part of a funding or capital benefit could be passed through as lower annual percentage rates, lower fees, more stable terms, or greater approval availability. This is plausible over a five- to ten-year horizon, particularly where financing options are thin, but each link\u2014execution, lender response, competition, and borrower pass-through\u2014must occur for households to benefit.",
+          "citation_ids": [
+            "s_fhfa_proposed_rule",
+            "s_urban_role",
+            "s_urban_climate"
+          ],
+          "claim_ids": [
+            "rc4"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s2p2",
+          "text": "The record does not support a numerical affordability forecast. Historical differences between chattel-loan and mortgage pricing reflect differences in borrower risk, collateral, land tenure, loan terms, fees, and underwriting, rather than the isolated absence of a GSE guarantee. Treating the reported 4.4-percentage-point gap as expected pass-through would conflate unlike products and overstate confidence. Before setting targets for guarantee fees, borrower savings, or volumes, policymakers would need matched loan-level pricing and performance analysis that compares otherwise similar transactions.",
+          "citation_ids": [
+            "s_urban_challenges",
+            "s_urban_climate"
+          ],
+          "claim_ids": [
+            "rc5"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s2p3",
+          "text": "Second-order market effects could be beneficial or adverse. Standardized GSE eligibility may improve data discipline and enable refinance or secondary-market options that are currently limited. Conversely, lenders with established retailer or captive channels may capture most of the execution benefit, preserve margins, or use additional liquidity to expand originations without commensurate improvements in terms. The program\u2019s policy value should therefore be assessed through observed borrower APRs, fees, approvals, lender participation, concentration, and refinancing outcomes rather than purchase volume alone.",
+          "citation_ids": [
+            "s_urban_role",
+            "s_urban_climate",
+            "s_fhfa_proposed_rule"
+          ],
+          "claim_ids": [
+            "rc4",
+            "rc9"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        }
+      ]
+    },
+    {
+      "section_id": "s3",
+      "title": "Credit, collateral, and taxpayer-risk consequences",
+      "paragraphs": [
+        {
+          "paragraph_id": "s3p1",
+          "text": "Chattel credit risk cannot be assumed to resemble risk on manufactured-home mortgages secured by real property. Personal-property title, lien perfection, disposition, land tenure, and repossession procedures can vary materially by state and transaction. A failure in any of these operational links can lower recoveries, increase loss severity, delay enforcement, impair servicer performance, and ultimately weaken investor confidence in guaranteed securities. Product design should therefore segment loans by title and land-tenure status rather than treat \u201cmanufactured housing\u201d as a single collateral category.",
+          "citation_ids": [
+            "s_fannie_titling",
+            "s_fannie_legal_requirements",
+            "s_freddie_faq",
+            "s_fhfa_mh_support"
+          ],
+          "claim_ids": [
+            "rc7"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s3p2",
+          "text": "Prior Enterprise chattel pilots reportedly did not achieve their intended outcomes, with insufficient industry data identified as a material constraint. FHFA has identified data, underwriting, risk management, and securitization infrastructure as prerequisites for broader activity. This history does not prove that a redesigned program would fail, but it materially weakens the case for scale before the underlying data and operating problems are resolved. A new guarantee could otherwise create a feedback loop in which initially understated losses lead to inadequate pricing, unexpected Enterprise capital demands, and later retrenchment that harms both borrowers and lenders.",
+          "citation_ids": [
+            "s_fhfa_proposed_rule",
+            "s_freddie_prior_plan",
+            "s_freddie_2023_chattel"
+          ],
+          "claim_ids": [
+            "rc6"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s3p3",
+          "text": "Private-label securitization provides limited evidence that some chattel collateral can be assembled and sold to investors, but it does not establish market-wide expected losses, loss severities, guarantee-fee adequacy, or resilience in a downturn. The supplied performance evidence is selected and issuer-provided, while related FHFA securitization material concerns real-property Enterprise acquisitions rather than chattel credit. As a result, there is no adequate record here for estimating taxpayer exposure or Enterprise capital effects; any such estimate would require independently auditable longitudinal performance and severe-stress modeling.",
+          "citation_ids": [
+            "s_urban_role",
+            "s_fhfa_mh_securitization"
+          ],
+          "claim_ids": [
+            "rc10"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        }
+      ]
+    },
+    {
+      "section_id": "s4",
+      "title": "Consumer, distributional, and market-structure effects",
+      "paragraphs": [
+        {
+          "paragraph_id": "s4p1",
+          "text": "Consumer protection is a first-order issue, not a peripheral compliance matter. The evidence indicates that many chattel transactions may have weaker protections than real-property manufactured-home mortgages in areas including disclosure, anti-steering, lien recording, loss mitigation, and repossession. Public-backed secondary-market liquidity could improve outcomes if eligibility overlays require stronger origination and servicing practices; without those conditions, it could increase the scale of a lower-protection product. Required standards should address transparent pricing, enforceable assignment and lien practices, servicing, loss mitigation, repossession reporting, complaint monitoring, and land-lease risks.",
+          "citation_ids": [
+            "s_urban_personal",
+            "s_freddie_plan",
+            "s_fhfa_proposed_rule"
+          ],
+          "claim_ids": [
+            "rc8"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s4p2",
+          "text": "The distributional case is mixed. Additional liquidity could help lower-income and rural households who rely on manufactured housing and have few financing alternatives. Yet greater availability does not establish fair allocation or net borrower benefit. Concentrated lender and retailer-linked channels may limit pass-through, and households who own land or could become mortgage-eligible may be steered into more expensive chattel credit. Existing racial, ethnic, geographic, and land-tenure disparities could therefore persist or widen unless program eligibility and oversight explicitly test for these patterns.",
+          "citation_ids": [
+            "s_urban_climate",
+            "s_urban_challenges",
+            "s_urban_role"
+          ],
+          "claim_ids": [
+            "rc9"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s4p3",
+          "text": "Monitoring should distinguish access from responsible access. Loan-level reporting should permit assessment of pricing, denials, dealer involvement, loan term, fees, land ownership, community type, refinance availability, delinquency, modifications, repossessions, and post-default outcomes across income, geography, race and ethnicity where lawfully collected and usable, lender, and tenure category. These measures would reveal whether the intervention expands sustainable ownership or merely increases credit penetration and collateral recovery activity in communities with limited bargaining power.",
+          "citation_ids": [
+            "s_urban_personal",
+            "s_urban_climate",
+            "s_fhfa_proposed_rule"
+          ],
+          "claim_ids": [
+            "rc8",
+            "rc9"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        }
+      ]
+    },
+    {
+      "section_id": "s5",
+      "title": "Implementation design, sequencing, and failure modes",
+      "paragraphs": [
+        {
+          "paragraph_id": "s5p1",
+          "text": "A prudent sequence begins with a formal FHFA determination on the proposed transaction structure, followed by a state legal-operational matrix before selecting jurisdictions. That matrix should cover title status, lien perfection, repossession, consumer-credit requirements, taxation, land-lease arrangements, and relevant community or tribal conditions. The record does not contain a 50-state analysis, so nationwide uniformity should not be presumed. Initial eligibility should favor transactions where collateral ownership, lien priority, land tenure, and servicing authority can be verified with high confidence.",
+          "citation_ids": [
+            "s_dts_statute",
+            "s_dts_rule",
+            "s_fannie_titling",
+            "s_fannie_legal_requirements",
+            "s_freddie_faq"
+          ],
+          "claim_ids": [
+            "rc2",
+            "rc7"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s5p2",
+          "text": "The initial program should be a risk-capped pilot rather than routine nationwide securitization. It should use standardized loan-level data; conservative underwriting and pricing; verified collateral and title controls; seller-servicer requirements; consistent loss-mitigation and repossession protocols; independent performance validation; and, where feasible, private risk transfer. Expansion gates should be tied to prespecified measures of delinquency, default, recoveries, loss severity, consumer complaints, fair-lending outcomes, and demonstrated borrower pass-through. Pause or termination triggers are essential because prior pilots and the agency\u2019s own prerequisites indicate substantial unresolved execution risk.",
+          "citation_ids": [
+            "s_fhfa_proposed_rule",
+            "s_freddie_prior_plan",
+            "s_freddie_2023_chattel",
+            "s_capital_conservatorship"
+          ],
+          "claim_ids": [
+            "rc3",
+            "rc6"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s5p3",
+          "text": "Key failure modes include adverse selection into a newly subsidized outlet, inaccurate recovery assumptions, inconsistent state-law execution, retailer-driven steering, weak servicing after default, and a public retreat after losses emerge. Mitigants should be built into eligibility rather than added after volume grows: exclusions or pricing adjustments for poorly controlled tenure and title structures, audit rights, quality-control reviews, standardized consumer disclosures, complaint escalation, servicing enforcement, and transparent public evaluation. The operational burden is substantial, but the alternative\u2014using conventional mortgage controls as a proxy for chattel controls\u2014would disregard the relevant risk differences.",
+          "citation_ids": [
+            "s_fhfa_proposed_rule",
+            "s_urban_personal",
+            "s_fannie_legal_requirements",
+            "s_fhfa_mh_support"
+          ],
+          "claim_ids": [
+            "rc6",
+            "rc7",
+            "rc8"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        }
+      ]
+    },
+    {
+      "section_id": "s6",
+      "title": "Decision implications and evidence agenda",
+      "paragraphs": [
+        {
+          "paragraph_id": "s6p1",
+          "text": "The evidence supports a conditional conclusion: a carefully designed pilot may be justified as a test of whether standardized GSE execution can improve sustainable chattel-credit access without creating uncompensated Enterprise or consumer risk. It does not support immediate nationwide purchase and guarantee activity or a promised interest-rate reduction. The principal deciding assumptions are whether savings are passed through amid market concentration, whether title and recovery operations are reliable across selected jurisdictions, and whether loss experience remains acceptable under stress. Evidence of weak pass-through, steering, poor recoveries, elevated complaints, or adverse distributional outcomes should weaken or reverse a scale-up decision.",
+          "citation_ids": [
+            "s_fhfa_proposed_rule",
+            "s_urban_role",
+            "s_urban_climate",
+            "s_freddie_prior_plan"
+          ],
+          "claim_ids": [
+            "rc4",
+            "rc6",
+            "rc7",
+            "rc9"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s6p2",
+          "text": "Before a scale decision, FHFA and the Enterprises should obtain independently auditable loan-level data spanning originations, pricing, collateral and tenure characteristics, servicing, modifications, repossessions, recoveries, and post-default outcomes. They should commission state-by-state legal and operational analysis, perform matched comparisons of guaranteed and comparable non-guaranteed loans, conduct severe-stress capital and liquidity analysis, and test borrower outcomes and disparate impacts. A comparison group and transparent evaluation protocol are necessary because descriptive evidence cannot identify the causal effect of the GSE channel.",
+          "citation_ids": [
+            "s_fhfa_proposed_rule",
+            "s_urban_challenges",
+            "s_urban_role",
+            "s_fannie_titling"
+          ],
+          "claim_ids": [
+            "rc5",
+            "rc7",
+            "rc10"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        },
+        {
+          "paragraph_id": "s6p3",
+          "text": "For decision-makers, the relevant choice is not simply whether chattel finance deserves support; it is whether a federal housing-finance backstop can add demonstrable consumer value after accounting for risk and alternatives. A pilot that targets clearly documented gaps, preserves mortgage options for eligible borrowers, prices risk conservatively, and makes continuation contingent on independent evidence offers the most defensible path in the present record. Deferral remains warranted if the required legal, data, consumer-protection, and capital foundations cannot be established before commitments become difficult to unwind.",
+          "citation_ids": [
+            "s_current_plans",
+            "s_capital_conservatorship",
+            "s_urban_personal",
+            "s_fhfa_proposed_rule"
+          ],
+          "claim_ids": [
+            "rc1",
+            "rc3",
+            "rc8"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        }
+      ]
+    },
+    {
+      "section_id": "s7",
+      "title": "Conclusion",
+      "paragraphs": [
+        {
+          "paragraph_id": "s7p1",
+          "text": "If Fannie Mae and Freddie Mac began purchasing and guaranteeing chattel loans, the likely consequence would be a consequential restructuring attempt in a largely portfolio-financed market: potentially more liquidity, standardization, and competition, but also new consumer-protection, operational, capital, and public-risk exposures. Benefits are plausible but unproven; risks are concrete enough to require controls before scale. The evidence supports proceeding, if at all, through a narrow FHFA-supervised pilot with enforceable borrower safeguards and evidence-based expansion gates, not through an immediate national commitment.",
+          "citation_ids": [
+            "s_current_plans",
+            "s_fhfa_proposed_rule",
+            "s_urban_role",
+            "s_urban_personal"
+          ],
+          "claim_ids": [
+            "rc1",
+            "rc4",
+            "rc6",
+            "rc8"
+          ],
+          "substantive": true,
+          "revision_note": null,
+          "withheld": false,
+          "withheld_reason": null
+        }
+      ]
+    }
+  ],
+  "decision_matrix": {
+    "criteria": [
+      {
+        "criterion_id": "c1",
+        "name": "Expected borrower access and affordability",
+        "description": "Likely improvement in sustainable access, pricing, and terms relative to the present market.",
+        "scale": "1 = weak or unproven; 5 = strong, demonstrated benefit"
+      },
+      {
+        "criterion_id": "c2",
+        "name": "Safety and soundness",
+        "description": "Ability to control credit, collateral, operational, capital, and taxpayer-related exposure.",
+        "scale": "1 = high uncontrolled risk; 5 = well-controlled risk"
+      },
+      {
+        "criterion_id": "c3",
+        "name": "Consumer protection and equity",
+        "description": "Ability to avoid steering, weak servicing, and unequal distribution of benefits and harms.",
+        "scale": "1 = inadequate safeguards; 5 = robust safeguards and monitoring"
+      },
+      {
+        "criterion_id": "c4",
+        "name": "Implementation feasibility",
+        "description": "Readiness of legal, data, operational, servicing, and supervisory infrastructure.",
+        "scale": "1 = not ready; 5 = ready for implementation"
+      },
+      {
+        "criterion_id": "c5",
+        "name": "Evidence and reversibility",
+        "description": "Strength of evidence, evaluability, and ability to pause or unwind the intervention.",
+        "scale": "1 = weak evidence and difficult to reverse; 5 = strong evidence and readily reversible"
+      }
+    ],
+    "options": [
+      {
+        "option_id": "o1",
+        "name": "Immediate nationwide GSE chattel purchase and guarantee program",
+        "description": "Authorize routine nationwide acquisitions, guarantees, and securitization without a preceding bounded pilot.",
+        "mechanism": "Creates broad secondary-market execution and standardization rapidly.",
+        "expected_benefits": [
+          "Potentially broad lender liquidity",
+          "Faster market standardization",
+          "Possible wider borrower access"
+        ],
+        "expected_costs": [
+          "Large build-out of seller-servicer and data systems",
+          "Potential capital and liquidity demands",
+          "State-specific operational complexity"
+        ],
+        "risks": [
+          "Mispriced defaults and recoveries",
+          "Scaling weaker consumer-protection practices",
+          "Weak pass-through or steering"
+        ],
+        "mitigants": [
+          "Conservative eligibility and pricing",
+          "Enhanced seller-servicer oversight",
+          "Consumer-protection overlays"
+        ],
+        "implementation_requirements": [
+          "FHFA approval and safety-and-soundness review",
+          "Nationwide state-law operational framework",
+          "Auditable performance and capital models"
+        ],
+        "evidence_strength": "weak",
+        "source_ids": [
+          "s_fhfa_proposed_rule",
+          "s_freddie_prior_plan",
+          "s_fannie_titling",
+          "s_urban_role"
+        ]
+      },
+      {
+        "option_id": "o2",
+        "name": "Bounded, FHFA-supervised pilot with expansion gates",
+        "description": "Launch limited activity in legally and operationally ready segments and jurisdictions, with independent evaluation and predefined pause, termination, and scale conditions.",
+        "mechanism": "Tests funding, performance, consumer, and distributional effects before committing to broad execution.",
+        "expected_benefits": [
+          "Generates decision-relevant performance data",
+          "May improve access in selected gaps",
+          "Limits initial Enterprise exposure"
+        ],
+        "expected_costs": [
+          "Slower reach and higher unit implementation cost",
+          "May not immediately alter national market concentration",
+          "Requires intensive monitoring"
+        ],
+        "risks": [
+          "Pilot selection may limit generalizability",
+          "Early lender benefits may not pass through",
+          "Operational failures may still harm borrowers"
+        ],
+        "mitigants": [
+          "Comparison groups and public metrics",
+          "Risk caps and private risk transfer where feasible",
+          "Consumer, servicing, and state-readiness requirements"
+        ],
+        "implementation_requirements": [
+          "Formal FHFA review",
+          "Loan-level data and independent validation",
+          "State legal-operational matrix and expansion gates"
+        ],
+        "evidence_strength": "moderate",
+        "source_ids": [
+          "s_fhfa_proposed_rule",
+          "s_capital_conservatorship",
+          "s_freddie_2023_chattel",
+          "s_urban_personal"
+        ]
+      },
+      {
+        "option_id": "o3",
+        "name": "Defer GSE execution pending foundational evidence and infrastructure",
+        "description": "Do not purchase or guarantee chattel loans until data, state-law analysis, consumer standards, and stress modeling are complete.",
+        "mechanism": "Avoids committing public-backed capacity before risk and pass-through can be assessed.",
+        "expected_benefits": [
+          "Avoids premature risk transfer to Enterprises",
+          "Allows stronger product and legal design",
+          "Preserves option value"
+        ],
+        "expected_costs": [
+          "Delays possible liquidity and access benefits",
+          "Maintains current financing constraints",
+          "May leave market concentration unaddressed"
+        ],
+        "risks": [
+          "Evidence gathering may become open-ended",
+          "Borrowers continue facing existing market conditions",
+          "Private practices may evolve without GSE standards"
+        ],
+        "mitigants": [
+          "Time-limited evidence plan",
+          "Publish readiness milestones",
+          "Coordinate voluntary data standards"
+        ],
+        "implementation_requirements": [
+          "Independent data acquisition",
+          "50-state legal-operational analysis",
+          "Stress, capital, and consumer-impact studies"
+        ],
+        "evidence_strength": "strong",
+        "source_ids": [
+          "s_fhfa_proposed_rule",
+          "s_freddie_prior_plan",
+          "s_fannie_legal_requirements",
+          "s_urban_challenges"
+        ]
+      }
+    ],
+    "scores": {
+      "o1": {
+        "c1": 2,
+        "c2": 1,
+        "c3": 1,
+        "c4": 1,
+        "c5": 1
+      },
+      "o2": {
+        "c1": 3,
+        "c2": 3,
+        "c3": 4,
+        "c4": 3,
+        "c5": 4
+      },
+      "o3": {
+        "c1": 1,
+        "c2": 4,
+        "c3": 3,
+        "c4": 4,
+        "c5": 4
+      }
+    },
+    "caveats": [
+      "Scores are ordinal judgments, not quantified forecasts or cost-benefit estimates.",
+      "Option o2 is preferred only conditionally: its access score is modest because borrower pass-through remains unproven, while its stronger scores reflect containment and learning rather than demonstrated outcomes.",
+      "Option o3 scores highly on risk control and readiness because it avoids new exposure, not because it resolves current borrower constraints.",
+      "No supplied evidence supports numerical estimates of guarantee fees, capital effects, taxpayer exposure, interest-rate reductions, or national loan volume."
+    ]
+  },
+  "source_ids_used": [
+    "s_capital_conservatorship",
+    "s_current_plans",
+    "s_dts_fact_sheet",
+    "s_dts_rule",
+    "s_dts_statute",
+    "s_fannie_2025_plan",
+    "s_fannie_charter",
+    "s_fannie_legal_requirements",
+    "s_fannie_titling",
+    "s_fhfa_mh_securitization",
+    "s_fhfa_mh_support",
+    "s_fhfa_proposed_rule",
+    "s_freddie_2023_chattel",
+    "s_freddie_charter",
+    "s_freddie_faq",
+    "s_freddie_plan",
+    "s_freddie_prior_plan",
+    "s_treasury_pspa_2025",
+    "s_urban_challenges",
+    "s_urban_climate",
+    "s_urban_personal",
+    "s_urban_role"
+  ],
+  "evidence_gaps": [
+    "No defined-program estimates of interest-rate pass-through, loan volume, defaults, recoveries, loss severity, guarantee fees, Enterprise capital effects, or taxpayer exposure.",
+    "No independently auditable nationwide loan-level chattel dataset supporting underwriting, pricing, stress testing, or disparate-impact analysis.",
+    "No 50-state analysis of title, lien perfection, repossession, consumer-credit, tax, and land-lease law.",
+    "No causal evaluation of actual GSE chattel purchase or guarantee activity.",
+    "No full stress-cycle evidence validating private-label chattel securitization performance.",
+    "1 model-supplied citation reference(s) were not present in the upstream source ledger."
+  ],
+  "limitations": [
+    "The FHFA proposed rule cited in the evidence package is not final policy.",
+    "Public-plan evidence concerns documented activity and does not rule out undisclosed or non-DTS transactions.",
+    "Some prior-pilot explanations lack sample sizes, loss distributions, and complete causal documentation.",
+    "Private securitization evidence is selected and issuer-provided and should not be generalized.",
+    "This report is research synthesis, not legal advice; sources require verification before formal reliance.",
+    "Invalid citation references were routed to deterministic validation, bounded re-work, and audit."
+  ],
+  "disclosures": [
+    "The evidence base contains policy and institutional sources as well as descriptive research; it does not establish consensus on program outcomes.",
+    "Program-development narratives, proposed-rule rationale, policy recommendations, and issuer-provided performance information may have incentive or selection limitations.",
+    "Recommendations are conditional on FHFA review, legally valid transaction structures, and evidence generated through implementation."
+  ],
+  "revised": false,
+  "revision_count": 0,
+  "executive_summary_withheld": false,
+  "decision_matrix_withheld": false,
+  "withheld_components": []
+}

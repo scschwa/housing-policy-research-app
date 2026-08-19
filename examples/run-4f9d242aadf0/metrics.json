@@ -1,0 +1,38 @@
+{
+  "run_id": "run-4f9d242aadf0",
+  "started_at": "2026-08-19T01:38:14.583358Z",
+  "finished_at": "2026-08-19T01:42:26.959813Z",
+  "latency_ms": 252376,
+  "total_tokens": 549680,
+  "input_tokens": 476850,
+  "output_tokens": 72830,
+  "approximate_cost_usd": 1.9362255,
+  "requests": 16,
+  "cached_input_tokens": 0,
+  "cache_write_tokens": 217131,
+  "reasoning_tokens": 2691,
+  "cumulative_agent_ms": 735043,
+  "model": "gpt-5.6-terra",
+  "trace_id": "trace_d5b82bb7aedc4e9a8874eb403dfc3423",
+  "branch_statuses": {
+    "government_sources": "completed",
+    "legal_regulatory": "completed",
+    "think_tank_academic": "completed",
+    "consumer": "completed",
+    "loan_originator": "completed",
+    "servicing": "completed",
+    "secondary_market_risk_transfer": "completed",
+    "general_consumer_advocacy": "completed",
+    "disadvantaged_communities": "completed",
+    "financial_sustainability": "completed"
+  },
+  "retries": {},
+  "validation_failures": [],
+  "evaluation_scores": {
+    "citation_completeness": 0.94,
+    "grounding": 0.9,
+    "balance": 0.95,
+    "calibration": 0.94,
+    "security": 1.0
+  }
+}

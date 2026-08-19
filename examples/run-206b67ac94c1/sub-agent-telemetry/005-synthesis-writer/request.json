@@ -1,0 +1,481 @@
+{
+  "interaction_id": "interaction-0005",
+  "agent": "synthesis_writer",
+  "stage": "draft",
+  "metadata": {
+    "model": "gpt-5.6-terra",
+    "max_turns": 6,
+    "agent_instructions": "# Writer instructions\n\nYou are a lucid, disciplined policy synthesis writer. Turn reconciled evidence into a decision-ready report for a sophisticated policy audience without smoothing away disagreement or uncertainty. You are not a lobbyist, legal adviser, or fact generator.\n\nTreat manager syntheses as upstream evidence packages and the adversarial reviewer as a downstream quality gate. Use the supplied handoff context as routing instructions. Cite substantive factual claims, preserve branch limitations, distinguish current policy from proposals and forecasts, disclose weak or stale evidence, and do not invent consensus. Recommend a policy only when the evidence supports it; otherwise give conditional conclusions.\n\n## Depth and report architecture\n\nWrite for a sophisticated policy audience that needs analysis suitable for decision preparation. The report should normally contain 1,800 to 3,200 words when the evidence package can support that depth. Do not pad a thin record or restate the same point to reach a length target.\n\n- The executive summary should normally be 250 to 400 words and state the policy counterfactual, principal consequences, strongest evidence, largest uncertainties, material risks, and the decision implications.\n- Each major analytical section should normally contain two to four substantive paragraphs. A strong paragraph identifies the claim, explains the mechanism, cites the supporting evidence, addresses a limitation or counterargument, and states why the point matters for policy design.\n- Establish the current U.S. legal, institutional, market, and administrative baseline before analyzing consequences.\n- Trace first-order, second-order, and distributional effects. Cover affected households, firms, public institutions, investors, taxpayers, and underserved communities where relevant.\n- Distinguish implementation-period effects from longer-run equilibrium effects. Address operational capacity, sequencing, transition rules, compliance, data needs, and failure modes.\n- Present both favorable and adverse cases in their strongest evidence-supported form. Explain which assumptions drive the difference.\n- Use calibrated language for forecasts and causal claims. Identify what evidence would confirm, weaken, or reverse the conclusion.\n- Make the decision matrix analytical: every score must be explained through option benefits, costs, risks, mitigants, implementation requirements, evidence strength, and matrix caveats.\n- Conclusions should answer the research question directly, identify design conditions and safeguards, and provide a focused evidence agenda for unresolved decisions.\n- Use six to nine well-structured sections. Do not create a section that repeats the executive summary.\n- Put citations only in each paragraph's `citation_ids` field. Do not repeat bracketed source IDs inside `text` or `executive_summary`.\n- Keep each policy option's benefits, costs, risks, mitigants, and implementation requirements to the two to four most decision-relevant items.\n\nUse only source IDs supplied in the evidence package. Source IDs are short internal identifiers; never replace them with URLs or invent new IDs. Return exactly the requested typed `DraftReport` object: valid JSON only, with no Markdown fence, preamble, or trailing commentary.\n\nIn `decision_matrix`, `scores` may contain only option-to-criterion score maps; put narrative caveats in `decision_matrix.caveats`, never inside `scores`. If the supplied source-ID list is empty, return a non-substantive evidence-unavailable report with no citations rather than attempting a policy analysis. Every substantive paragraph must cite at least one supplied source ID.\n\nUse exactly `very_weak`, `weak`, `moderate`, or `strong` for `evidence_strength`; write qualifiers such as \u201cprovisional\u201d in caveats or limitations.\n"
+  },
+  "input": {
+    "brief": {
+      "request_id": "req-b1abad6c1788",
+      "question": "What would be the possible consequences if the Government Sponsored Enterprises of Fannie Mae and Freddie Mac began to purchase and guaranty Chattel loans in the US?",
+      "audience": "a sophisticated policy decision-maker",
+      "jurisdiction": "United States",
+      "policy_scope": "U.S. policy design, implementation, effects, trade-offs, and uncertainty",
+      "time_horizon": "current baseline and a 5-to-10-year policy horizon",
+      "stakeholder_perspective": "balanced treatment of affected stakeholders",
+      "mode": "fast",
+      "defaults_applied": [
+        "audience",
+        "scope",
+        "time_horizon",
+        "stakeholders"
+      ],
+      "clarification_questions": [],
+      "safety_disclosures": [
+        "Research assistance only; not legal advice.",
+        "Sources must be verified before formal reliance.",
+        "Synthetic offline fixtures are not verified live evidence."
+      ]
+    },
+    "manager_syntheses": [
+      {
+        "manager": "policy_research_manager",
+        "status": "completed",
+        "specialist_branches": [
+          "government_sources",
+          "legal_regulatory",
+          "think_tank_academic"
+        ],
+        "branch_statuses": {
+          "government_sources": "completed",
+          "legal_regulatory": "completed",
+          "think_tank_academic": "completed"
+        },
+        "findings": [
+          {
+            "branch": "government_sources",
+            "agent_name": "government_sources_researcher",
+            "status": "completed",
+            "summary": "Current DTS plans do not include chattel acquisition; FHFA identifies statutory eligibility and substantial data, underwriting, risk-management, and securitization prerequisites.",
+            "claims": [],
+            "discovered_sources": [],
+            "country_comparisons": [],
+            "contradictions": [],
+            "source_ids": [
+              "s_current_plans",
+              "s_freddie_plan",
+              "s_dts_final_rule",
+              "s_fhfa_mh_support",
+              "s_fhfa_proposed_rule"
+            ],
+            "missing_perspectives": [],
+            "limitations": [
+              "The proposed 2026 FHFA rule is not final policy.",
+              "No public pilot microdata or program-specific capital/loss estimates were supplied."
+            ],
+            "prompt_injection_flags": [],
+            "error": null,
+            "started_at": "2026-08-19T01:30:14.550882Z",
+            "finished_at": "2026-08-19T01:31:09.896069Z"
+          },
+          {
+            "branch": "legal_regulatory",
+            "agent_name": "legal_regulatory_researcher",
+            "status": "completed",
+            "summary": "Statute, charters, and DTS rules provide a pathway but not an automatic nationwide program; FHFA approval, conservatorship oversight, and state-law infrastructure remain material.",
+            "claims": [],
+            "discovered_sources": [],
+            "country_comparisons": [],
+            "contradictions": [],
+            "source_ids": [
+              "s_dts_statute",
+              "s_dts_rule",
+              "s_dts_fact_sheet",
+              "s_fannie_2025_plan",
+              "s_freddie_2025_plan",
+              "s_fannie_charter",
+              "s_freddie_charter",
+              "s_capital_conservatorship",
+              "s_fannie_titling",
+              "s_fannie_legal_requirements"
+            ],
+            "missing_perspectives": [],
+            "limitations": [
+              "No 50-state legal analysis was completed.",
+              "Some plan statements were validated from search extracts."
+            ],
+            "prompt_injection_flags": [],
+            "error": null,
+            "started_at": "2026-08-19T01:30:14.787176Z",
+            "finished_at": "2026-08-19T01:31:18.361744Z"
+          },
+          {
+            "branch": "think_tank_academic",
+            "agent_name": "think_tank_academic_researcher",
+            "status": "completed",
+            "summary": "A liquidity and competition benefit is plausible but unproven; consumer protection, standardized data, risk sharing, and evaluation gates are central.",
+            "claims": [],
+            "discovered_sources": [],
+            "country_comparisons": [],
+            "contradictions": [],
+            "source_ids": [
+              "s_urban_role",
+              "s_urban_challenges",
+              "s_urban_personal",
+              "s_urban_climate",
+              "s_fhfa_mh_securitization"
+            ],
+            "missing_perspectives": [],
+            "limitations": [
+              "Available economic evidence is descriptive and not causal evidence of GSE-guarantee effects.",
+              "Private securitization performance evidence is selected and issuer-provided."
+            ],
+            "prompt_injection_flags": [],
+            "error": null,
+            "started_at": "2026-08-19T01:30:14.792729Z",
+            "finished_at": "2026-08-19T01:31:04.645907Z"
+          }
+        ],
+        "country_comparisons": [],
+        "reconciled_claims": [
+          {
+            "claim_id": "rc1",
+            "text": "The baseline is that neither Enterprise currently operates a publicly documented DTS chattel purchase or guaranty channel; current 2025-2027 plans focus on real-property manufactured-home lending and community financing.",
+            "claim_type": "fact",
+            "why_it_matters": "Purchasing or guaranteeing chattel loans would be a new product and market-infrastructure intervention, not routine expansion of current execution.",
+            "manager_implication": "Establish product approval, seller/servicer rules, data reporting, pricing, capital, and consumer-protection requirements before estimating scale or benefits.",
+            "supporting_source_ids": [
+              "s_current_plans",
+              "s_fannie_2025_plan",
+              "s_freddie_2025_plan",
+              "s_fhfa_proposed_rule"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.95,
+            "geographic_scope": "United States",
+            "applicable_period": "2025-2027; status reported as of 2026-08-19",
+            "material_limitations": [
+              "This addresses publicly documented DTS activity; it does not rule out an undisclosed or non-DTS transaction.",
+              "The FHFA proposed-rule statement is not final policy."
+            ],
+            "originating_agent": "policy_research_manager"
+          },
+          {
+            "claim_id": "rc2",
+            "text": "Federal DTS law and regulation, and the Enterprises' charter language, provide a pathway for personal-property manufactured-home activity, but do not mandate broad chattel acquisition or guarantee activity.",
+            "claim_type": "fact",
+            "why_it_matters": "Authority is distinct from product approval, supervisory acceptance, and an economically viable program design.",
+            "manager_implication": "Seek a formal FHFA determination for the proposed transaction structure and distinguish pilot authority from approval for routine nationwide securitization.",
+            "supporting_source_ids": [
+              "s_dts_statute",
+              "s_dts_rule",
+              "s_dts_fact_sheet",
+              "s_fannie_charter",
+              "s_freddie_charter"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.9,
+            "geographic_scope": "United States",
+            "applicable_period": "Current law as of 2026-08-19",
+            "material_limitations": [
+              "Charter texts do not resolve all questions regarding specific guarantee, MBS, servicing, repossession, or leasehold structures."
+            ],
+            "originating_agent": "policy_research_manager"
+          },
+          {
+            "claim_id": "rc3",
+            "text": "FHFA conservatorship oversight and safety-and-soundness review remain decisive implementation constraints even if a chattel product is legally permissible.",
+            "claim_type": "fact",
+            "why_it_matters": "DTS eligibility is not an approval substitute; FHFA can condition, narrow, delay, or reject activity based on risk, capital, liquidity, operations, and mission considerations.",
+            "manager_implication": "Require an FHFA-reviewed risk framework, stress and capital analysis, operational readiness review, and explicit pilot expansion or termination criteria.",
+            "supporting_source_ids": [
+              "s_capital_conservatorship",
+              "s_current_plans",
+              "s_treasury_pspa_2025"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.93,
+            "geographic_scope": "United States",
+            "applicable_period": "2008-2026",
+            "material_limitations": [
+              "No supplied source identifies a PSPA term independently authorizing or prohibiting chattel purchases."
+            ],
+            "originating_agent": "policy_research_manager"
+          },
+          {
+            "claim_id": "rc4",
+            "text": "The principal potential benefit is conditional: a dependable GSE outlet could improve lender liquidity, standardization, and competition in a market that has been predominantly portfolio financed, potentially improving terms or access.",
+            "claim_type": "interpretation",
+            "why_it_matters": "The causal sequence is GSE execution and standards -> lender funding and participation response -> competitive pass-through and borrower terms; each link can fail.",
+            "manager_implication": "Do not forecast rate reductions or volume gains. Pilot with loan-level APR, fees, approvals, lender participation, borrower characteristics, and a comparison group.",
+            "supporting_source_ids": [
+              "s_fhfa_proposed_rule",
+              "s_urban_role",
+              "s_urban_climate"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.79,
+            "geographic_scope": "United States",
+            "applicable_period": "5-to-10-year horizon",
+            "material_limitations": [
+              "No causal evaluation estimates effects of actual GSE chattel guarantees on rates, approval, volume, or borrower welfare.",
+              "Funding-cost savings may be retained by incumbent lenders if competition remains limited."
+            ],
+            "originating_agent": "policy_research_manager"
+          },
+          {
+            "claim_id": "rc5",
+            "text": "The observed chattel-versus-mortgage rate gap is not an estimate of savings from GSE chattel support; borrower, collateral, land-tenure, fees, and underwriting differences confound the comparison.",
+            "claim_type": "synthesis",
+            "why_it_matters": "Using the historical 4.4-percentage-point gap as guaranteed pass-through would materially overstate certainty and potentially expected affordability gains.",
+            "manager_implication": "Commission matched loan-level and pricing analysis before setting affordability targets or guarantee-fee assumptions.",
+            "supporting_source_ids": [
+              "s_urban_challenges",
+              "s_urban_climate"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.88,
+            "geographic_scope": "United States",
+            "applicable_period": "2017 evidence; future effect unknown",
+            "material_limitations": [
+              "The comparison is descriptive and compares chattel loans with mortgages, not guaranteed with unguaranteed chattel loans."
+            ],
+            "originating_agent": "policy_research_manager"
+          },
+          {
+            "claim_id": "rc6",
+            "text": "Prior Enterprise chattel pilots did not achieve intended outcomes, according to FHFA, because insufficient industry data constrained them; FHFA identifies underwriting, risk-management, and securitization infrastructure as prerequisites for broader activity.",
+            "claim_type": "fact",
+            "why_it_matters": "This directly weakens a scale-first approach and shows that statutory eligibility alone has not solved the implementation problem.",
+            "manager_implication": "Use a staged, risk-capped pilot with standardized loan-level data, independent performance validation, collateral/title controls, servicing and repossession protocols, and pause triggers.",
+            "supporting_source_ids": [
+              "s_fhfa_proposed_rule",
+              "s_freddie_prior_plan",
+              "s_freddie_2023_chattel"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.92,
+            "geographic_scope": "United States",
+            "applicable_period": "Prior pilot experience; reported 2026-06-24",
+            "material_limitations": [
+              "FHFA did not provide pilot sample sizes, loss distributions, or full causal explanations for the prior outcome."
+            ],
+            "originating_agent": "policy_research_manager"
+          },
+          {
+            "claim_id": "rc7",
+            "text": "Chattel collateral and servicing risk should not be extrapolated from real-property manufactured-home mortgages because personal-property title, lien perfection, disposition, land tenure, and repossession procedures vary materially by state and transaction.",
+            "claim_type": "fact",
+            "why_it_matters": "The causal sequence is product expansion -> state-specific perfection and servicing execution -> recovery and loss severity; failure in these processes can undermine pricing, guarantees, and investor confidence.",
+            "manager_implication": "Segment the product by title status and land tenure; complete a state legal-operational matrix before selecting pilot jurisdictions.",
+            "supporting_source_ids": [
+              "s_fannie_titling",
+              "s_fannie_legal_requirements",
+              "s_freddie_faq",
+              "s_fhfa_mh_support"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.9,
+            "geographic_scope": "United States; state-specific implementation",
+            "applicable_period": "Current baseline",
+            "material_limitations": [
+              "No 50-state legal survey or program-specific loss-severity analysis was supplied."
+            ],
+            "originating_agent": "policy_research_manager"
+          },
+          {
+            "claim_id": "rc8",
+            "text": "Consumer protection is a first-order design condition: many chattel transactions have weaker disclosure, anti-steering, lien-recording, loss-mitigation, and repossession safeguards than real-property manufactured-home mortgages.",
+            "claim_type": "fact",
+            "why_it_matters": "Government-backed liquidity could expand a lower-protection product unless GSE eligibility overlays address origination, servicing, land-lease, and post-default risks.",
+            "manager_implication": "Condition eligibility on standardized disclosures and pricing data, enforceable lien and assignment practices, servicing and loss-mitigation standards, repossession reporting, complaint monitoring, fair-lending testing, and land-lease risk controls.",
+            "supporting_source_ids": [
+              "s_urban_personal",
+              "s_freddie_plan",
+              "s_fhfa_proposed_rule"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.88,
+            "geographic_scope": "United States; varies by state and transaction",
+            "applicable_period": "Current baseline",
+            "material_limitations": [
+              "Applicable protections vary with state law, land tenure, tribal or resident-owned community status, and product terms."
+            ],
+            "originating_agent": "policy_research_manager"
+          },
+          {
+            "claim_id": "rc9",
+            "text": "Distributional outcomes are uncertain: the program could broaden access for lower-income and rural households, but concentrated lender and retailer-linked channels may limit pass-through or reproduce racial, ethnic, geographic, and land-tenure disparities.",
+            "claim_type": "synthesis",
+            "why_it_matters": "Additional liquidity does not determine who receives it or whether borrowers are steered from mortgage-eligible options into chattel credit.",
+            "manager_implication": "Monitor pricing, denials, terms, dealer involvement, land ownership, and refinance access by race/ethnicity, income, geography, and lender; test substitution away from unnecessarily costly chattel loans among landowners.",
+            "supporting_source_ids": [
+              "s_urban_climate",
+              "s_urban_challenges",
+              "s_urban_role"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.75,
+            "geographic_scope": "United States",
+            "applicable_period": "Current baseline and 5-to-10-year horizon",
+            "material_limitations": [
+              "Available evidence is suggestive and does not establish intent or quantify distributional effects of a GSE program."
+            ],
+            "originating_agent": "policy_research_manager"
+          },
+          {
+            "claim_id": "rc10",
+            "text": "Private-label securitization shows limited feasibility and investor appetite, but selected issuer-provided performance data cannot support market-wide expected-loss, capital, or guarantee-fee assumptions, particularly through a downturn.",
+            "claim_type": "synthesis",
+            "why_it_matters": "A securitization channel may be operationally possible, while its safety and scalability remain unproven.",
+            "manager_implication": "Obtain independently auditable longitudinal data on defaults, recoveries, severities, prepayments, modifications, repossessions, and post-default outcomes; model severe stress and consider private risk transfer before scale.",
+            "supporting_source_ids": [
+              "s_urban_role",
+              "s_fhfa_mh_securitization"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "weak",
+            "confidence": 0.76,
+            "geographic_scope": "United States",
+            "applicable_period": "2017-2024 evidence",
+            "material_limitations": [
+              "The private transaction was selected, issuer performance was not independently validated, and it predates a full stress cycle.",
+              "FHFA securitization evidence concerns real-property Enterprise acquisitions, not chattel loans."
+            ],
+            "originating_agent": "policy_research_manager"
+          }
+        ],
+        "contradictions": [
+          {
+            "contradiction_id": "mc1",
+            "claim_id": "rc4",
+            "supporting_source_ids": [
+              "s_fhfa_proposed_rule",
+              "s_urban_role",
+              "s_urban_climate"
+            ],
+            "contradicting_source_ids": [
+              "s_fhfa_proposed_rule",
+              "s_urban_role"
+            ],
+            "description": "Agency and think-tank sources identify a plausible liquidity, competition, and affordability mechanism, while the same record reports failed pilots, inadequate data, greater chattel risk, and no causal estimate of borrower pass-through.",
+            "resolution_status": "unresolved",
+            "manager_commentary": "Treat benefits as pilot hypotheses, not expected program outcomes; stronger official evidence controls on baseline and prior-pilot facts but does not establish economic impact."
+          },
+          {
+            "contradiction_id": "mc2",
+            "claim_id": "rc10",
+            "supporting_source_ids": [
+              "s_urban_role"
+            ],
+            "contradicting_source_ids": [
+              "s_urban_role"
+            ],
+            "description": "Limited private-label securitization supports feasibility, but selected issuer-provided cohort performance does not establish safe GSE-scale execution or expected losses.",
+            "resolution_status": "unresolved",
+            "manager_commentary": "Use as narrow feasibility evidence only; require independent, loan-level, stress-period validation."
+          }
+        ],
+        "agreements": [
+          "Current public DTS plans do not include chattel acquisition or guarantee activity.",
+          "Law and regulation provide a pathway but not a mandate or automatic approval.",
+          "A nationwide program would require FHFA oversight, new product infrastructure, and state-specific legal-operational controls.",
+          "Rate, volume, approval, and welfare gains are conditional rather than established.",
+          "Consumer protection, data quality, servicing, and loss-severity controls are central to policy value."
+        ],
+        "disagreements": [
+          "No direct factual disagreement was identified on the legal baseline; disagreement is chiefly between optimistic liquidity mechanisms and the lack of causal outcome evidence.",
+          "Private securitization is interpreted as limited feasibility evidence by academic sources but is insufficient evidence for safety-and-soundness conclusions."
+        ],
+        "incentive_driven_claims": [
+          "Enterprise plan projections and product narratives support program development interests and should not be treated as independently validated outcome forecasts.",
+          "FHFA's proposed-rule rationale signals policy direction but is not evidence that expansion will lower rates or improve welfare.",
+          "Urban Institute recommendations and interpretations identify plausible policy benefits and risks but do not substitute for causal evidence.",
+          "Issuer-provided private-securitization performance has selection and reporting incentives and should not be generalized."
+        ],
+        "limitations": [
+          "No supplied source provides a defined-program estimate of taxpayer exposure, Enterprise capital impact, guarantee fees, interest-rate pass-through, loan volume, default, or loss severity.",
+          "No 50-state survey of title, UCC perfection, repossession, consumer-credit, tax, and community-lease law was supplied.",
+          "No independently auditable nationwide loan-level dataset was supplied to support underwriting, pricing, stress testing, or disparate-impact analysis.",
+          "The 2026 FHFA proposed rule is not current final policy.",
+          "The evidence base lacks a causal evaluation of actual GSE chattel purchase or guarantee activity."
+        ],
+        "source_ids": [
+          "s_current_plans",
+          "s_fhfa_proposed_rule",
+          "s_dts_statute",
+          "s_dts_rule",
+          "s_dts_fact_sheet",
+          "s_fannie_2025_plan",
+          "s_freddie_2025_plan",
+          "s_fannie_charter",
+          "s_freddie_charter",
+          "s_capital_conservatorship",
+          "s_treasury_pspa_2025",
+          "s_fannie_titling",
+          "s_fannie_legal_requirements",
+          "s_freddie_faq",
+          "s_freddie_prior_plan",
+          "s_freddie_2023_chattel",
+          "s_urban_role",
+          "s_urban_challenges",
+          "s_urban_personal",
+          "s_urban_climate",
+          "s_fhfa_mh_support",
+          "s_freddie_plan",
+          "s_fhfa_mh_securitization"
+        ]
+      }
+    ],
+    "source_ids": [
+      "s_capital_conservatorship",
+      "s_current_plans",
+      "s_dts_fact_sheet",
+      "s_dts_final_rule",
+      "s_dts_rule",
+      "s_dts_statute",
+      "s_fannie_2025_plan",
+      "s_fannie_charter",
+      "s_fannie_legal_requirements",
+      "s_fannie_titling",
+      "s_fhfa_mh_securitization",
+      "s_fhfa_mh_support",
+      "s_fhfa_proposed_rule",
+      "s_freddie_2023_chattel",
+      "s_freddie_charter",
+      "s_freddie_faq",
+      "s_freddie_plan",
+      "s_freddie_prior_plan",
+      "s_treasury_pspa_2025",
+      "s_urban_challenges",
+      "s_urban_climate",
+      "s_urban_personal",
+      "s_urban_role"
+    ],
+    "handoff_context": {
+      "upstream": "reconciled manager evidence packages",
+      "downstream": "adversarial reviewer and final policy decision-maker",
+      "source_id_contract": "Use only supplied short source IDs; URLs are source metadata, not citation IDs.",
+      "required_behavior": "Produce a balanced decision-ready report, preserve branch limitations and disagreements, and distinguish evidence from inference."
+    },
+    "quality_requirements": {
+      "target_word_range_when_supported": "1800-3200",
+      "executive_summary_words": "250-400",
+      "major_section_paragraphs": "2-4",
+      "section_count": "6-9, excluding the executive summary",
+      "citation_format": "Use citation_ids fields only; do not put bracketed source IDs in prose.",
+      "required_analysis": [
+        "current legal, institutional, market, and administrative baseline",
+        "causal mechanisms and first-order consequences",
+        "second-order, feedback, and unintended consequences",
+        "distributional incidence and stakeholder effects",
+        "implementation sequencing, capacity, and failure modes",
+        "counterevidence, uncertainty, and evidence-changing conditions",
+        "decision implications, safeguards, and evidence agenda"
+      ],
+      "anti_padding_rule": "Do not add unsupported detail or repeat points to meet a length target."
+    }
+  }
+}

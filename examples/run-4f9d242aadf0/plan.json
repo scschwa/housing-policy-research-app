@@ -1,0 +1,614 @@
+{
+  "plan_id": "plan-784f3914ba",
+  "brief": {
+    "request_id": "req-b1ee1796a1f1",
+    "question": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+    "audience": "a sophisticated policy decision-maker",
+    "jurisdiction": "United States",
+    "policy_scope": "U.S. policy design, implementation, effects, trade-offs, and uncertainty",
+    "time_horizon": "current baseline and a 5-to-10-year policy horizon",
+    "stakeholder_perspective": "balanced treatment of affected stakeholders",
+    "mode": "fast",
+    "defaults_applied": [
+      "audience",
+      "scope",
+      "time_horizon",
+      "stakeholders"
+    ],
+    "clarification_questions": [],
+    "safety_disclosures": [
+      "Research assistance only; not legal advice.",
+      "Sources must be verified before formal reliance.",
+      "Synthetic offline fixtures are not verified live evidence."
+    ]
+  },
+  "selected_branches": [
+    "government_sources",
+    "legal_regulatory",
+    "think_tank_academic",
+    "consumer",
+    "loan_originator",
+    "servicing",
+    "secondary_market_risk_transfer",
+    "general_consumer_advocacy",
+    "disadvantaged_communities",
+    "financial_sustainability"
+  ],
+  "assignments": [
+    {
+      "assignment_id": "asg-9c6041a7db",
+      "branch": "government_sources",
+      "manager": "policy_research_manager",
+      "objective": "Produce a claim-level record of authoritative public-sector evidence that lets the Policy Research Manager identify the current policy baseline, governing authority, implementation requirements, public evidence, unresolved issues, and contradictions. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Policy Research Manager will reconcile your finding with sibling branches (legal regulatory, think tank academic) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "statutory and regulatory authority",
+        "current agency policy and program baseline",
+        "official policy history and prior pilots",
+        "government empirical analysis and administrative data",
+        "officially documented borrower, market, taxpayer, and implementation effects"
+      ],
+      "out_of_scope": [
+        "general manufactured-housing background without a policy implication",
+        "general industry feedback unless summarized in an official record",
+        "legal conclusions beyond what the cited authority supports",
+        "secondary commentary when the underlying government source is available"
+      ],
+      "preferred_sources": [
+        "statutes, regulations, court opinions, agency orders, Federal Register notices",
+        "FHFA, HUD, CFPB, Treasury, Federal Reserve, GAO, CBO, CRS, and official GSE documents",
+        "official hearings, testimony records, program evaluations, and administrative datasets"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-9831abae96",
+          "text": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+          "purpose": "current law, policy baseline, official analysis, and administrative data",
+          "branch": "government_sources",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-887a09bc36",
+      "branch": "legal_regulatory",
+      "manager": "policy_research_manager",
+      "objective": "Map the governing legal and regulatory constraints and distinguish controlling authority, agency interpretation, proposed policy, and unresolved legal questions. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Policy Research Manager will reconcile your finding with sibling branches (government sources, think tank academic) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "statutes, regulations, charters, conservatorship and PSPA constraints",
+        "FHFA approval, rulemaking, Duty to Serve, and agency authority",
+        "state-law implementation issues where material to feasibility",
+        "legal conditions, procedural requirements, and unresolved interpretations"
+      ],
+      "out_of_scope": [
+        "predicting litigation outcomes without authority or clearly labeled assumptions",
+        "general market or consumer commentary unless it bears on implementation law",
+        "formal legal advice or conclusions outside the cited jurisdiction"
+      ],
+      "preferred_sources": [
+        "U.S. Code, Code of Federal Regulations, Federal Register, agency orders and guidance",
+        "official FHFA, Treasury, HUD, CFPB, GSE, CRS, GAO, and court materials",
+        "reputable legal analysis only when primary authority is unavailable and clearly labeled"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-de90ab0f8d",
+          "text": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+          "purpose": "authority, jurisdiction, legal constraints, and unresolved interpretations",
+          "branch": "legal_regulatory",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-b38f744adf",
+      "branch": "think_tank_academic",
+      "manager": "policy_research_manager",
+      "objective": "Produce transparent empirical and analytical evidence, including contrary findings, that helps the Policy Research Manager assess mechanisms, magnitudes, and uncertainty. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Policy Research Manager will reconcile your finding with sibling branches (government sources, legal regulatory) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "peer-reviewed studies, working papers, think-tank analysis, and transparent models",
+        "causal evidence, descriptive evidence, analogous markets, and methodological limits",
+        "distributional, market, pricing, credit, and consumer-outcome research",
+        "evidence that challenges or qualifies the policy mechanism"
+      ],
+      "out_of_scope": [
+        "treating an analogy as direct evidence about a GSE chattel program",
+        "using a think-tank or industry position as controlling legal authority",
+        "unsupported numerical estimates or consensus claims"
+      ],
+      "preferred_sources": [
+        "peer-reviewed research and transparent working papers",
+        "Urban Institute, academic centers, Federal Reserve research, and methodologically explicit studies",
+        "official datasets used with appropriate causal and measurement caveats"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-bade52e750",
+          "text": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+          "purpose": "empirical evidence, causal identification, models, and contrary research",
+          "branch": "think_tank_academic",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-36b20111bf",
+      "branch": "consumer",
+      "manager": "industry_research_manager",
+      "objective": "Assess borrower-facing consequences, affordability, access, terms, mobility, and consumer risk without treating aggregate access as equivalent to durable consumer benefit. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Industry Research Manager will reconcile your finding with sibling branches (loan originator, servicing, secondary market risk transfer) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "pricing, eligibility, access, loan terms, defaults, repossession, and wealth effects",
+        "consumer protection, disclosure, servicing, and complaint evidence",
+        "differences across borrower types and housing tenure arrangements"
+      ],
+      "out_of_scope": [
+        "legal conclusions, lender strategy, or advocacy claims presented as neutral facts",
+        "unsupported claims that lower rates necessarily improve welfare"
+      ],
+      "preferred_sources": [
+        "CFPB, HUD, FHFA, GAO, Federal Reserve, official complaint and administrative data",
+        "transparent household surveys and peer-reviewed consumer-finance research"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-841e6961b3",
+          "text": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+          "purpose": "household effects, affordability, mobility, access, and behavior",
+          "branch": "consumer",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-8c8b143705",
+      "branch": "loan_originator",
+      "manager": "industry_research_manager",
+      "objective": "Analyze underwriting, pricing, compliance, capacity, incentives, and operational effects on originators. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Industry Research Manager will reconcile your finding with sibling branches (consumer, servicing, secondary market risk transfer) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "underwriting standards, pricing, documentation, compliance, and capacity",
+        "origination incentives, competition, adverse selection, and product design",
+        "differences between mortgage and personal-property lending workflows"
+      ],
+      "out_of_scope": [
+        "treating lender statements as unbiased evidence",
+        "legal advice or consumer outcomes outside origination mechanisms"
+      ],
+      "preferred_sources": [
+        "agency examinations, official program guidance, transparent market studies",
+        "peer-reviewed lending research and clearly attributed industry evidence"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-cf054e7ca6",
+          "text": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+          "purpose": "origination operations, underwriting, pricing, compliance, and incentives",
+          "branch": "loan_originator",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-a176bd6900",
+      "branch": "servicing",
+      "manager": "industry_research_manager",
+      "objective": "Identify servicing, title, loss-mitigation, repossession, communications, and systems requirements that could determine whether the policy works in practice. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Industry Research Manager will reconcile your finding with sibling branches (consumer, loan originator, secondary market risk transfer) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "servicing transfers, payment processing, loss mitigation, default, repossession, and disputes",
+        "title, lien perfection, state-law variation, data, and operational controls",
+        "borrower communications and consumer-protection implementation"
+      ],
+      "out_of_scope": [
+        "assuming mortgage servicing processes transfer unchanged to chattel loans",
+        "speculative cost estimates without operational evidence"
+      ],
+      "preferred_sources": [
+        "agency servicing rules, GSE guides, CFPB/HUD materials, state-law sources",
+        "transparent servicing studies and documented program experience"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-48e36c8ea5",
+          "text": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+          "purpose": "servicing operations, transfers, loss mitigation, escrow, and communication",
+          "branch": "servicing",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-879c626470",
+      "branch": "secondary_market_risk_transfer",
+      "manager": "industry_research_manager",
+      "objective": "Trace liquidity, securitization, capital, guarantee, credit-risk-transfer, systemic, and taxpayer mechanisms. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Industry Research Manager will reconcile your finding with sibling branches (consumer, loan originator, servicing) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "secondary-market liquidity, securitization, guarantee fees, capital, CRT, and risk retention",
+        "credit performance, loss severity, investor demand, moral hazard, and taxpayer exposure",
+        "stress scenarios and conditions for risk containment"
+      ],
+      "out_of_scope": [
+        "presenting a market analogy as a calibrated GSE forecast",
+        "quantitative fiscal claims without disclosed assumptions and data"
+      ],
+      "preferred_sources": [
+        "FHFA, Treasury, Federal Reserve, GAO, CBO, official GSE CRT and capital documents",
+        "peer-reviewed securitization and financial-risk research with transparent methods"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-3b9aa37d1f",
+          "text": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+          "purpose": "prepayment, capital, guarantee, taxpayer, liquidity, and systemic risk",
+          "branch": "secondary_market_risk_transfer",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-f02619aacf",
+      "branch": "general_consumer_advocacy",
+      "manager": "advocacy_research_manager",
+      "objective": "Surface consumer-protection, transparency, market-power, remedy, and accountability concerns, clearly distinguishing advocacy positions from measured findings. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Advocacy Research Manager will reconcile your finding with sibling branches (disadvantaged communities, financial sustainability) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "fees, disclosures, fair dealing, complaints, remedies, market power, and accountability",
+        "consumer and resident advocacy positions with source provenance",
+        "design safeguards and enforcement mechanisms"
+      ],
+      "out_of_scope": [
+        "representing a stakeholder position as neutral evidence",
+        "legal conclusions or broad distributional claims without supporting evidence"
+      ],
+      "preferred_sources": [
+        "CFPB, HUD, FTC, agency comment records, complaint data, and enforcement materials",
+        "transparent consumer-advocacy research and clearly attributed public comments"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-0d01d40394",
+          "text": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+          "purpose": "consumer protection, transparency, fees, market power, and remedies",
+          "branch": "general_consumer_advocacy",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-6beac2fb64",
+      "branch": "disadvantaged_communities",
+      "manager": "advocacy_research_manager",
+      "objective": "Analyze who benefits, who bears risk, and how geography, income, race, tenure, rurality, and institutional access may change the policy effects. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Advocacy Research Manager will reconcile your finding with sibling branches (general consumer advocacy, financial sustainability) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "distributional outcomes across borrower, owner, renter, community, and geographic groups",
+        "access, displacement, wealth, exclusion, and unintended consequences",
+        "measurement gaps and subgroup-specific safeguards"
+      ],
+      "out_of_scope": [
+        "assuming aggregate affordability proves equitable benefit",
+        "using demographic generalizations without evidence or uncertainty labels"
+      ],
+      "preferred_sources": [
+        "official demographic and housing datasets, HUD/CFPB/FHFA/GAO analysis",
+        "peer-reviewed and transparent equity research with subgroup methods"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-02578351be",
+          "text": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+          "purpose": "distributional outcomes, underserved communities, and displacement",
+          "branch": "disadvantaged_communities",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-6d9027eeeb",
+      "branch": "financial_sustainability",
+      "manager": "advocacy_research_manager",
+      "objective": "Stress-test durability, incentives, fiscal exposure, adverse selection, moral hazard, and governance conditions without inventing a quantitative forecast. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Advocacy Research Manager will reconcile your finding with sibling branches (general consumer advocacy, disadvantaged communities) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "downturns, defaults, rate shocks, adverse selection, moral hazard, and fiscal exposure",
+        "governance, program limits, capital, monitoring, and exit conditions",
+        "assumptions needed for credible stress analysis"
+      ],
+      "out_of_scope": [
+        "single-point fiscal estimates without a calibrated model",
+        "treating historical GSE experience as direct evidence about chattel performance"
+      ],
+      "preferred_sources": [
+        "GAO, CBO, FHFA, Treasury, Federal Reserve, official stress and capital materials",
+        "transparent financial-risk and public-finance research"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-784717ebef",
+          "text": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+          "purpose": "durability, adverse selection, moral hazard, fiscal exposure, and stress",
+          "branch": "financial_sustainability",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    }
+  ],
+  "branch_rationale": {
+    "government_sources": "Selected because the question contains terms relevant to government sources.",
+    "legal_regulatory": "Selected because the question contains terms relevant to legal regulatory.",
+    "think_tank_academic": "Selected because the question contains terms relevant to think tank academic.",
+    "consumer": "Selected because the question contains terms relevant to consumer.",
+    "loan_originator": "Selected because the question contains terms relevant to loan originator.",
+    "servicing": "Selected because the question contains terms relevant to servicing.",
+    "secondary_market_risk_transfer": "Selected because the question contains terms relevant to secondary market risk transfer.",
+    "general_consumer_advocacy": "Selected because the question contains terms relevant to general consumer advocacy.",
+    "disadvantaged_communities": "Selected because the question contains terms relevant to disadvantaged communities.",
+    "financial_sustainability": "Selected because the question contains terms relevant to financial sustainability."
+  },
+  "clarification_questions": [],
+  "created_at": "2026-08-19T01:38:14.590711Z"
+}

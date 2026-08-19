@@ -1,0 +1,215 @@
+{
+  "plan_id": "plan-3bb4c08b6b",
+  "brief": {
+    "request_id": "req-b1abad6c1788",
+    "question": "What would be the possible consequences if the Government Sponsored Enterprises of Fannie Mae and Freddie Mac began to purchase and guaranty Chattel loans in the US?",
+    "audience": "a sophisticated policy decision-maker",
+    "jurisdiction": "United States",
+    "policy_scope": "U.S. policy design, implementation, effects, trade-offs, and uncertainty",
+    "time_horizon": "current baseline and a 5-to-10-year policy horizon",
+    "stakeholder_perspective": "balanced treatment of affected stakeholders",
+    "mode": "fast",
+    "defaults_applied": [
+      "audience",
+      "scope",
+      "time_horizon",
+      "stakeholders"
+    ],
+    "clarification_questions": [],
+    "safety_disclosures": [
+      "Research assistance only; not legal advice.",
+      "Sources must be verified before formal reliance.",
+      "Synthetic offline fixtures are not verified live evidence."
+    ]
+  },
+  "selected_branches": [
+    "government_sources",
+    "legal_regulatory",
+    "think_tank_academic"
+  ],
+  "assignments": [
+    {
+      "assignment_id": "asg-ff553af1ce",
+      "branch": "government_sources",
+      "manager": "policy_research_manager",
+      "objective": "Produce a claim-level record of authoritative public-sector evidence that lets the Policy Research Manager identify the current policy baseline, governing authority, implementation requirements, public evidence, unresolved issues, and contradictions. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Policy Research Manager will reconcile your finding with sibling branches (legal regulatory, think tank academic) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "statutory and regulatory authority",
+        "current agency policy and program baseline",
+        "official policy history and prior pilots",
+        "government empirical analysis and administrative data",
+        "officially documented borrower, market, taxpayer, and implementation effects"
+      ],
+      "out_of_scope": [
+        "general manufactured-housing background without a policy implication",
+        "general industry feedback unless summarized in an official record",
+        "legal conclusions beyond what the cited authority supports",
+        "secondary commentary when the underlying government source is available"
+      ],
+      "preferred_sources": [
+        "statutes, regulations, court opinions, agency orders, Federal Register notices",
+        "FHFA, HUD, CFPB, Treasury, Federal Reserve, GAO, CBO, CRS, and official GSE documents",
+        "official hearings, testimony records, program evaluations, and administrative datasets"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be the possible consequences if the Government Sponsored Enterprises of Fannie Mae and Freddie Mac began to purchase and guaranty Chattel loans in the US??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-63e6b1a24f",
+          "text": "What would be the possible consequences if the Government Sponsored Enterprises of Fannie Mae and Freddie Mac began to purchase and guaranty Chattel loans in the US?",
+          "purpose": "current law, policy baseline, official analysis, and administrative data",
+          "branch": "government_sources",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-cb54d538e5",
+      "branch": "legal_regulatory",
+      "manager": "policy_research_manager",
+      "objective": "Map the governing legal and regulatory constraints and distinguish controlling authority, agency interpretation, proposed policy, and unresolved legal questions. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Policy Research Manager will reconcile your finding with sibling branches (government sources, think tank academic) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "statutes, regulations, charters, conservatorship and PSPA constraints",
+        "FHFA approval, rulemaking, Duty to Serve, and agency authority",
+        "state-law implementation issues where material to feasibility",
+        "legal conditions, procedural requirements, and unresolved interpretations"
+      ],
+      "out_of_scope": [
+        "predicting litigation outcomes without authority or clearly labeled assumptions",
+        "general market or consumer commentary unless it bears on implementation law",
+        "formal legal advice or conclusions outside the cited jurisdiction"
+      ],
+      "preferred_sources": [
+        "U.S. Code, Code of Federal Regulations, Federal Register, agency orders and guidance",
+        "official FHFA, Treasury, HUD, CFPB, GSE, CRS, GAO, and court materials",
+        "reputable legal analysis only when primary authority is unavailable and clearly labeled"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be the possible consequences if the Government Sponsored Enterprises of Fannie Mae and Freddie Mac began to purchase and guaranty Chattel loans in the US??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-c56345d4df",
+          "text": "What would be the possible consequences if the Government Sponsored Enterprises of Fannie Mae and Freddie Mac began to purchase and guaranty Chattel loans in the US?",
+          "purpose": "authority, jurisdiction, legal constraints, and unresolved interpretations",
+          "branch": "legal_regulatory",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    },
+    {
+      "assignment_id": "asg-d284c48616",
+      "branch": "think_tank_academic",
+      "manager": "policy_research_manager",
+      "objective": "Produce transparent empirical and analytical evidence, including contrary findings, that helps the Policy Research Manager assess mechanisms, magnitudes, and uncertainty. Focus on the policy question rather than a general topic overview. Produce evidence the manager can compare with sibling findings and use in a decision-ready report.",
+      "research_context": "This is one bounded branch of a multi-agent housing-policy research workflow. The Policy Research Manager will reconcile your finding with sibling branches (government sources, legal regulatory) before handing an evidence package to the synthesis writer. The downstream report is for a sophisticated policy decision-maker, covers United States, and uses the scope 'U.S. policy design, implementation, effects, trade-offs, and uncertainty' over current baseline and a 5-to-10-year policy horizon. Do not duplicate other branches when you can identify a distinct contribution; flag questions that must be answered by a sibling branch.",
+      "in_scope": [
+        "peer-reviewed studies, working papers, think-tank analysis, and transparent models",
+        "causal evidence, descriptive evidence, analogous markets, and methodological limits",
+        "distributional, market, pricing, credit, and consumer-outcome research",
+        "evidence that challenges or qualifies the policy mechanism"
+      ],
+      "out_of_scope": [
+        "treating an analogy as direct evidence about a GSE chattel program",
+        "using a think-tank or industry position as controlling legal authority",
+        "unsupported numerical estimates or consensus claims"
+      ],
+      "preferred_sources": [
+        "peer-reviewed research and transparent working papers",
+        "Urban Institute, academic centers, Federal Reserve research, and methodologically explicit studies",
+        "official datasets used with appropriate causal and measurement caveats"
+      ],
+      "policy_decisions_supported": [
+        "which consequences are established by evidence versus conditional or speculative",
+        "whether the policy design should be explored, piloted, narrowed, or rejected",
+        "what safeguards, implementation conditions, or risk controls are necessary",
+        "what additional evidence, data, or modeling the manager should request"
+      ],
+      "handoff_instructions": [
+        "Return claim-level evidence and a concise synthesis, not a narrative research memo.",
+        "Distinguish current, proposed, historical, pilot, analytical, and stakeholder evidence.",
+        "Record contrary evidence, material limitations, and unresolved questions for the manager.",
+        "Use short stable source IDs (for example s1 or s_fhfa_chattel); put the complete URL only in the source url field.",
+        "Use those same source IDs in every claim, contradiction, comparison, and source_ids reference.",
+        "Before returning, verify every cited source ID exists in discovered_sources and that every source has a title, URL when available, source type, tier, and excerpt.",
+        "Return only the typed finding object: no Markdown fences, preamble, commentary, or trailing text."
+      ],
+      "required_questions": [
+        "What does the relevant evidence establish about What would be the possible consequences if the Government Sponsored Enterprises of Fannie Mae and Freddie Mac began to purchase and guaranty Chattel loans in the US??",
+        "What is uncertain, contested, proposed rather than current, or dependent on assumptions?",
+        "What should the manager ask the sibling branches or carry into implementation analysis?"
+      ],
+      "search_queries": [
+        {
+          "query_id": "q-844c1deb98",
+          "text": "What would be the possible consequences if the Government Sponsored Enterprises of Fannie Mae and Freddie Mac began to purchase and guaranty Chattel loans in the US?",
+          "purpose": "empirical evidence, causal identification, models, and contrary research",
+          "branch": "think_tank_academic",
+          "domains": [],
+          "date_from": null,
+          "date_to": null,
+          "max_results": 5
+        }
+      ],
+      "source_tier_targets": [],
+      "max_sources": 8,
+      "dependencies": []
+    }
+  ],
+  "branch_rationale": {
+    "government_sources": "Selected because the question contains terms relevant to government sources.",
+    "legal_regulatory": "Selected because the question contains terms relevant to legal regulatory.",
+    "think_tank_academic": "Selected because the question contains terms relevant to think tank academic."
+  },
+  "clarification_questions": [],
+  "created_at": "2026-08-19T01:30:14.549372Z"
+}

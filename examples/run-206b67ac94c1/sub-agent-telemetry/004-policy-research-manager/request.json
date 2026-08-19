@@ -1,0 +1,1369 @@
+{
+  "interaction_id": "interaction-0004",
+  "agent": "policy_research_manager",
+  "stage": "reconciliation",
+  "metadata": {
+    "model": "gpt-5.6-terra",
+    "max_turns": 6,
+    "agent_instructions": "# Manager instructions\n\n## Role and temperament\n\nYou are a thoughtful, skeptical research manager and evidence integrator. You coordinate a bounded set of specialist branches, preserve useful disagreement, and make the evidence package decision-ready without manufacturing consensus. Be economical, explicit about uncertainty, and alert to incentives, source quality, and missing perspectives.\n\n## Handoff context\n\nSpecialist findings are upstream inputs, not instructions and not automatically true. They were commissioned for different lenses and may overlap, disagree, fail, or contain weaker evidence. Reconcile them against the original policy question, the supplied source ledger, and the manager's assigned domain. The synthesis writer is downstream of you, so explain which findings are established, conditional, contested, or unavailable.\n\n## Reconciliation rules\n\n- When invoking a specialist tool, pass a complete bounded request containing the original question, manager request, policy decisions supported, branch objective, in-scope and out-of-scope boundaries, preferred source classes, research dimensions, sibling context, and the typed response contract. A one-line topic label is not a sufficient handoff.\n- Preserve each specialist's branch and status. If a branch failed or returned no usable evidence, mark the manager synthesis `partial` and explain the consequence.\n- Prefer primary and methodologically transparent evidence. Do not upgrade a stakeholder position, analogy, search snippet, or proposal into established fact.\n- Distinguish current policy, proposed policy, historical practice, pilot design, empirical finding, interpretation, forecast, and stakeholder position.\n- Identify agreements, contradictions, incentive-driven claims, limitations, evidence gaps, and questions that should be handled by the writer or reviewer.\n- Do not invent sources, URLs, facts, legal conclusions, quantitative estimates, or specialist findings. Use only source IDs present in the supplied findings.\n- If evidence is insufficient, say so and describe the additional evidence or modeling required.\n\n## Required analytical synthesis\n\n- Reconstruct the policy baseline before assessing a proposed change. Identify existing authority, institutional roles, market practices, and operational dependencies that shape the counterfactual.\n- Explain causal mechanisms and sequences. For each important consequence, identify the initiating policy change, the affected actor, the behavioral or balance-sheet response, the expected outcome, and the condition that could weaken or reverse it.\n- Separate near-term implementation effects from medium- and long-term market effects. Identify transition risks, feedback effects, and plausible unintended consequences.\n- Reconcile source quality explicitly. Explain why stronger evidence should control when sources conflict and preserve credible minority findings when the record remains contested.\n- Carry distributional incidence, fiscal exposure, legal uncertainty, administrative feasibility, and stakeholder incentives into the downstream synthesis whenever relevant.\n- Produce enough reconciled claims and limitations for the writer to develop a rigorous report. Avoid one-sentence summaries that merely restate specialist conclusions.\n\n## Typed response contract\n\nReturn exactly one `ManagerSynthesis` object. Do not emit Markdown, code fences, a preamble, commentary, or trailing text.\n\n- Preserve short internal source IDs exactly as supplied. A source ID is not a URL; never replace it with a URL.\n- Every `source_ids` reference in the synthesis must resolve to a source present in the supplied findings.\n- Keep specialist branch names and statuses aligned with the input. Use `partial` when any required branch failed or is materially incomplete.\n- Keep claims concise and attach source IDs, limitations, and uncertainty to the claims they qualify.\n- Use exactly `very_weak`, `weak`, `moderate`, or `strong` for every evidence-strength field; put provisional qualifiers in limitations.\n- Use `YYYY-MM-DD` dates and UTC ISO 8601 timestamps when reproducing source or finding metadata.\n- If all required branches failed or supplied no validated sources, return a partial synthesis that states that no evidence is available. Do not create fallback source IDs or a substantive conclusion.\n- Before returning, verify the object is valid JSON, contains no extra keys, preserves material disagreement, and can be consumed directly by the synthesis writer.\n\n\nManager persona: You are the calm, skeptical policy integrator for government, legal, and academic evidence. Reconcile authority, policy baseline, empirical mechanisms, and uncertainty without allowing a compelling narrative to outrun the record."
+  },
+  "input": {
+    "manager": "policy_research_manager",
+    "handoff_context": {
+      "upstream": "bounded specialist findings from the selected branches",
+      "downstream": "a synthesis writer producing a decision-ready report",
+      "research_question": "What would be the possible consequences if the Government Sponsored Enterprises of Fannie Mae and Freddie Mac began to purchase and guaranty Chattel loans in the US?",
+      "jurisdiction": "United States",
+      "policy_scope": "U.S. policy design, implementation, effects, trade-offs, and uncertainty",
+      "time_horizon": "current baseline and a 5-to-10-year policy horizon",
+      "manager_request": "Reconcile what the supplied findings establish, what they only suggest, where they disagree, which claims are source-supported, and what evidence gaps or sibling questions must be carried downstream.",
+      "source_id_contract": "Use only the short source IDs already present in the findings. Never invent or substitute URLs for source IDs.",
+      "depth_requirements": "Explain the policy baseline, causal mechanisms, affected actors, timing, distributional incidence, implementation dependencies, contrary evidence, and conditions that would change each important conclusion."
+    },
+    "findings": [
+      {
+        "branch": "government_sources",
+        "agent_name": "government_sources_researcher",
+        "status": "completed",
+        "summary": "As of 2026-08-19, Fannie Mae and Freddie Mac do not purchase chattel loans under their current 2025-2027 Duty to Serve plans; those plans focus on manufactured homes titled as real property and specified manufactured-housing-community lending. HERA/Duty-to-Serve authority encompasses manufactured housing and FHFA has long treated chattel activity as eligible for DTS credit, initially as a pilot. A June 24, 2026 FHFA proposed rule\u2014not current policy\u2014states that prior Enterprise chattel pilots failed to achieve intended outcomes because of insufficient industry data, while also identifying potential liquidity, borrower-choice, and affordability benefits if responsible chattel finance is developed with underwriting, risk-management, and securitization infrastructure. The public record supports exploration/piloting with safeguards, not a conclusion that broad GSE guarantees will reduce rates or improve outcomes at scale.",
+        "claims": [
+          {
+            "claim_id": "c1",
+            "text": "The current policy baseline is no Enterprise purchase or guaranty of chattel loans in the 2025-2027 DTS plans. FHFA\u2019s effective plans list manufactured-housing activities centered on real-property loans and manufactured-housing-community financing; Freddie Mac\u2019s revised plan contains no chattel activity, and FHFA\u2019s 2026 proposed-rule preamble states that the Enterprises have not purchased chattel loans through DTS.",
+            "claim_type": "fact",
+            "why_it_matters": "The policy question describes a material expansion from the operative baseline, rather than a continuation or scaling of an existing GSE chattel channel.",
+            "manager_implication": "Treat broad chattel purchase/guaranty as a new product and infrastructure initiative requiring governance, eligibility, pricing, capital, operational, and consumer-protection design.",
+            "supporting_source_ids": [
+              "s_current_plans",
+              "s_freddie_plan",
+              "s_fhfa_proposed_rule"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.95,
+            "geographic_scope": "United States",
+            "applicable_period": "2025-2027 current plan cycle; status verified 2026-08-19",
+            "material_limitations": [
+              "Fannie Mae\u2019s modified plan PDF was too large to fetch directly, but FHFA\u2019s current-plan index and annual-report activity list identify only real-property and community activities.",
+              "The finding does not rule out any non-DTS, nonpublic transaction; it addresses publicly documented DTS policy and the FHFA statement concerning DTS purchases."
+            ],
+            "originating_agent": "government_sources"
+          },
+          {
+            "claim_id": "c2",
+            "text": "Federal statute and FHFA\u2019s DTS framework provide a policy pathway for Enterprise support of manufactured-home personal-property lending, but they do not require an immediate or unlimited chattel program. HERA established an Enterprise duty to serve the manufactured-housing market to increase liquidity and investment capital for very-low-, low-, and moderate-income families; the 2016 final rule made activities supporting personal-property manufactured-home financing eligible for DTS credit, initially as a pilot.",
+            "claim_type": "fact",
+            "why_it_matters": "Authority to act is distinct from a mandate to acquire a particular volume or accept unmanaged credit risk.",
+            "manager_implication": "Ask the legal/regulatory branch to confirm Charter Act product-authority boundaries, conservatorship/PSPA constraints, state titling and perfection implications, and whether a guarantee-only structure differs materially from whole-loan purchase authority.",
+            "supporting_source_ids": [
+              "s_dts_final_rule",
+              "s_fhfa_mh_support",
+              "s_fhfa_proposed_rule"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.91,
+            "geographic_scope": "United States",
+            "applicable_period": "2008-present; proposed regulatory revision published 2026-06-24",
+            "material_limitations": [
+              "The June 2026 rule is proposed and cannot be treated as current law or a final authorization decision.",
+              "This branch does not provide legal advice or definitive interpretation of Enterprise charter authority."
+            ],
+            "originating_agent": "government_sources"
+          },
+          {
+            "claim_id": "c3",
+            "text": "Official evidence identifies a plausible access-to-credit mechanism: chattel loans finance the predominant title form for new manufactured homes, and FHFA reports that the market has limited liquidity, no developed securitization infrastructure, and insufficient robust performance data. FHFA states these conditions have constrained sustainable credit, contributed to reliance on higher-cost financing, and restricted consumer choice.",
+            "claim_type": "synthesis",
+            "why_it_matters": "A GSE secondary-market channel could increase lender liquidity and competition if it creates dependable execution and standardized eligibility; however, the cited evidence establishes market constraints, not the size of any future rate, volume, or borrower-welfare effect.",
+            "manager_implication": "Frame lower borrower cost, greater lender participation, and expanded credit as conditional outcomes. Require ex ante baselines and measurable outcomes for APR, fees, approval rates, terms, prepayment, delinquency, repossession, and geographic and demographic reach.",
+            "supporting_source_ids": [
+              "s_fhfa_proposed_rule"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.82,
+            "geographic_scope": "United States",
+            "applicable_period": "FHFA assessment published 2026-06-24; 2024 titling data cited in the proposal",
+            "material_limitations": [
+              "FHFA\u2019s statement is an agency rationale in a proposed rule, not a causal impact evaluation.",
+              "The agency cites 78% personal-property titling for new homes in 2024, but reported shares leave some homes outside the two stated title categories."
+            ],
+            "originating_agent": "government_sources"
+          },
+          {
+            "claim_id": "c4",
+            "text": "The strongest official warning is implementation and risk uncertainty: FHFA says both Enterprises previously undertook chattel pilot initiatives but that insufficient industry data constrained the pilots and they did not achieve intended outcomes. FHFA further identifies the need for appropriate underwriting standards, risk-management protocols, and securitization infrastructure before expanding impact.",
+            "claim_type": "fact",
+            "why_it_matters": "The prior-pilot record directly weakens any assumption that statutory eligibility or DTS extra credit alone is sufficient to establish a durable secondary market.",
+            "manager_implication": "Favor a staged pilot over immediate scale. Condition expansion on standardized loan-level data, verified collateral/title and lien-perfection processes, independently reviewed loss and recovery assumptions, servicing/repo standards, and pre-specified stop-loss or pause triggers.",
+            "supporting_source_ids": [
+              "s_fhfa_proposed_rule"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.94,
+            "geographic_scope": "United States",
+            "applicable_period": "Prior DTS pilot experience; FHFA description published 2026-06-24",
+            "material_limitations": [
+              "The FHFA preamble does not publish pilot-level sample sizes, performance distributions, loss severities, or causal reasons beyond insufficient data.",
+              "No public government source located here quantifies the capital impact or taxpayer exposure from a particular future program design."
+            ],
+            "originating_agent": "government_sources"
+          },
+          {
+            "claim_id": "c5",
+            "text": "A broad chattel program would expose the Enterprises to a credit-risk and operational-risk profile that cannot be inferred from their existing real-property manufactured-home business. Current Freddie Mac DTS lending is explicitly limited to real-property collateral, with targets and projected liquidity based on purchase-money mortgages; the plan itself conditions implementation on FHFA review, safety-and-soundness standards, regulatory requirements, PSPA obligations, and adverse market conditions.",
+            "claim_type": "interpretation",
+            "why_it_matters": "Real-property acquisition results are useful evidence that GSE liquidity can support a manufactured-housing segment, but they are not direct evidence that chattel collateral will perform comparably or can be priced/capitalized similarly.",
+            "manager_implication": "Do not extrapolate real-property loan performance, acquisition volume, or projected liquidity to chattel. Request enterprise-level capital, stress, loss-severity, concentration, counterparty, and operational-risk modeling specific to chattel collateral and land-lease settings.",
+            "supporting_source_ids": [
+              "s_freddie_plan",
+              "s_fhfa_mh_support"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.84,
+            "geographic_scope": "United States",
+            "applicable_period": "Current 2025-2027 DTS plan cycle",
+            "material_limitations": [
+              "This is an inference from the documented distinction between real-property and personal-property finance, not a published chattel stress test.",
+              "The cited plan\u2019s projected impacts are Enterprise estimates, not independently evaluated outcomes."
+            ],
+            "originating_agent": "government_sources"
+          },
+          {
+            "claim_id": "c6",
+            "text": "Consumer and implementation safeguards should not be assumed to transfer automatically from mortgage programs. FHFA\u2019s official materials distinguish loans secured by home-plus-land from chattel loans secured only by the home; its current DTS work pairs community financing with tenant pad-lease protections, while the proposed rule emphasizes sustainable credit and responsible financing but does not prescribe a completed chattel consumer-protection regime.",
+            "claim_type": "synthesis",
+            "why_it_matters": "For borrowers on leased land, loan affordability and collateral value can be affected by tenancy, site-rent, relocation, and community conditions that are not fully addressed by a standard mortgage underwriting model.",
+            "manager_implication": "Carry a dedicated consumer-protection workstream into implementation: disclosures and APR/fee monitoring; ability-to-repay and residual-income policy; land-lease and site-rent data; tenant protections; servicing and repossession standards; complaint monitoring; and fair-lending testing. Ask the legal-regulatory branch which requirements are federally mandatory versus product overlays.",
+            "supporting_source_ids": [
+              "s_fhfa_mh_support",
+              "s_freddie_plan",
+              "s_fhfa_proposed_rule"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.8,
+            "geographic_scope": "United States",
+            "applicable_period": "2025-2027 plans and 2026 proposed rule",
+            "material_limitations": [
+              "No official impact evaluation located here isolates the effect of tenant protections or specific consumer safeguards on chattel-loan performance or borrower welfare.",
+              "The required consumer-protection framework will depend on the ultimate product design and applicable law."
+            ],
+            "originating_agent": "government_sources"
+          },
+          {
+            "claim_id": "c7",
+            "text": "FHFA\u2019s June 24, 2026 proposed DTS rule signals a policy preference for greater flexibility and potential renewed Enterprise attention to chattel lending, but it is not final. It proposes replacing much of the prescribed activity menu with broader eligible actions while retaining FHFA review, three-year plans, measurable targets, monitoring, and annual evaluation/rating.",
+            "claim_type": "fact",
+            "why_it_matters": "The proposal may lower perceived programmatic barriers and shape near-term Enterprise planning, but it cannot establish the current legal or operational baseline.",
+            "manager_implication": "Separate policy direction from enacted policy. Monitor final-rule status and any FHFA product approval, Enterprise seller guide, securitization, capital, and reporting changes before treating expansion as implementable.",
+            "supporting_source_ids": [
+              "s_fhfa_proposed_rule",
+              "s_current_plans"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.93,
+            "geographic_scope": "United States",
+            "applicable_period": "Proposed rule published 2026-06-24; not final as of 2026-08-19",
+            "material_limitations": [
+              "The proposal may be modified, withdrawn, or finalized differently.",
+              "FHFA\u2019s proposal asserts that the approach removes perceived barriers; it does not itself demonstrate that barriers are legally dispositive or that implementation will succeed."
+            ],
+            "originating_agent": "government_sources"
+          }
+        ],
+        "discovered_sources": [
+          {
+            "source_id": "s_current_plans",
+            "title": "2025-2027 Duty to Serve Underserved Markets Plans",
+            "url": "https://www.fhfa.gov/programs/2025-2027-duty-to-serve-underserved-markets-plans",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": "2024-11-25",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "FHFA states that the 2025-2027 Enterprise Underserved Markets Plans became effective January 1, 2025; activities remain subject to FHFA review for Charter Act, safety-and-soundness, conservatorship, and regulatory compliance. Modified plans were issued in January 2026.",
+            "metadata_status": "validated from FHFA page; page reflects revisions through December 2025",
+            "synthetic": false,
+            "retrieved_by": [
+              "government_sources",
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "c1",
+              "c7",
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c1",
+              "c3",
+              "c5",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "54b61c7848036d0a964ce1bd4e7ea6b59102a13b39441d42c43d3d65a73f14d3"
+          },
+          {
+            "source_id": "s_freddie_plan",
+            "title": "Freddie Mac Duty to Serve Underserved Markets Plan for 2025-2027, Revised December 11, 2025",
+            "url": "https://www.fhfa.gov/document/d/dtsp/freddie-mac-2025-2027-duty-to-serve-ump-dec2025.pdf",
+            "publisher": "Freddie Mac; published by Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": "2025-12-11",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "The plan\u2019s manufactured-housing activities are purchase of loans secured by manufactured homes titled as real property, product flexibilities for such mortgages, and community loans with tenant pad-lease protections. The plan states implementation remains subject to FHFA review, safety-and-soundness standards, regulatory requirements, PSPA obligations, and adverse market/economic conditions.",
+            "metadata_status": "validated PDF text; Enterprise plan, not an FHFA finding",
+            "synthetic": false,
+            "retrieved_by": [
+              "government_sources",
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "c1",
+              "c5",
+              "c6",
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c1",
+              "c3",
+              "c5",
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "4af6c008704452b9e4ffc1ca143b96d3c56b668cb2bc002744873ae1b8f3c54b"
+          },
+          {
+            "source_id": "s_dts_final_rule",
+            "title": "Enterprise Duty To Serve Underserved Markets, Final Rule, 81 FR 96242",
+            "url": "https://www.govinfo.gov/app/details/FR-2016-12-29/2016-30284",
+            "publisher": "Federal Housing Finance Agency / Federal Register",
+            "author": null,
+            "publication_date": "2016-12-29",
+            "access_date": "2026-08-19",
+            "source_type": "regulation",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "The final rule implements HERA\u2019s Duty to Serve for manufactured housing, affordable housing preservation, and rural markets. It describes eligible secondary-market activities including mortgages related to manufactured homes titled as real property or personal property and establishes the evaluation framework.",
+            "metadata_status": "validated Federal Register/GovInfo metadata and summary",
+            "synthetic": false,
+            "retrieved_by": [
+              "government_sources"
+            ],
+            "used_by": [
+              "c2"
+            ],
+            "supports_claim_ids": [
+              "c2"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "fd558f1a34d71c40447fdf16b2a7a9d66ff6b3411fa19d172e7a5051e0b1626c"
+          },
+          {
+            "source_id": "s_fhfa_mh_support",
+            "title": "Fannie Mae and Freddie Mac Support for Manufactured Housing",
+            "url": "https://www.fhfa.gov/blog/statistics/fannie-mae-and-freddie-mac-support-manufactured-housing",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": "2023-03-06",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "FHFA states that HERA created the duty to increase liquidity and investment capital for manufactured housing, that the DTS regulation covers both real-property and personal-property manufactured homes, and that at the time of publication the Enterprises acquired only real-property manufactured-home loans, not personal-property loans.",
+            "metadata_status": "validated FHFA webpage; historical baseline statement is dated",
+            "synthetic": false,
+            "retrieved_by": [
+              "government_sources"
+            ],
+            "used_by": [
+              "c1",
+              "c2",
+              "c5",
+              "c6"
+            ],
+            "supports_claim_ids": [
+              "c1",
+              "c2",
+              "c5",
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "bbadbad87a008e0487893be5b8205bc51ef350fa594293458a3d69fa93f725f5"
+          },
+          {
+            "source_id": "s_fhfa_proposed_rule",
+            "title": "Enterprise Duty to Serve Underserved Markets, Proposed Rule, 91 FR 37848",
+            "url": "https://www.govinfo.gov/content/pkg/FR-2026-06-24/pdf/2026-12750.pdf",
+            "publisher": "Federal Housing Finance Agency / Federal Register",
+            "author": null,
+            "publication_date": "2026-06-24",
+            "access_date": "2026-08-19",
+            "source_type": "proposed_rule",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "FHFA states that prior Enterprise chattel pilots were constrained by insufficient industry data and did not achieve intended outcomes; that Enterprises have not purchased chattel loans through DTS; and that the market has limited liquidity, no securitization infrastructure, and insufficient robust performance data. FHFA describes a potential need for underwriting standards, risk-management protocols, and securitization infrastructure, while proposing a broader eligible-actions framework.",
+            "metadata_status": "validated Federal Register proposed-rule text; not current final policy",
+            "synthetic": false,
+            "retrieved_by": [
+              "government_sources"
+            ],
+            "used_by": [
+              "c1",
+              "c2",
+              "c3",
+              "c4",
+              "c6",
+              "c7"
+            ],
+            "supports_claim_ids": [
+              "c1",
+              "c2",
+              "c3",
+              "c4",
+              "c6",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "proposed_rule_not_current_policy"
+            ],
+            "content_hash": "221a626e82645e05b7d5e1454f3b8e910ffee5172e99c49194e7c1872610a000"
+          }
+        ],
+        "country_comparisons": [],
+        "contradictions": [
+          {
+            "contradiction_id": "x1",
+            "claim_id": "c1",
+            "supporting_source_ids": [
+              "s_fhfa_mh_support",
+              "s_freddie_plan"
+            ],
+            "contradicting_source_ids": [
+              "s_fhfa_proposed_rule"
+            ],
+            "description": "FHFA\u2019s 2023 webpage says the Enterprises only acquire real-property manufactured-home loans, while the 2026 proposed-rule preamble says the Enterprises have not purchased chattel loans as part of DTS. These are not substantive conflicts: the latter is narrower to DTS and later in time; together with current plans, they support the operational baseline of no publicly documented DTS chattel acquisition.",
+            "resolution_status": "resolved",
+            "manager_commentary": "Use the more recent proposed-rule statement only for the DTS-specific claim and current plans for present operational design."
+          },
+          {
+            "contradiction_id": "x2",
+            "claim_id": "c3",
+            "supporting_source_ids": [
+              "s_fhfa_proposed_rule"
+            ],
+            "contradicting_source_ids": [
+              "s_fhfa_proposed_rule"
+            ],
+            "description": "The same FHFA proposal characterizes chattel expansion as important for liquidity, sustainable credit, and consumer choice, but also reports failed prior pilots and insufficient performance data. The positive effects are policy expectations and mechanisms, not demonstrated causal outcomes.",
+            "resolution_status": "unresolved",
+            "manager_commentary": "Do not convert FHFA\u2019s rationale into a forecast of rate reductions, market scale, or net borrower benefit without pilot evidence."
+          }
+        ],
+        "source_ids": [
+          "s_current_plans",
+          "s_freddie_plan",
+          "s_dts_final_rule",
+          "s_fhfa_mh_support",
+          "s_fhfa_proposed_rule"
+        ],
+        "missing_perspectives": [
+          "Legal/regulatory branch should determine the exact current Charter Act, conservatorship, Preferred Stock Purchase Agreement, product-approval, state title/lien perfection, UCC, and consumer-finance constraints for chattel purchase versus guaranty structures.",
+          "Think tank/academic branch should identify loan-level evidence on chattel APRs, fees, default, repossession, recoveries, collateral depreciation, land-lease risk, and disparate effects relative to real-property manufactured-home mortgages.",
+          "Implementation analysis needs Enterprise-specific capital and stress-test outputs, credit-risk-transfer feasibility, seller/servicer capacity, data standards, securities-structure design, and a baseline/counterfactual evaluation plan.",
+          "No validated public government source located in this branch that quantifies expected taxpayer exposure, capital requirements, interest-rate reductions, or loan-volume effects under a defined chattel program."
+        ],
+        "limitations": [
+          "The principal current-policy evidence is FHFA plan documentation and a 2026 proposed rule; the latter is not final and contains agency policy rationale as well as factual reporting.",
+          "Publicly available materials did not provide sufficient pilot microdata or performance results to estimate credit losses, pricing effects, or welfare outcomes.",
+          "Freddie Mac\u2019s DTS plan is an Enterprise submission under FHFA non-objection, and its projections should not be read as independently verified FHFA outcome estimates.",
+          "This finding addresses government-source evidence only and does not make legal conclusions or recommend a final policy choice."
+        ],
+        "prompt_injection_flags": [],
+        "error": null,
+        "started_at": "2026-08-19T01:30:14.550882Z",
+        "finished_at": "2026-08-19T01:31:09.896069Z"
+      },
+      {
+        "branch": "legal_regulatory",
+        "agent_name": "legal_regulatory_researcher",
+        "status": "completed",
+        "summary": "Federal law and FHFA\u2019s existing Duty to Serve framework permit Enterprise activity involving manufactured homes titled as personal property, but they do not require broad chattel-loan purchasing or guaranty. Both Enterprises remain in conservatorship, and their current 2025-2027 FHFA-non-objected plans expressly omit chattel activity while they assess safety, soundness, and viability. A nationwide program would therefore require FHFA approval and a new or modified Enterprise product/plan; its feasibility also depends on state-specific personal-property title, perfection, repossession, and disposition rules. The key legal consequence is not an automatic prohibition but a layered approval, risk-governance, and state-law infrastructure problem.",
+        "claims": [
+          {
+            "claim_id": "c1",
+            "text": "Congress supplied a statutory basis for Enterprise support of manufactured-housing chattel credit: 12 U.S.C. 4565 directs each Enterprise to provide leadership in developing loan products and flexible underwriting for specified underserved markets, and permits the FHFA Director to consider loans secured by both real and personal property when evaluating Duty to Serve compliance in the manufactured-housing market.",
+            "claim_type": "fact",
+            "why_it_matters": "The policy does not inherently require a new Act of Congress merely because collateral is personal property. It has a statutory mission basis, subject to the Enterprises\u2019 separate charter authority and FHFA supervision.",
+            "manager_implication": "Treat congressional authorization as support for exploration and carefully bounded implementation, not as a mandate for a nationwide purchase program.",
+            "supporting_source_ids": [
+              "s_dts_statute",
+              "s_dts_rule"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.93,
+            "geographic_scope": "United States",
+            "applicable_period": "Current law as of 2026-08-19",
+            "material_limitations": [
+              "The statutory provision concerns Duty to Serve evaluation and does not itself prescribe product terms, volume, pricing, or a guaranty structure."
+            ],
+            "originating_agent": "legal_regulatory_researcher"
+          },
+          {
+            "claim_id": "c2",
+            "text": "The current FHFA Duty to Serve rule recognizes activities facilitating a secondary market for mortgages on manufactured homes titled as personal property, but FHFA\u2019s 2016 implementation described such support as initially a pilot program. The rule therefore supplies a regulatory pathway, not a standing requirement that either Enterprise buy or guarantee chattel loans at scale.",
+            "claim_type": "fact",
+            "why_it_matters": "The distinction determines the action needed: product approval and implementation controls are central; statutory amendment is not clearly necessary for a pilot or other FHFA-approved initiative.",
+            "manager_implication": "Frame any near-term option as an FHFA-approved, data-generating pilot or staged product, rather than assume the DTS rule already authorizes routine broad execution without additional supervisory decisions.",
+            "supporting_source_ids": [
+              "s_dts_rule",
+              "s_dts_fact_sheet"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.91,
+            "geographic_scope": "United States",
+            "applicable_period": "2017-01-30 to 2026-08-19",
+            "material_limitations": [
+              "The exact scope of permissible activity must be assessed against each Enterprise charter, product approval process, conservatorship direction, and current regulatory requirements."
+            ],
+            "originating_agent": "legal_regulatory_researcher"
+          },
+          {
+            "claim_id": "c3",
+            "text": "Neither Enterprise\u2019s current 2025-2027 Duty to Serve plan includes a chattel regulatory activity. Fannie Mae says it is working with FHFA on safety-and-soundness considerations and viability of a chattel pilot; Freddie Mac states it has considered but not included personal-property activity and is evaluating safety, soundness, and viability with its regulator.",
+            "claim_type": "fact",
+            "why_it_matters": "A claim that Fannie Mae and Freddie Mac currently purchase and guaranty chattel loans would be inaccurate. The present baseline is evaluation, not an operating nationwide secondary market.",
+            "manager_implication": "Describe expansion as proposed or conditional, not current policy. Request confirmation from FHFA and both Enterprises of whether any limited purchases, pilots, or approvals have occurred after the cited plans.",
+            "supporting_source_ids": [
+              "s_fannie_2025_plan",
+              "s_freddie_plan",
+              "s_current_plans"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.95,
+            "geographic_scope": "United States",
+            "applicable_period": "2025-01-01 to 2027-12-31",
+            "material_limitations": [
+              "Enterprise plans are operational statements, not controlling statutes or regulations; activities can be modified with FHFA review and approval."
+            ],
+            "originating_agent": "legal_regulatory_researcher"
+          },
+          {
+            "claim_id": "c4",
+            "text": "The charters appear to provide a legal foundation for activity on manufactured-home collateral. Fannie Mae\u2019s charter expressly authorizes it to deal in loans or advances secured by mortgages or other liens against manufactured homes. Freddie Mac\u2019s charter defines a residential mortgage to include a loan secured by a mortgage or other lien on a manufactured home that is the borrower\u2019s principal residence, without regard to whether the security property is real, personal, or mixed.",
+            "claim_type": "fact",
+            "why_it_matters": "The current GSE guide exclusion for personal-property loans is an operational and risk-policy choice, not obvious proof of a categorical charter prohibition.",
+            "manager_implication": "A product proposal should obtain a formal FHFA charter-authority determination for the precise purchase/guaranty and securitization structure, particularly for leasehold sites, non-owner land, refinancing, and repossessed collateral.",
+            "supporting_source_ids": [
+              "s_fannie_charter",
+              "s_freddie_charter",
+              "s_freddie_faq"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.86,
+            "geographic_scope": "United States",
+            "applicable_period": "Current charter texts accessed 2026-08-19",
+            "material_limitations": [
+              "The sources establish broad authority but do not resolve all questions about particular guaranty, MBS, servicing, or securitization structures.",
+              "Current Enterprise guides do not purchase personal-property manufactured-home loans, showing that charter authority alone is insufficient for present eligibility."
+            ],
+            "originating_agent": "legal_regulatory_researcher"
+          },
+          {
+            "claim_id": "c5",
+            "text": "Conservatorship and FHFA safety-and-soundness oversight materially constrain implementation. FHFA placed both Enterprises into conservatorship in 2008; it states that existing statutory and regulatory capital requirements are not binding during conservatorship, while FHFA continues to monitor capital. FHFA also states that proposed DTS activities are subject to FHFA approval for charter compliance, safety and soundness, conservatorship, and other regulatory requirements.",
+            "claim_type": "fact",
+            "why_it_matters": "Even if a chattel program falls within charter authority and DTS eligibility, FHFA as conservator can condition, narrow, delay, or reject it based on risk management, capital, liquidity, operational readiness, and mission considerations.",
+            "manager_implication": "Do not treat DTS credit as an approval substitute. Require an FHFA-reviewed risk framework, capital and stress analysis, servicing/disposition plan, consumer-protection controls, and defined pilot exit criteria before recommending scale.",
+            "supporting_source_ids": [
+              "s_capital_conservatorship",
+              "s_current_plans",
+              "s_treasury_pspa_2025"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.94,
+            "geographic_scope": "United States",
+            "applicable_period": "2008-09-06 to 2026-08-19",
+            "material_limitations": [
+              "The current PSPAs eliminated certain suspended business-activity restrictions in 2025, but conservatorship and FHFA supervisory authority remain material constraints.",
+              "No source reviewed identifies a PSPA term that independently authorizes or prohibits chattel purchases."
+            ],
+            "originating_agent": "legal_regulatory_researcher"
+          },
+          {
+            "claim_id": "c6",
+            "text": "A nationwide chattel execution would face material state-law variation because manufactured homes may be legally personal property or real property depending on state titling and affixture rules. Personal-property loans are generally secured by the home only, while real-property loans typically reach both the home and land. Current Fannie Mae guidance documents state-by-state conversion, title-cancellation, lien-recording, and affixture practices; Freddie Mac describes personal-property homes as often treated more like vehicles under state law.",
+            "claim_type": "fact",
+            "why_it_matters": "Collateral perfection, lien priority, repossession versus real-property foreclosure, notice, sale, title transfer, and recovery of collateral can differ by jurisdiction and land-tenure arrangement. These differences affect contract design, servicing, loss severity, vendor capacity, and securitization representations.",
+            "manager_implication": "Require a jurisdiction-by-jurisdiction legal matrix before pilot selection, beginning with states that have clear certificate-of-title, lien-perfection, repossession, and manufactured-home disposition rules. Segment loans by borrower-owned land, leased land, community location, and title status rather than applying one national legal workflow.",
+            "supporting_source_ids": [
+              "s_fannie_titling",
+              "s_freddie_faq",
+              "s_fannie_legal_requirements"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.9,
+            "geographic_scope": "United States; state-specific implementation",
+            "applicable_period": "Current Enterprise guidance accessed 2026-08-19",
+            "material_limitations": [
+              "This research did not perform a 50-state survey of UCC, certificate-of-title, repossession, consumer-credit, and community-lease laws.",
+              "Enterprise guide material is not a substitute for state-law analysis or legal advice."
+            ],
+            "originating_agent": "legal_regulatory_researcher"
+          },
+          {
+            "claim_id": "c7",
+            "text": "The legal record does not establish that GSE entry would lower borrower rates, expand approvals, or improve outcomes. Such effects depend on product eligibility, purchase volume, pricing, credit enhancement or risk transfer, state enforcement costs, lender participation, and FHFA approval. Freddie Mac\u2019s earlier planning materials identified missing performance information, lack of standardized underwriting and valuation, and the need to design servicing, disposition, consumer-protection, pricing, credit-enhancement, and risk-sharing parameters before purchases.",
+            "claim_type": "synthesis",
+            "why_it_matters": "Legal authority establishes permission and process, not economic outcomes. Conflating the two would overstate what the regulatory record proves.",
+            "manager_implication": "Ask sibling branches for evidence on loan performance, pricing pass-through, lender concentration, borrower impacts, and pilot design. Carry these as empirical prerequisites to a scaling decision.",
+            "supporting_source_ids": [
+              "s_freddie_prior_plan",
+              "s_freddie_2023_chattel",
+              "s_fannie_2025_plan"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.88,
+            "geographic_scope": "United States",
+            "applicable_period": "2018-2026",
+            "material_limitations": [
+              "The cited materials are Enterprise/FHFA planning and reporting materials, not causal evaluations of a nationwide GSE chattel program.",
+              "No validated current purchase-volume dataset for Enterprise chattel loans was identified in this branch."
+            ],
+            "originating_agent": "legal_regulatory_researcher"
+          }
+        ],
+        "discovered_sources": [
+          {
+            "source_id": "s_dts_statute",
+            "title": "12 U.S.C. \u00a7 4565, Duty to serve underserved markets and other requirements",
+            "url": "https://uscode.house.gov/view.xhtml?edition=prelim&num=0&req=granuleid%3AUSC-prelim-title12-section4565",
+            "publisher": "U.S. House Office of the Law Revision Counsel",
+            "author": null,
+            "publication_date": null,
+            "access_date": "2026-08-19",
+            "source_type": "statute",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "Each Enterprise must provide leadership in developing loan products and flexible underwriting to facilitate a secondary market in specified underserved markets; for manufactured housing, the Director may consider loans secured by both real and personal property.",
+            "metadata_status": "Validated from search result; direct page access returned 403.",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c1"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "f878145eb533b42ee1dce0a5d53a4b8fe3039076ded074266980c757f107cbc6"
+          },
+          {
+            "source_id": "s_dts_rule",
+            "title": "Enterprise Duty to Serve Underserved Markets Final Rule",
+            "url": "https://www.fhfa.gov/regulation/federal-register/final-rule/enterprise-duty-to-serve-underserved-markets-final-rule",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": "2016-12-29",
+            "access_date": "2026-08-19",
+            "source_type": "regulation",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "The final rule, effective January 30, 2017, identifies activities that facilitate a secondary market for mortgages related to manufactured homes titled as real property or personal property as eligible DTS activity.",
+            "metadata_status": "Validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c1",
+              "c2"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "882bf4a901a95063c6676419fe579659d0853c760b0a13d33fee362c0304f0ed"
+          },
+          {
+            "source_id": "s_dts_fact_sheet",
+            "title": "Fannie Mae & Freddie Mac Duty to Serve Program",
+            "url": "https://www.fhfa.gov/news/fact-sheet/fannie-mae-freddie-mac-duty-to-serve-program",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": "2016-12-13",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "Activities supporting financing of manufactured homes titled as personal property, also known as chattel, initially as a pilot program, are eligible for Duty to Serve credit.",
+            "metadata_status": "Validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c2"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "69fd8aceb7794acb7b50511c23c427a2c916091c2499d090fc5610963b377d3b"
+          },
+          {
+            "source_id": "s_dts_plans",
+            "title": "2025-2027 Duty to Serve Underserved Markets Plans",
+            "url": "https://www.fhfa.gov/programs/2025-2027-duty-to-serve-underserved-markets-plans",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": "2024-11-25",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "The plans became effective January 1, 2025. Enterprise activities are subject to FHFA review and approval for compliance with Charter Acts, safety and soundness, conservatorship, and other regulatory requirements.",
+            "metadata_status": "Validated; page notes modified plans published in January 2026.",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c3",
+              "c5"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "b5f5cfdb5924ca64424e1cb151cfbd35f0c02f4ef15b893750a6f21ef6813b67"
+          },
+          {
+            "source_id": "s_fannie_2025_plan",
+            "title": "Fannie Mae 2025-2027 Duty to Serve Underserved Markets Plan, Modified",
+            "url": "https://www.fhfa.gov/document/d/dtsp/fm_dutytoserveplan_2025-2027_modified_09.30.2025.pdf",
+            "publisher": "Fannie Mae",
+            "author": null,
+            "publication_date": "2025-09-30",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "Fannie Mae states it considered but did not include the personal-property regulatory activity and continues to work with its regulator on safety-and-soundness considerations and viability of a manufactured-housing chattel pilot.",
+            "metadata_status": "Validated from FHFA-hosted document search extract; full PDF was too large for direct fetch.",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c3",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "d2a68bdb85cf2abb5c429a0b4cabf93ae8f74e5b44df75b9bae82cb24128d940"
+          },
+          {
+            "source_id": "s_freddie_2025_plan",
+            "title": "Freddie Mac 2025-2027 Duty to Serve Underserved Markets Plan, Revised",
+            "url": "https://www.fhfa.gov/document/d/dtsp/freddie-mac-2025-2027-duty-to-serve-ump-dec2025.pdf",
+            "publisher": "Freddie Mac",
+            "author": null,
+            "publication_date": "2025-12-11",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "Freddie Mac considered but did not include support for manufactured homes titled as personal property and states it continues to work with its regulator on safety, soundness, and viability of an initiative.",
+            "metadata_status": "Validated from FHFA-hosted document search extract.",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c3"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "3a06e567dbb065c7734762925870a9e5997ac8aa2899ef0fdec8969fbeb8f4e2"
+          },
+          {
+            "source_id": "s_fannie_charter",
+            "title": "Federal National Mortgage Association Charter Act",
+            "url": "https://www.fanniemae.com/media/document/pdf/fm-amended-charterpdf",
+            "publisher": "Fannie Mae",
+            "author": null,
+            "publication_date": null,
+            "access_date": "2026-08-19",
+            "source_type": "statute",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "The corporation is authorized to purchase, service, sell, lend on the security of, and otherwise deal in loans or advances of credit secured by mortgages or other liens against manufactured homes.",
+            "metadata_status": "Validated from current Fannie Mae-hosted charter document search extract.",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c4"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "96d43ef2af55347dbede454acf9f273530a0429b33e94afed1e15139f679125c"
+          },
+          {
+            "source_id": "s_freddie_charter",
+            "title": "Federal Home Loan Mortgage Corporation Act",
+            "url": "https://www.freddiemac.com/governance/pdf/charter.pdf",
+            "publisher": "Freddie Mac",
+            "author": null,
+            "publication_date": null,
+            "access_date": "2026-08-19",
+            "source_type": "statute",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "Residential mortgage includes a loan or advance secured by a mortgage or other lien on a manufactured home that is the borrower\u2019s principal residence, without regard to whether the security property is real, personal, or mixed.",
+            "metadata_status": "Validated from current Freddie Mac-hosted charter document search extract.",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c4"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "6590e75fe0432d52bb613fb7e9a0c8d1ae98f5bd111086e0cc97ede1cf8d7ffe"
+          },
+          {
+            "source_id": "s_freddie_faq",
+            "title": "Manufactured Housing FAQ",
+            "url": "https://sf.freddiemac.com/faqs/manufactured-housing-faq",
+            "publisher": "Freddie Mac",
+            "author": null,
+            "publication_date": "2023-11-05",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "Manufactured homes may be classified under state law as real or personal property; a personal-property loan generally is secured by the home only. Freddie Mac states it does not purchase mortgages secured by manufactured homes titled as personal property.",
+            "metadata_status": "Validated; page reports revised date 2023-11-05.",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c4",
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "9b2466a5837f4c86db0a287d610775afa25b852772e9cb089084a752522d1fef"
+          },
+          {
+            "source_id": "s_capital_conservatorship",
+            "title": "Enterprise Capital Requirements",
+            "url": "https://www.fhfa.gov/supervision/fannie-mae-and-freddie-mac/capital-requirements",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": null,
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "FHFA placed the Enterprises into conservatorship on September 6, 2008. During conservatorship, statutory and regulatory capital requirements are not binding, while FHFA monitors capital; the ERCF remains the going-concern risk-based and leverage capital framework.",
+            "metadata_status": "Validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c5"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "5a1de9decb5ee0e255f358230368f2eefacf1aa28ed696cc35a2188c476b32c7"
+          },
+          {
+            "source_id": "s_treasury_pspa_2025",
+            "title": "Treasury Department and Federal Housing Finance Agency Amend Preferred Stock Purchase Agreements for Fannie Mae and Freddie Mac",
+            "url": "https://home.treasury.gov/news/press-releases/jy2767",
+            "publisher": "U.S. Department of the Treasury",
+            "author": null,
+            "publication_date": "2025-01-02",
+            "access_date": "2026-08-19",
+            "source_type": "executive_action",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "The 2025 PSPA amendments eliminated certain business-activity restrictions that had been suspended since September 14, 2021, updated ERCF references, and restored Treasury consent rights over release from conservatorship.",
+            "metadata_status": "Validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c5"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "a346ae04a6cc9cb83958b15b5630b838d490fb7b314f26becb025778931097d2"
+          },
+          {
+            "source_id": "s_fannie_titling",
+            "title": "Titling Manufactured Homes as Real Property",
+            "url": "https://singlefamily.fanniemae.com/originating-underwriting/titling-manufactured-homes-real-property",
+            "publisher": "Fannie Mae",
+            "author": null,
+            "publication_date": null,
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 2,
+            "jurisdiction": "United States; state-specific",
+            "excerpt": "For sale to Fannie Mae under current guidance, a manufactured home must be titled as real property through a process that varies by state, including certificate-of-title cancellation or an affidavit of affixture and real-property lien recording.",
+            "metadata_status": "Validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "3a787d6d1a8162a20ac5ee463a540545889ef5c3b8b59e6999bcf5fdc8a47e3d"
+          },
+          {
+            "source_id": "s_fannie_legal_requirements",
+            "title": "Legal Requirements",
+            "url": "https://selling-guide.fanniemae.com/sel/b2-1.5-03/legal-requirements",
+            "publisher": "Fannie Mae",
+            "author": null,
+            "publication_date": null,
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "The lender is responsible for ensuring clear title and first-lien enforceability; Fannie Mae\u2019s guide generally excludes personal property as additional security for a one-unit mortgage unless otherwise specified.",
+            "metadata_status": "Validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "23d52401140763f12a1379d657d76e3edfd88b9f3766ecc638bbf48d9a0b4acd"
+          },
+          {
+            "source_id": "s_freddie_prior_plan",
+            "title": "Freddie Mac Duty to Serve Underserved Markets Plan, Chattel Pilot Materials",
+            "url": "https://www.fhfa.gov/sites/default/files/documents/Freddie-Mac_Final-UMP.pdf",
+            "publisher": "Freddie Mac",
+            "author": null,
+            "publication_date": "2017-01-01",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "Freddie Mac described lack of standardized products, underwriting, and collateral valuation; proposed pilot parameters for credit, servicing, pricing, credit enhancement, risk sharing, consumer protections, delivery, quality control, disposition, and potential securitization, subject to FHFA approval.",
+            "metadata_status": "Validated from FHFA-hosted plan search extract; publication date is approximate plan-cycle year.",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "4e941420d35287b1a40e8f7849c49fa757d4a65d5acac2903bfbe4f7616522e4"
+          },
+          {
+            "source_id": "s_freddie_2023_chattel",
+            "title": "2023 Manufactured Housing Chattel Loan Product Narrative",
+            "url": "https://www.fhfa.gov/sites/default/files/2024-04/MH_Chattel_2_A_Narrative_2023-revised.pdf",
+            "publisher": "Freddie Mac",
+            "author": null,
+            "publication_date": "2024-04-01",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "Freddie Mac reported due diligence and data accumulation to develop a framework for purchasing personal-property manufactured-home loans pending FHFA approval, including examination of varied siting arrangements and loan programs.",
+            "metadata_status": "Validated from FHFA-hosted document search extract; publication date inferred from file path.",
+            "synthetic": false,
+            "retrieved_by": [
+              "legal_regulatory_researcher"
+            ],
+            "used_by": [
+              "legal_regulatory_researcher"
+            ],
+            "supports_claim_ids": [
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "91d354501465c15c4c7538de5165223ca1dda05497aa9fd40fb2fa9a1d91b8e1"
+          }
+        ],
+        "country_comparisons": [],
+        "contradictions": [],
+        "source_ids": [
+          "s_dts_statute",
+          "s_dts_rule",
+          "s_dts_fact_sheet",
+          "s_dts_plans",
+          "s_fannie_2025_plan",
+          "s_freddie_2025_plan",
+          "s_fannie_charter",
+          "s_freddie_charter",
+          "s_freddie_faq",
+          "s_capital_conservatorship",
+          "s_treasury_pspa_2025",
+          "s_fannie_titling",
+          "s_fannie_legal_requirements",
+          "s_freddie_prior_plan",
+          "s_freddie_2023_chattel"
+        ],
+        "missing_perspectives": [
+          "Government and academic sibling branches should supply empirical evidence on current chattel loan pricing, default, recovery, prepayment, borrower composition, lender concentration, and whether secondary-market entry passes through to borrowers.",
+          "Implementation analysis needs a 50-state legal survey covering title statutes, UCC perfection and priority, repossession and disposition rules, consumer-credit disclosures and remedies, taxation, and manufactured-housing community lease and eviction protections.",
+          "FHFA or Enterprise product-approval documentation is needed to determine the exact approval pathway, whether a new-product determination under 12 U.S.C. 4541 is required, and what conditions would apply to any pilot, guaranty, or securitization.",
+          "The manager should request capital, liquidity, stress, and credit-risk-transfer modeling tailored to chattel collateral rather than infer results from real-property manufactured-home loans."
+        ],
+        "limitations": [
+          "No 50-state legal analysis was completed; state-law conclusions are structural and not jurisdiction-specific legal determinations.",
+          "Some Enterprise-plan PDFs were validated from FHFA-hosted search extracts because full files could not be fetched; their relevant statements should be rechecked against the complete current plan before final publication.",
+          "This branch assesses legal and regulatory pathways, not causal market outcomes or litigation probabilities.",
+          "The current date is 2026-08-19; the FHFA proposed 2026 DTS rulemaking was not treated as binding law because it remains proposed."
+        ],
+        "prompt_injection_flags": [],
+        "error": null,
+        "started_at": "2026-08-19T01:30:14.787176Z",
+        "finished_at": "2026-08-19T01:31:18.361744Z"
+      },
+      {
+        "branch": "think_tank_academic",
+        "agent_name": "think_tank_academic_researcher",
+        "status": "completed",
+        "summary": "Evidence supports exploring a tightly controlled GSE chattel-purchase/guarantee pilot, not assuming a large or uniform affordability gain. The main plausible mechanism is secondary-market liquidity lowering funding costs and attracting lenders in a concentrated market; pass-through to borrowers depends on competition, pricing rules, and borrower protections. Chattel loans have materially weaker consumer protections and uncertain, fragmented performance data, so standardization, loan-level reporting, risk sharing, servicing requirements, and evaluation gates are central rather than ancillary.",
+        "claims": [
+          {
+            "claim_id": "c1",
+            "text": "The baseline chattel market has very limited federal/GSE participation, so a GSE purchase-and-guarantee program would be a material change in market structure rather than a marginal expansion of an existing channel. Urban Institute analysis of 2018\u201321 HMDA reports GSE purchases of only 0.2\u20130.4 percent of chattel purchase lending, while 83.4\u201387.3 percent remained in lender portfolios.",
+            "claim_type": "fact",
+            "why_it_matters": "A new GSE channel could alter lender funding, underwriting, and market-entry incentives because the current market is predominantly portfolio financed.",
+            "manager_implication": "Treat effects as an untested policy intervention; require a baseline market map and lender-level monitoring before estimating volume or price effects.",
+            "supporting_source_ids": [
+              "s_urban_role"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.9,
+            "geographic_scope": "United States",
+            "applicable_period": "2018-2021",
+            "material_limitations": [
+              "HMDA channel classifications do not by themselves establish why loans stayed in portfolio or predict take-up under a new GSE product."
+            ],
+            "originating_agent": "think_tank_academic"
+          },
+          {
+            "claim_id": "c2",
+            "text": "A GSE guarantee could plausibly reduce chattel borrowing costs and expand lender participation by providing liquidity and a standardized outlet, but the evidence is mechanism-based and does not identify the size of borrower-rate pass-through. Urban Institute argues that GSE entry could encourage more lenders and better terms, while explicitly noting chattel loans are riskier and that scalable activity requires standardization, credit and servicing policy, and ongoing monitoring.",
+            "claim_type": "interpretation",
+            "why_it_matters": "The central claimed benefit\u2014lower rates and broader access\u2014is conditional on product design and competitive pass-through, not guaranteed merely by GSE eligibility.",
+            "manager_implication": "Explore a pilot with required rate/APR reporting, lender participation targets, and a comparison group; do not set a projected rate reduction without loan-level pricing and performance modeling.",
+            "supporting_source_ids": [
+              "s_urban_role",
+              "s_urban_climate"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.78,
+            "geographic_scope": "United States",
+            "applicable_period": "5-to-10-year policy horizon",
+            "material_limitations": [
+              "No causal study was identified estimating the effect of actual Fannie Mae or Freddie Mac chattel guarantees on borrower rates, approval rates, or production.",
+              "Lower funding costs may be retained by incumbent lenders where competition remains limited."
+            ],
+            "originating_agent": "think_tank_academic"
+          },
+          {
+            "claim_id": "c3",
+            "text": "The potential consumer benefit is economically meaningful but cannot be inferred as the full observed chattel-versus-mortgage pricing gap. Urban Institute's 2017 HMDA analysis found an approximately 4.4 percentage-point annual rate gap and illustrated roughly $2,600 annual savings on an $80,000, 20-year loan if a borrower moved from chattel financing to a mortgage; the authors caution that chattel borrowers likely have weaker unobserved credit profiles and that closing costs differ.",
+            "claim_type": "estimate",
+            "why_it_matters": "The rate gap indicates substantial potential affordability headroom, but it is not a valid estimate of the reduction a GSE chattel guarantee would deliver.",
+            "manager_implication": "Avoid using the 4.4-point gap as a program savings estimate. Request matched loan-level analyses controlling for credit score, LTV, DTI, home characteristics, land tenure, geography, and fees.",
+            "supporting_source_ids": [
+              "s_urban_challenges",
+              "s_urban_climate"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.86,
+            "geographic_scope": "United States",
+            "applicable_period": "2017",
+            "material_limitations": [
+              "Observed comparisons are not causal.",
+              "The comparison is between chattel loans and mortgages, not between guaranteed and unguaranteed chattel loans.",
+              "The source notes lower upfront costs may partially offset chattel financing's higher rate."
+            ],
+            "originating_agent": "think_tank_academic"
+          },
+          {
+            "claim_id": "c4",
+            "text": "A GSE program could improve distributional access, including for lower-income and rural manufactured-home households, but it could also reproduce inequities unless its underwriting and outreach are deliberately designed. Research reports high denial rates for Black, Hispanic, and Indigenous applicants in both manufactured-home chattel and mortgage lending, and identifies concentrated chattel lending and retailer-linked finance as barriers to competitive choice.",
+            "claim_type": "synthesis",
+            "why_it_matters": "Expanded liquidity might widen access, but incumbent distribution channels could capture benefits unevenly or continue steering borrowers toward costlier products.",
+            "manager_implication": "Require fair-lending monitoring by race/ethnicity, income, geography, land tenure, dealer involvement, and lender; test whether new GSE-eligible loans substitute for unnecessarily costly chattel loans among landowners rather than merely increasing volume.",
+            "supporting_source_ids": [
+              "s_urban_climate",
+              "s_urban_challenges"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.76,
+            "geographic_scope": "United States",
+            "applicable_period": "Current baseline; 5-to-10-year policy horizon",
+            "material_limitations": [
+              "Evidence of steering cited in the synthesis is suggestive and does not establish intent or quantify effects of a GSE program.",
+              "Distributional outcomes depend on eligibility rules, outreach, and lender/dealer conduct."
+            ],
+            "originating_agent": "think_tank_academic"
+          },
+          {
+            "claim_id": "c5",
+            "text": "Consumer-protection design is a first-order condition for policy value. Compared with real-property manufactured-home mortgages, chattel loans can have higher HOEPA thresholds, reduced applicability of integrated disclosures and anti-steering rules, less formal lien/assignment recording, and weaker loss-mitigation protections; many states permit self-help repossession. Increased government-backed liquidity without minimum protections could therefore scale a product whose legal and servicing safeguards are weaker.",
+            "claim_type": "fact",
+            "why_it_matters": "Lower-cost financing alone may not improve household security if borrowers remain exposed to opaque origination, weak title transfer practices, pad-lease instability, or rapid repossession.",
+            "manager_implication": "Condition eligibility on standardized disclosures, independent value review where appropriate, recorded liens and assignments, national servicing/loss-mitigation standards, pad-lease protections for land-lease homes, and transparent complaint and repossession reporting.",
+            "supporting_source_ids": [
+              "s_urban_personal"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.9,
+            "geographic_scope": "United States; protections vary by state and transaction type",
+            "applicable_period": "Current baseline",
+            "material_limitations": [
+              "Some differences depend on whether the borrower owns land, resides on tribal land or in a resident-owned community, and applicable state law."
+            ],
+            "originating_agent": "think_tank_academic"
+          },
+          {
+            "claim_id": "c6",
+            "text": "Private-label chattel securitization demonstrates some investor appetite and provides a limited performance analogy, but it does not establish that GSE-scale guarantees would be safe or broadly scalable. One 2021 private-label channel financed $135 million, or 2.4 percent, of $5.7 billion in chattel originations; a cited Cascade transaction showed 0.91 percent 90-plus-day delinquency and 2.47 percent foreclosure as of March 2022, but the underlying data were supplied by the issuer and covered a selected 2017\u201319 cohort.",
+            "claim_type": "fact",
+            "why_it_matters": "The analogy supports feasibility of securitization but is insufficient for expected-loss pricing, capital, or guarantee-fee design across economic cycles.",
+            "manager_implication": "Require independently auditable, longitudinal loan-level performance data\u2014including defaults, recoveries, severities, prepayments, modifications, repossessions, and post-repossession borrower outcomes\u2014before scaling beyond a risk-capped pilot.",
+            "supporting_source_ids": [
+              "s_urban_role"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "weak",
+            "confidence": 0.74,
+            "geographic_scope": "United States",
+            "applicable_period": "2017-2022",
+            "material_limitations": [
+              "Selected private transaction; issuer-provided performance data.",
+              "Performance observation predates a full credit-cycle stress test.",
+              "The transaction's underwriting and servicing may not represent market-wide originations."
+            ],
+            "originating_agent": "think_tank_academic"
+          },
+          {
+            "claim_id": "c7",
+            "text": "Chattel loans' slow prepayments create a mixed consequence for a GSE securitization program: they may be attractive to investors seeking predictable duration, but low refinance access is also a consumer-cost concern. Urban found chattel refinances remained under 10 percent of originations from 2018 through 2021; in 2021, refinance shares were 7.5 percent for chattel, versus 43.4 percent for manufactured-home mortgages and 61.2 percent for site-built mortgages. FHFA similarly reports manufactured-home loans are disproportionately placed in specified pools associated with slower prepayments and duration sensitivity.",
+            "claim_type": "synthesis",
+            "why_it_matters": "A product designed solely to maximize investor appeal could preserve borrower lock-in; a program designed for affordability needs pathways for refinance and payoff without excessive friction.",
+            "manager_implication": "Include refinance eligibility, portability/payoff rules, and reporting of refinance opportunities and take-up in program design; separately model prepayment/duration risk for guarantee pricing.",
+            "supporting_source_ids": [
+              "s_urban_role",
+              "s_fhfa_mh_securitization"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.84,
+            "geographic_scope": "United States",
+            "applicable_period": "2018-2024",
+            "material_limitations": [
+              "Slow prepayment reflects multiple factors, including loan balance, borrower profiles, and limited refinance competition; it does not independently prove borrower harm or investor benefit."
+            ],
+            "originating_agent": "think_tank_academic"
+          }
+        ],
+        "discovered_sources": [
+          {
+            "source_id": "s_urban_role",
+            "title": "The Role of Manufactured Housing in Increasing the Supply of Affordable Housing",
+            "url": "https://www.urban.org/sites/default/files/2022-07/The%20Role%20of%20Manufactured%20Housing%20in%20Increasing%20the%20Supply%20of%20Affordable%20Housing.pdf",
+            "publisher": "Urban Institute",
+            "author": "Karan Kaul and Daniel Pang",
+            "publication_date": "2022-07-01",
+            "access_date": "2026-08-19",
+            "source_type": "think_tank",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "Using 2018\u201321 HMDA, the report shows 83.4\u201387.3 percent of chattel purchase lending was portfolio-held and only 0.2\u20130.4 percent was GSE-purchased. It argues GSE entry could improve availability and affordability but states chattel is riskier and requires scalable standardization, credit and servicing policies, monitoring, and potentially private risk transfer. It also reports limited private-label securitization and issuer-provided transaction performance.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "think_tank_academic"
+            ],
+            "used_by": [
+              "c1",
+              "c2",
+              "c6",
+              "c7"
+            ],
+            "supports_claim_ids": [
+              "c1",
+              "c2",
+              "c6",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Issuer-provided transaction-performance data cited in the report should not be generalized without independent validation."
+            ],
+            "content_hash": "59c8a5be1ce311bd107233d8d61cc0a4eace1c7c292c2133ae5653134b7033c1"
+          },
+          {
+            "source_id": "s_urban_challenges",
+            "title": "Challenges to Obtaining Manufactured Home Financing",
+            "url": "https://www.urban.org/sites/default/files/publication/98687/challenges_to_obtaining_manufactured_home_financing_0.pdf",
+            "publisher": "Urban Institute",
+            "author": "Laurie Goodman and Bhargavi Ganesh",
+            "publication_date": "2018-02-01",
+            "access_date": "2026-08-19",
+            "source_type": "think_tank",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "The report finds a 4.4 percentage-point chattel-versus-mortgage annual rate gap in 2017 HMDA and illustrates $2,600 annual savings on an $80,000, 20-year loan, while warning that borrower credit profiles and closing costs differ. It estimates that 53 percent of financed manufactured-home purchasers who owned land may have used chattel when they might have been mortgage eligible, but labels this an upper bound.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "think_tank_academic"
+            ],
+            "used_by": [
+              "c3",
+              "c4"
+            ],
+            "supports_claim_ids": [
+              "c3",
+              "c4"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Descriptive estimates; not causal and based on older data."
+            ],
+            "content_hash": "0fa77fabeba875337dbe124d44191446f9364036bf880eacbac9eff74e300336"
+          },
+          {
+            "source_id": "s_urban_personal",
+            "title": "Manufactured Housing Personal Property Loans",
+            "url": "https://www.urban.org/sites/default/files/2023-08/Manufactured%20Housing%20Personal%20Property%20Loans.pdf",
+            "publisher": "Urban Institute",
+            "author": "Sarah Gerecke",
+            "publication_date": "2023-08-01",
+            "access_date": "2026-08-19",
+            "source_type": "think_tank",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "The brief compares personal-property and real-property manufactured-home loans, identifying weaker protections for many chattel transactions: higher high-cost thresholds, limited integrated disclosures and anti-steering restrictions, weaker lien/assignment recording, and limited loss-mitigation requirements. It recommends tying increased government-backed liquidity to consumer protections and public performance data.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "think_tank_academic"
+            ],
+            "used_by": [
+              "c5"
+            ],
+            "supports_claim_ids": [
+              "c5"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Legal protections vary by state, land tenure, and transaction characteristics; this is policy analysis rather than legal authority."
+            ],
+            "content_hash": "55f0d3d3f37abaa3a76897b5fa30f5653511da7966a3dfe63f57484cbf2b25c9"
+          },
+          {
+            "source_id": "s_urban_climate",
+            "title": "Building a Climate-Resilient Manufactured Housing Stock",
+            "url": "https://www.urban.org/sites/default/files/2025-02/Building_Climate-Resilient_Manufactured_Housing_Stock.pdf",
+            "publisher": "Urban Institute",
+            "author": "Multiple authors",
+            "publication_date": "2025-02-01",
+            "access_date": "2026-08-19",
+            "source_type": "think_tank",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "The report states that chattel borrowers face higher costs and that federal support is limited, citing market concentration and higher denial rates for Black, Hispanic, and Indigenous borrowers. It describes GSE chattel activity as not currently launched and notes retailer-linked financing may be associated with selection into chattel lending.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "think_tank_academic"
+            ],
+            "used_by": [
+              "c2",
+              "c3",
+              "c4"
+            ],
+            "supports_claim_ids": [
+              "c2",
+              "c3",
+              "c4"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Synthesizes underlying sources; claims about steering are suggestive rather than a direct causal finding about a GSE program."
+            ],
+            "content_hash": "5b7924f736d9491ec031fe8f862dfd92a95a1e298764f2944c749330fc950f1d"
+          },
+          {
+            "source_id": "s_fhfa_mh_securitization",
+            "title": "Securitization of Manufactured Housing Loans in Enterprise Portfolios",
+            "url": "https://www.fhfa.gov/blog/statistics/securitization-of-manufactured-housing-loans-in-enterprise-portfolios",
+            "publisher": "Federal Housing Finance Agency",
+            "author": "FHFA Division of Research and Statistics",
+            "publication_date": "2024-10-09",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "FHFA reports that manufactured housing represented 0.80 percent of Enterprise single-family acquisitions by mid-2024 and that nearly three-fourths of Enterprise-acquired manufactured-home loans entered specified pools, which are associated with slower prepayments and greater interest-rate sensitivity from longer duration.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "think_tank_academic"
+            ],
+            "used_by": [
+              "c7"
+            ],
+            "supports_claim_ids": [
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Covers Enterprise-acquired manufactured-home mortgages, not chattel loans; it is an analogy for securitization behavior and investor demand."
+            ],
+            "content_hash": "14d3dbe6f7a39666ca2e6e1c648a7c83b30e275e25a19fb6533c7aa2525886c2"
+          }
+        ],
+        "country_comparisons": [],
+        "contradictions": [
+          {
+            "contradiction_id": "x1",
+            "claim_id": "c2",
+            "supporting_source_ids": [
+              "s_urban_role",
+              "s_urban_climate"
+            ],
+            "contradicting_source_ids": [
+              "s_urban_role"
+            ],
+            "description": "The same evidence base supports a plausible liquidity-and-competition mechanism while warning that chattel loans are riskier and that pricing pass-through depends on standardization, monitoring, and market structure. This is not a direct empirical contradiction; it is a distinction between a policy hypothesis and evidence of realized causal effects.",
+            "resolution_status": "unresolved",
+            "manager_commentary": "Frame lower rates and higher access as conditional outcomes to be tested in a pilot, not established effects."
+          },
+          {
+            "contradiction_id": "x2",
+            "claim_id": "c6",
+            "supporting_source_ids": [
+              "s_urban_role"
+            ],
+            "contradicting_source_ids": [
+              "s_urban_role"
+            ],
+            "description": "Private-label securitization and one transaction's reported performance support feasibility and investor appetite, but selected issuer-provided data cannot establish market-wide expected loss or GSE safety and soundness through a downturn.",
+            "resolution_status": "unresolved",
+            "manager_commentary": "Use the transaction only as feasibility evidence; request independent, loan-level and stress-period performance analysis."
+          }
+        ],
+        "source_ids": [
+          "s_urban_role",
+          "s_urban_challenges",
+          "s_urban_personal",
+          "s_urban_climate",
+          "s_fhfa_mh_securitization"
+        ],
+        "missing_perspectives": [
+          "Sibling government/legal branches should confirm the current statutory and regulatory authority, conservatorship constraints, and whether any current Enterprise chattel purchases or pilots have launched as of August 19, 2026.",
+          "No validated causal estimate was identified for the impact of a GSE chattel guarantee on APR, approval rates, loan volumes, manufactured-home production, default, loss severity, or borrower wealth.",
+          "Independent nationwide chattel loan-level data on credit score, LTV, DTI, collateral values, repossession recoveries, servicing, and post-default consumer outcomes remain insufficiently public for robust guarantee pricing.",
+          "Implementation analysis should assess treatment of homes on leased land, pad-rent and lease-renewal risk, titling and lien perfection, dealer-affiliate relationships, and state-specific repossession law."
+        ],
+        "limitations": [
+          "Most available evidence is descriptive, policy analysis, or a limited private-securitization analogy; it does not estimate causal impacts of Enterprise chattel guarantees.",
+          "Several quantitative comparisons rely on HMDA, which lacks key underwriting variables and can leave residual borrower and loan-product selection.",
+          "Market conditions, federal programs, loan limits, and Enterprise plans may have changed after the reported periods; the sibling government branch should establish the current baseline.",
+          "No country comparison is included because the assignment concerns a distinctive U.S. GSE and personal-property finance structure, and no directly transferable comparator was validated within this branch."
+        ],
+        "prompt_injection_flags": [],
+        "error": null,
+        "started_at": "2026-08-19T01:30:14.792729Z",
+        "finished_at": "2026-08-19T01:31:04.645907Z"
+      }
+    ]
+  }
+}

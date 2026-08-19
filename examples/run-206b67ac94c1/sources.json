@@ -1,0 +1,679 @@
+[
+  {
+    "source_id": "s_current_plans",
+    "title": "2025-2027 Duty to Serve Underserved Markets Plans",
+    "url": "https://www.fhfa.gov/programs/2025-2027-duty-to-serve-underserved-markets-plans",
+    "publisher": "Federal Housing Finance Agency",
+    "author": null,
+    "publication_date": "2024-11-25",
+    "access_date": "2026-08-19",
+    "source_type": "agency_guidance",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "FHFA states that the 2025-2027 Enterprise Underserved Markets Plans became effective January 1, 2025; activities remain subject to FHFA review for Charter Act, safety-and-soundness, conservatorship, and regulatory compliance. Modified plans were issued in January 2026.",
+    "metadata_status": "validated from FHFA page; page reflects revisions through December 2025",
+    "synthetic": false,
+    "retrieved_by": [
+      "government_sources",
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "c1",
+      "c7",
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c1",
+      "c3",
+      "c5",
+      "c7"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "54b61c7848036d0a964ce1bd4e7ea6b59102a13b39441d42c43d3d65a73f14d3"
+  },
+  {
+    "source_id": "s_freddie_plan",
+    "title": "Freddie Mac Duty to Serve Underserved Markets Plan for 2025-2027, Revised December 11, 2025",
+    "url": "https://www.fhfa.gov/document/d/dtsp/freddie-mac-2025-2027-duty-to-serve-ump-dec2025.pdf",
+    "publisher": "Freddie Mac; published by Federal Housing Finance Agency",
+    "author": null,
+    "publication_date": "2025-12-11",
+    "access_date": "2026-08-19",
+    "source_type": "agency_guidance",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "The plan\u2019s manufactured-housing activities are purchase of loans secured by manufactured homes titled as real property, product flexibilities for such mortgages, and community loans with tenant pad-lease protections. The plan states implementation remains subject to FHFA review, safety-and-soundness standards, regulatory requirements, PSPA obligations, and adverse market/economic conditions.",
+    "metadata_status": "validated PDF text; Enterprise plan, not an FHFA finding",
+    "synthetic": false,
+    "retrieved_by": [
+      "government_sources",
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "c1",
+      "c5",
+      "c6",
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c1",
+      "c3",
+      "c5",
+      "c6"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "4af6c008704452b9e4ffc1ca143b96d3c56b668cb2bc002744873ae1b8f3c54b"
+  },
+  {
+    "source_id": "s_dts_final_rule",
+    "title": "Enterprise Duty To Serve Underserved Markets, Final Rule, 81 FR 96242",
+    "url": "https://www.govinfo.gov/app/details/FR-2016-12-29/2016-30284",
+    "publisher": "Federal Housing Finance Agency / Federal Register",
+    "author": null,
+    "publication_date": "2016-12-29",
+    "access_date": "2026-08-19",
+    "source_type": "regulation",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "The final rule implements HERA\u2019s Duty to Serve for manufactured housing, affordable housing preservation, and rural markets. It describes eligible secondary-market activities including mortgages related to manufactured homes titled as real property or personal property and establishes the evaluation framework.",
+    "metadata_status": "validated Federal Register/GovInfo metadata and summary",
+    "synthetic": false,
+    "retrieved_by": [
+      "government_sources"
+    ],
+    "used_by": [
+      "c2"
+    ],
+    "supports_claim_ids": [
+      "c2"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "fd558f1a34d71c40447fdf16b2a7a9d66ff6b3411fa19d172e7a5051e0b1626c"
+  },
+  {
+    "source_id": "s_fhfa_mh_support",
+    "title": "Fannie Mae and Freddie Mac Support for Manufactured Housing",
+    "url": "https://www.fhfa.gov/blog/statistics/fannie-mae-and-freddie-mac-support-manufactured-housing",
+    "publisher": "Federal Housing Finance Agency",
+    "author": null,
+    "publication_date": "2023-03-06",
+    "access_date": "2026-08-19",
+    "source_type": "government_report",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "FHFA states that HERA created the duty to increase liquidity and investment capital for manufactured housing, that the DTS regulation covers both real-property and personal-property manufactured homes, and that at the time of publication the Enterprises acquired only real-property manufactured-home loans, not personal-property loans.",
+    "metadata_status": "validated FHFA webpage; historical baseline statement is dated",
+    "synthetic": false,
+    "retrieved_by": [
+      "government_sources"
+    ],
+    "used_by": [
+      "c1",
+      "c2",
+      "c5",
+      "c6"
+    ],
+    "supports_claim_ids": [
+      "c1",
+      "c2",
+      "c5",
+      "c6"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "bbadbad87a008e0487893be5b8205bc51ef350fa594293458a3d69fa93f725f5"
+  },
+  {
+    "source_id": "s_fhfa_proposed_rule",
+    "title": "Enterprise Duty to Serve Underserved Markets, Proposed Rule, 91 FR 37848",
+    "url": "https://www.govinfo.gov/content/pkg/FR-2026-06-24/pdf/2026-12750.pdf",
+    "publisher": "Federal Housing Finance Agency / Federal Register",
+    "author": null,
+    "publication_date": "2026-06-24",
+    "access_date": "2026-08-19",
+    "source_type": "proposed_rule",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "FHFA states that prior Enterprise chattel pilots were constrained by insufficient industry data and did not achieve intended outcomes; that Enterprises have not purchased chattel loans through DTS; and that the market has limited liquidity, no securitization infrastructure, and insufficient robust performance data. FHFA describes a potential need for underwriting standards, risk-management protocols, and securitization infrastructure, while proposing a broader eligible-actions framework.",
+    "metadata_status": "validated Federal Register proposed-rule text; not current final policy",
+    "synthetic": false,
+    "retrieved_by": [
+      "government_sources"
+    ],
+    "used_by": [
+      "c1",
+      "c2",
+      "c3",
+      "c4",
+      "c6",
+      "c7"
+    ],
+    "supports_claim_ids": [
+      "c1",
+      "c2",
+      "c3",
+      "c4",
+      "c6",
+      "c7"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [
+      "proposed_rule_not_current_policy"
+    ],
+    "content_hash": "221a626e82645e05b7d5e1454f3b8e910ffee5172e99c49194e7c1872610a000"
+  },
+  {
+    "source_id": "s_dts_statute",
+    "title": "12 U.S.C. \u00a7 4565, Duty to serve underserved markets and other requirements",
+    "url": "https://uscode.house.gov/view.xhtml?edition=prelim&num=0&req=granuleid%3AUSC-prelim-title12-section4565",
+    "publisher": "U.S. House Office of the Law Revision Counsel",
+    "author": null,
+    "publication_date": null,
+    "access_date": "2026-08-19",
+    "source_type": "statute",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "Each Enterprise must provide leadership in developing loan products and flexible underwriting to facilitate a secondary market in specified underserved markets; for manufactured housing, the Director may consider loans secured by both real and personal property.",
+    "metadata_status": "Validated from search result; direct page access returned 403.",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c1"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "f878145eb533b42ee1dce0a5d53a4b8fe3039076ded074266980c757f107cbc6"
+  },
+  {
+    "source_id": "s_dts_rule",
+    "title": "Enterprise Duty to Serve Underserved Markets Final Rule",
+    "url": "https://www.fhfa.gov/regulation/federal-register/final-rule/enterprise-duty-to-serve-underserved-markets-final-rule",
+    "publisher": "Federal Housing Finance Agency",
+    "author": null,
+    "publication_date": "2016-12-29",
+    "access_date": "2026-08-19",
+    "source_type": "regulation",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "The final rule, effective January 30, 2017, identifies activities that facilitate a secondary market for mortgages related to manufactured homes titled as real property or personal property as eligible DTS activity.",
+    "metadata_status": "Validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c1",
+      "c2"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "882bf4a901a95063c6676419fe579659d0853c760b0a13d33fee362c0304f0ed"
+  },
+  {
+    "source_id": "s_dts_fact_sheet",
+    "title": "Fannie Mae & Freddie Mac Duty to Serve Program",
+    "url": "https://www.fhfa.gov/news/fact-sheet/fannie-mae-freddie-mac-duty-to-serve-program",
+    "publisher": "Federal Housing Finance Agency",
+    "author": null,
+    "publication_date": "2016-12-13",
+    "access_date": "2026-08-19",
+    "source_type": "agency_guidance",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "Activities supporting financing of manufactured homes titled as personal property, also known as chattel, initially as a pilot program, are eligible for Duty to Serve credit.",
+    "metadata_status": "Validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c2"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "69fd8aceb7794acb7b50511c23c427a2c916091c2499d090fc5610963b377d3b"
+  },
+  {
+    "source_id": "s_fannie_2025_plan",
+    "title": "Fannie Mae 2025-2027 Duty to Serve Underserved Markets Plan, Modified",
+    "url": "https://www.fhfa.gov/document/d/dtsp/fm_dutytoserveplan_2025-2027_modified_09.30.2025.pdf",
+    "publisher": "Fannie Mae",
+    "author": null,
+    "publication_date": "2025-09-30",
+    "access_date": "2026-08-19",
+    "source_type": "agency_guidance",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "Fannie Mae states it considered but did not include the personal-property regulatory activity and continues to work with its regulator on safety-and-soundness considerations and viability of a manufactured-housing chattel pilot.",
+    "metadata_status": "Validated from FHFA-hosted document search extract; full PDF was too large for direct fetch.",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c3",
+      "c7"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "d2a68bdb85cf2abb5c429a0b4cabf93ae8f74e5b44df75b9bae82cb24128d940"
+  },
+  {
+    "source_id": "s_fannie_charter",
+    "title": "Federal National Mortgage Association Charter Act",
+    "url": "https://www.fanniemae.com/media/document/pdf/fm-amended-charterpdf",
+    "publisher": "Fannie Mae",
+    "author": null,
+    "publication_date": null,
+    "access_date": "2026-08-19",
+    "source_type": "statute",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "The corporation is authorized to purchase, service, sell, lend on the security of, and otherwise deal in loans or advances of credit secured by mortgages or other liens against manufactured homes.",
+    "metadata_status": "Validated from current Fannie Mae-hosted charter document search extract.",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c4"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "96d43ef2af55347dbede454acf9f273530a0429b33e94afed1e15139f679125c"
+  },
+  {
+    "source_id": "s_freddie_charter",
+    "title": "Federal Home Loan Mortgage Corporation Act",
+    "url": "https://www.freddiemac.com/governance/pdf/charter.pdf",
+    "publisher": "Freddie Mac",
+    "author": null,
+    "publication_date": null,
+    "access_date": "2026-08-19",
+    "source_type": "statute",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "Residential mortgage includes a loan or advance secured by a mortgage or other lien on a manufactured home that is the borrower\u2019s principal residence, without regard to whether the security property is real, personal, or mixed.",
+    "metadata_status": "Validated from current Freddie Mac-hosted charter document search extract.",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c4"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "6590e75fe0432d52bb613fb7e9a0c8d1ae98f5bd111086e0cc97ede1cf8d7ffe"
+  },
+  {
+    "source_id": "s_freddie_faq",
+    "title": "Manufactured Housing FAQ",
+    "url": "https://sf.freddiemac.com/faqs/manufactured-housing-faq",
+    "publisher": "Freddie Mac",
+    "author": null,
+    "publication_date": "2023-11-05",
+    "access_date": "2026-08-19",
+    "source_type": "agency_guidance",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "Manufactured homes may be classified under state law as real or personal property; a personal-property loan generally is secured by the home only. Freddie Mac states it does not purchase mortgages secured by manufactured homes titled as personal property.",
+    "metadata_status": "Validated; page reports revised date 2023-11-05.",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c4",
+      "c6"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "9b2466a5837f4c86db0a287d610775afa25b852772e9cb089084a752522d1fef"
+  },
+  {
+    "source_id": "s_capital_conservatorship",
+    "title": "Enterprise Capital Requirements",
+    "url": "https://www.fhfa.gov/supervision/fannie-mae-and-freddie-mac/capital-requirements",
+    "publisher": "Federal Housing Finance Agency",
+    "author": null,
+    "publication_date": null,
+    "access_date": "2026-08-19",
+    "source_type": "agency_guidance",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "FHFA placed the Enterprises into conservatorship on September 6, 2008. During conservatorship, statutory and regulatory capital requirements are not binding, while FHFA monitors capital; the ERCF remains the going-concern risk-based and leverage capital framework.",
+    "metadata_status": "Validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c5"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "5a1de9decb5ee0e255f358230368f2eefacf1aa28ed696cc35a2188c476b32c7"
+  },
+  {
+    "source_id": "s_treasury_pspa_2025",
+    "title": "Treasury Department and Federal Housing Finance Agency Amend Preferred Stock Purchase Agreements for Fannie Mae and Freddie Mac",
+    "url": "https://home.treasury.gov/news/press-releases/jy2767",
+    "publisher": "U.S. Department of the Treasury",
+    "author": null,
+    "publication_date": "2025-01-02",
+    "access_date": "2026-08-19",
+    "source_type": "executive_action",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "The 2025 PSPA amendments eliminated certain business-activity restrictions that had been suspended since September 14, 2021, updated ERCF references, and restored Treasury consent rights over release from conservatorship.",
+    "metadata_status": "Validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c5"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "a346ae04a6cc9cb83958b15b5630b838d490fb7b314f26becb025778931097d2"
+  },
+  {
+    "source_id": "s_fannie_titling",
+    "title": "Titling Manufactured Homes as Real Property",
+    "url": "https://singlefamily.fanniemae.com/originating-underwriting/titling-manufactured-homes-real-property",
+    "publisher": "Fannie Mae",
+    "author": null,
+    "publication_date": null,
+    "access_date": "2026-08-19",
+    "source_type": "agency_guidance",
+    "tier": 2,
+    "jurisdiction": "United States; state-specific",
+    "excerpt": "For sale to Fannie Mae under current guidance, a manufactured home must be titled as real property through a process that varies by state, including certificate-of-title cancellation or an affidavit of affixture and real-property lien recording.",
+    "metadata_status": "Validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c6"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "3a787d6d1a8162a20ac5ee463a540545889ef5c3b8b59e6999bcf5fdc8a47e3d"
+  },
+  {
+    "source_id": "s_fannie_legal_requirements",
+    "title": "Legal Requirements",
+    "url": "https://selling-guide.fanniemae.com/sel/b2-1.5-03/legal-requirements",
+    "publisher": "Fannie Mae",
+    "author": null,
+    "publication_date": null,
+    "access_date": "2026-08-19",
+    "source_type": "agency_guidance",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "The lender is responsible for ensuring clear title and first-lien enforceability; Fannie Mae\u2019s guide generally excludes personal property as additional security for a one-unit mortgage unless otherwise specified.",
+    "metadata_status": "Validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c6"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "23d52401140763f12a1379d657d76e3edfd88b9f3766ecc638bbf48d9a0b4acd"
+  },
+  {
+    "source_id": "s_freddie_prior_plan",
+    "title": "Freddie Mac Duty to Serve Underserved Markets Plan, Chattel Pilot Materials",
+    "url": "https://www.fhfa.gov/sites/default/files/documents/Freddie-Mac_Final-UMP.pdf",
+    "publisher": "Freddie Mac",
+    "author": null,
+    "publication_date": "2017-01-01",
+    "access_date": "2026-08-19",
+    "source_type": "agency_guidance",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "Freddie Mac described lack of standardized products, underwriting, and collateral valuation; proposed pilot parameters for credit, servicing, pricing, credit enhancement, risk sharing, consumer protections, delivery, quality control, disposition, and potential securitization, subject to FHFA approval.",
+    "metadata_status": "Validated from FHFA-hosted plan search extract; publication date is approximate plan-cycle year.",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c7"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "4e941420d35287b1a40e8f7849c49fa757d4a65d5acac2903bfbe4f7616522e4"
+  },
+  {
+    "source_id": "s_freddie_2023_chattel",
+    "title": "2023 Manufactured Housing Chattel Loan Product Narrative",
+    "url": "https://www.fhfa.gov/sites/default/files/2024-04/MH_Chattel_2_A_Narrative_2023-revised.pdf",
+    "publisher": "Freddie Mac",
+    "author": null,
+    "publication_date": "2024-04-01",
+    "access_date": "2026-08-19",
+    "source_type": "government_report",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "Freddie Mac reported due diligence and data accumulation to develop a framework for purchasing personal-property manufactured-home loans pending FHFA approval, including examination of varied siting arrangements and loan programs.",
+    "metadata_status": "Validated from FHFA-hosted document search extract; publication date inferred from file path.",
+    "synthetic": false,
+    "retrieved_by": [
+      "legal_regulatory_researcher"
+    ],
+    "used_by": [
+      "legal_regulatory_researcher"
+    ],
+    "supports_claim_ids": [
+      "c7"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [],
+    "content_hash": "91d354501465c15c4c7538de5165223ca1dda05497aa9fd40fb2fa9a1d91b8e1"
+  },
+  {
+    "source_id": "s_urban_role",
+    "title": "The Role of Manufactured Housing in Increasing the Supply of Affordable Housing",
+    "url": "https://www.urban.org/sites/default/files/2022-07/The%20Role%20of%20Manufactured%20Housing%20in%20Increasing%20the%20Supply%20of%20Affordable%20Housing.pdf",
+    "publisher": "Urban Institute",
+    "author": "Karan Kaul and Daniel Pang",
+    "publication_date": "2022-07-01",
+    "access_date": "2026-08-19",
+    "source_type": "think_tank",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "Using 2018\u201321 HMDA, the report shows 83.4\u201387.3 percent of chattel purchase lending was portfolio-held and only 0.2\u20130.4 percent was GSE-purchased. It argues GSE entry could improve availability and affordability but states chattel is riskier and requires scalable standardization, credit and servicing policies, monitoring, and potentially private risk transfer. It also reports limited private-label securitization and issuer-provided transaction performance.",
+    "metadata_status": "validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "think_tank_academic"
+    ],
+    "used_by": [
+      "c1",
+      "c2",
+      "c6",
+      "c7"
+    ],
+    "supports_claim_ids": [
+      "c1",
+      "c2",
+      "c6",
+      "c7"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [
+      "Issuer-provided transaction-performance data cited in the report should not be generalized without independent validation."
+    ],
+    "content_hash": "59c8a5be1ce311bd107233d8d61cc0a4eace1c7c292c2133ae5653134b7033c1"
+  },
+  {
+    "source_id": "s_urban_challenges",
+    "title": "Challenges to Obtaining Manufactured Home Financing",
+    "url": "https://www.urban.org/sites/default/files/publication/98687/challenges_to_obtaining_manufactured_home_financing_0.pdf",
+    "publisher": "Urban Institute",
+    "author": "Laurie Goodman and Bhargavi Ganesh",
+    "publication_date": "2018-02-01",
+    "access_date": "2026-08-19",
+    "source_type": "think_tank",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "The report finds a 4.4 percentage-point chattel-versus-mortgage annual rate gap in 2017 HMDA and illustrates $2,600 annual savings on an $80,000, 20-year loan, while warning that borrower credit profiles and closing costs differ. It estimates that 53 percent of financed manufactured-home purchasers who owned land may have used chattel when they might have been mortgage eligible, but labels this an upper bound.",
+    "metadata_status": "validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "think_tank_academic"
+    ],
+    "used_by": [
+      "c3",
+      "c4"
+    ],
+    "supports_claim_ids": [
+      "c3",
+      "c4"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [
+      "Descriptive estimates; not causal and based on older data."
+    ],
+    "content_hash": "0fa77fabeba875337dbe124d44191446f9364036bf880eacbac9eff74e300336"
+  },
+  {
+    "source_id": "s_urban_personal",
+    "title": "Manufactured Housing Personal Property Loans",
+    "url": "https://www.urban.org/sites/default/files/2023-08/Manufactured%20Housing%20Personal%20Property%20Loans.pdf",
+    "publisher": "Urban Institute",
+    "author": "Sarah Gerecke",
+    "publication_date": "2023-08-01",
+    "access_date": "2026-08-19",
+    "source_type": "think_tank",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "The brief compares personal-property and real-property manufactured-home loans, identifying weaker protections for many chattel transactions: higher high-cost thresholds, limited integrated disclosures and anti-steering restrictions, weaker lien/assignment recording, and limited loss-mitigation requirements. It recommends tying increased government-backed liquidity to consumer protections and public performance data.",
+    "metadata_status": "validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "think_tank_academic"
+    ],
+    "used_by": [
+      "c5"
+    ],
+    "supports_claim_ids": [
+      "c5"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [
+      "Legal protections vary by state, land tenure, and transaction characteristics; this is policy analysis rather than legal authority."
+    ],
+    "content_hash": "55f0d3d3f37abaa3a76897b5fa30f5653511da7966a3dfe63f57484cbf2b25c9"
+  },
+  {
+    "source_id": "s_urban_climate",
+    "title": "Building a Climate-Resilient Manufactured Housing Stock",
+    "url": "https://www.urban.org/sites/default/files/2025-02/Building_Climate-Resilient_Manufactured_Housing_Stock.pdf",
+    "publisher": "Urban Institute",
+    "author": "Multiple authors",
+    "publication_date": "2025-02-01",
+    "access_date": "2026-08-19",
+    "source_type": "think_tank",
+    "tier": 2,
+    "jurisdiction": "United States",
+    "excerpt": "The report states that chattel borrowers face higher costs and that federal support is limited, citing market concentration and higher denial rates for Black, Hispanic, and Indigenous borrowers. It describes GSE chattel activity as not currently launched and notes retailer-linked financing may be associated with selection into chattel lending.",
+    "metadata_status": "validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "think_tank_academic"
+    ],
+    "used_by": [
+      "c2",
+      "c3",
+      "c4"
+    ],
+    "supports_claim_ids": [
+      "c2",
+      "c3",
+      "c4"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [
+      "Synthesizes underlying sources; claims about steering are suggestive rather than a direct causal finding about a GSE program."
+    ],
+    "content_hash": "5b7924f736d9491ec031fe8f862dfd92a95a1e298764f2944c749330fc950f1d"
+  },
+  {
+    "source_id": "s_fhfa_mh_securitization",
+    "title": "Securitization of Manufactured Housing Loans in Enterprise Portfolios",
+    "url": "https://www.fhfa.gov/blog/statistics/securitization-of-manufactured-housing-loans-in-enterprise-portfolios",
+    "publisher": "Federal Housing Finance Agency",
+    "author": "FHFA Division of Research and Statistics",
+    "publication_date": "2024-10-09",
+    "access_date": "2026-08-19",
+    "source_type": "government_report",
+    "tier": 1,
+    "jurisdiction": "United States",
+    "excerpt": "FHFA reports that manufactured housing represented 0.80 percent of Enterprise single-family acquisitions by mid-2024 and that nearly three-fourths of Enterprise-acquired manufactured-home loans entered specified pools, which are associated with slower prepayments and greater interest-rate sensitivity from longer duration.",
+    "metadata_status": "validated",
+    "synthetic": false,
+    "retrieved_by": [
+      "think_tank_academic"
+    ],
+    "used_by": [
+      "c7"
+    ],
+    "supports_claim_ids": [
+      "c7"
+    ],
+    "contradicts_claim_ids": [],
+    "safety_flags": [
+      "Covers Enterprise-acquired manufactured-home mortgages, not chattel loans; it is an analogy for securitization behavior and investor demand."
+    ],
+    "content_hash": "14d3dbe6f7a39666ca2e6e1c648a7c83b30e275e25a19fb6533c7aa2525886c2"
+  }
+]

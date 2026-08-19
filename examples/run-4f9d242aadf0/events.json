@@ -1,0 +1,259 @@
+[
+  {
+    "timestamp": "2026-08-19T01:38:14.583358+00:00",
+    "event": "run_started",
+    "provider": "web"
+  },
+  {
+    "timestamp": "2026-08-19T01:38:14.589854+00:00",
+    "event": "intake_validated",
+    "mode": "fast"
+  },
+  {
+    "timestamp": "2026-08-19T01:38:14.590711+00:00",
+    "event": "plan_created",
+    "branches": [
+      "government_sources",
+      "legal_regulatory",
+      "think_tank_academic",
+      "consumer",
+      "loan_originator",
+      "servicing",
+      "secondary_market_risk_transfer",
+      "general_consumer_advocacy",
+      "disadvantaged_communities",
+      "financial_sustainability"
+    ]
+  },
+  {
+    "timestamp": "2026-08-19T01:38:14.590711+00:00",
+    "event": "research_started",
+    "assignments": 10
+  },
+  {
+    "timestamp": "2026-08-19T01:38:14.591507+00:00",
+    "event": "branch_started",
+    "branch": "government_sources"
+  },
+  {
+    "timestamp": "2026-08-19T01:38:14.802408+00:00",
+    "event": "branch_started",
+    "branch": "legal_regulatory"
+  },
+  {
+    "timestamp": "2026-08-19T01:38:14.810751+00:00",
+    "event": "branch_started",
+    "branch": "think_tank_academic"
+  },
+  {
+    "timestamp": "2026-08-19T01:38:14.819616+00:00",
+    "event": "branch_started",
+    "branch": "consumer"
+  },
+  {
+    "timestamp": "2026-08-19T01:38:14.826358+00:00",
+    "event": "branch_started",
+    "branch": "loan_originator"
+  },
+  {
+    "timestamp": "2026-08-19T01:38:14.833549+00:00",
+    "event": "branch_started",
+    "branch": "servicing"
+  },
+  {
+    "timestamp": "2026-08-19T01:38:57.249385+00:00",
+    "event": "branch_finished",
+    "branch": "think_tank_academic",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:38:57.251915+00:00",
+    "event": "branch_started",
+    "branch": "secondary_market_risk_transfer"
+  },
+  {
+    "timestamp": "2026-08-19T01:38:57.588427+00:00",
+    "event": "branch_finished",
+    "branch": "legal_regulatory",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:38:57.588427+00:00",
+    "event": "branch_started",
+    "branch": "general_consumer_advocacy"
+  },
+  {
+    "timestamp": "2026-08-19T01:39:03.403142+00:00",
+    "event": "branch_finished",
+    "branch": "loan_originator",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:39:03.405782+00:00",
+    "event": "branch_started",
+    "branch": "disadvantaged_communities"
+  },
+  {
+    "timestamp": "2026-08-19T01:39:06.833572+00:00",
+    "event": "branch_finished",
+    "branch": "consumer",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:39:06.835853+00:00",
+    "event": "branch_started",
+    "branch": "financial_sustainability"
+  },
+  {
+    "timestamp": "2026-08-19T01:39:07.715445+00:00",
+    "event": "branch_finished",
+    "branch": "servicing",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:39:15.472066+00:00",
+    "event": "branch_finished",
+    "branch": "government_sources",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:39:47.701783+00:00",
+    "event": "branch_finished",
+    "branch": "general_consumer_advocacy",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:39:56.704420+00:00",
+    "event": "branch_finished",
+    "branch": "secondary_market_risk_transfer",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:40:04.942309+00:00",
+    "event": "branch_finished",
+    "branch": "disadvantaged_communities",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:40:05.080996+00:00",
+    "event": "branch_finished",
+    "branch": "financial_sustainability",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:40:05.084347+00:00",
+    "event": "branches_validated",
+    "errors": 0,
+    "warnings": 9,
+    "source_count": 57
+  },
+  {
+    "timestamp": "2026-08-19T01:40:05.085932+00:00",
+    "event": "manager_started",
+    "manager": "policy_research_manager",
+    "branches": [
+      "government_sources",
+      "legal_regulatory",
+      "think_tank_academic"
+    ]
+  },
+  {
+    "timestamp": "2026-08-19T01:40:05.113238+00:00",
+    "event": "manager_started",
+    "manager": "industry_research_manager",
+    "branches": [
+      "consumer",
+      "loan_originator",
+      "servicing",
+      "secondary_market_risk_transfer"
+    ]
+  },
+  {
+    "timestamp": "2026-08-19T01:40:05.142972+00:00",
+    "event": "manager_started",
+    "manager": "advocacy_research_manager",
+    "branches": [
+      "general_consumer_advocacy",
+      "disadvantaged_communities",
+      "financial_sustainability"
+    ]
+  },
+  {
+    "timestamp": "2026-08-19T01:40:36.662443+00:00",
+    "event": "manager_finished",
+    "manager": "policy_research_manager",
+    "status": "partial"
+  },
+  {
+    "timestamp": "2026-08-19T01:40:38.030956+00:00",
+    "event": "manager_finished",
+    "manager": "advocacy_research_manager",
+    "status": "completed"
+  },
+  {
+    "timestamp": "2026-08-19T01:40:42.534973+00:00",
+    "event": "manager_finished",
+    "manager": "industry_research_manager",
+    "status": "completed"
+  },
+  {
+    "timestamp": "2026-08-19T01:40:42.535984+00:00",
+    "event": "managers_reconciled",
+    "count": 3
+  },
+  {
+    "timestamp": "2026-08-19T01:40:42.536489+00:00",
+    "event": "draft_started"
+  },
+  {
+    "timestamp": "2026-08-19T01:41:38.652581+00:00",
+    "event": "draft_completed",
+    "sections": 7
+  },
+  {
+    "timestamp": "2026-08-19T01:41:38.653699+00:00",
+    "event": "pre_review_validation",
+    "errors": 0,
+    "warnings": 2
+  },
+  {
+    "timestamp": "2026-08-19T01:41:38.653699+00:00",
+    "event": "review_started"
+  },
+  {
+    "timestamp": "2026-08-19T01:41:47.525090+00:00",
+    "event": "review_completed",
+    "recommendation": "revise",
+    "findings": 4
+  },
+  {
+    "timestamp": "2026-08-19T01:41:47.526607+00:00",
+    "event": "revision_started"
+  },
+  {
+    "timestamp": "2026-08-19T01:42:26.957805+00:00",
+    "event": "bounded_revision",
+    "revision_count": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:42:26.959311+00:00",
+    "event": "final_validation",
+    "errors": 0,
+    "warnings": 2
+  },
+  {
+    "timestamp": "2026-08-19T01:42:26.993061+00:00",
+    "event": "artifacts_persisted",
+    "path": "artifacts\\run-4f9d242aadf0"
+  }
+]

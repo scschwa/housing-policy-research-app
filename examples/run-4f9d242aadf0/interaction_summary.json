@@ -1,0 +1,47 @@
+{
+  "run_id": "run-4f9d242aadf0",
+  "enabled": true,
+  "include_content": true,
+  "max_chars_per_value": 30000,
+  "interaction_count": 16,
+  "completed_count": 16,
+  "failed_count": 0,
+  "running_count": 0,
+  "handoff_count": 6,
+  "agents": [
+    "adversarial_reviewer",
+    "advocacy_research_manager",
+    "consumer_researcher",
+    "disadvantaged_communities_researcher",
+    "financial_sustainability_researcher",
+    "general_consumer_advocacy_researcher",
+    "government_sources_researcher",
+    "industry_research_manager",
+    "legal_regulatory_researcher",
+    "loan_originator_researcher",
+    "policy_research_manager",
+    "secondary_market_risk_transfer_researcher",
+    "servicing_researcher",
+    "synthesis_writer",
+    "synthesis_writer_revision",
+    "think_tank_academic_researcher"
+  ],
+  "stages": [
+    "draft",
+    "reconciliation",
+    "research",
+    "review",
+    "revision"
+  ],
+  "elapsed_ms": 252411,
+  "usage": {
+    "requests": 16,
+    "input_tokens": 476850,
+    "cached_input_tokens": 0,
+    "cache_write_tokens": 217131,
+    "output_tokens": 72830,
+    "reasoning_tokens": 2691,
+    "total_tokens": 549680
+  },
+  "failed_interactions": []
+}

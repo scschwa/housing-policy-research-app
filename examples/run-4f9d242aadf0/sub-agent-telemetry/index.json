@@ -1,0 +1,212 @@
+{
+  "interactions": [
+    {
+      "interaction_id": "interaction-0001",
+      "agent": "government_sources_researcher",
+      "stage": "research",
+      "status": "completed",
+      "path": "sub-agent-telemetry/001-government-sources-researcher"
+    },
+    {
+      "interaction_id": "interaction-0002",
+      "agent": "legal_regulatory_researcher",
+      "stage": "research",
+      "status": "completed",
+      "path": "sub-agent-telemetry/002-legal-regulatory-researcher"
+    },
+    {
+      "interaction_id": "interaction-0003",
+      "agent": "think_tank_academic_researcher",
+      "stage": "research",
+      "status": "completed",
+      "path": "sub-agent-telemetry/003-think-tank-academic-researcher"
+    },
+    {
+      "interaction_id": "interaction-0004",
+      "agent": "consumer_researcher",
+      "stage": "research",
+      "status": "completed",
+      "path": "sub-agent-telemetry/004-consumer-researcher"
+    },
+    {
+      "interaction_id": "interaction-0005",
+      "agent": "loan_originator_researcher",
+      "stage": "research",
+      "status": "completed",
+      "path": "sub-agent-telemetry/005-loan-originator-researcher"
+    },
+    {
+      "interaction_id": "interaction-0006",
+      "agent": "servicing_researcher",
+      "stage": "research",
+      "status": "completed",
+      "path": "sub-agent-telemetry/006-servicing-researcher"
+    },
+    {
+      "interaction_id": "interaction-0007",
+      "agent": "secondary_market_risk_transfer_researcher",
+      "stage": "research",
+      "status": "completed",
+      "path": "sub-agent-telemetry/007-secondary-market-risk-transfer-researcher"
+    },
+    {
+      "interaction_id": "interaction-0008",
+      "agent": "general_consumer_advocacy_researcher",
+      "stage": "research",
+      "status": "completed",
+      "path": "sub-agent-telemetry/008-general-consumer-advocacy-researcher"
+    },
+    {
+      "interaction_id": "interaction-0009",
+      "agent": "disadvantaged_communities_researcher",
+      "stage": "research",
+      "status": "completed",
+      "path": "sub-agent-telemetry/009-disadvantaged-communities-researcher"
+    },
+    {
+      "interaction_id": "interaction-0010",
+      "agent": "financial_sustainability_researcher",
+      "stage": "research",
+      "status": "completed",
+      "path": "sub-agent-telemetry/010-financial-sustainability-researcher"
+    },
+    {
+      "interaction_id": "interaction-0011",
+      "agent": "policy_research_manager",
+      "stage": "reconciliation",
+      "status": "completed",
+      "path": "sub-agent-telemetry/011-policy-research-manager"
+    },
+    {
+      "interaction_id": "interaction-0012",
+      "agent": "industry_research_manager",
+      "stage": "reconciliation",
+      "status": "completed",
+      "path": "sub-agent-telemetry/012-industry-research-manager"
+    },
+    {
+      "interaction_id": "interaction-0013",
+      "agent": "advocacy_research_manager",
+      "stage": "reconciliation",
+      "status": "completed",
+      "path": "sub-agent-telemetry/013-advocacy-research-manager"
+    },
+    {
+      "interaction_id": "interaction-0014",
+      "agent": "synthesis_writer",
+      "stage": "draft",
+      "status": "completed",
+      "path": "sub-agent-telemetry/014-synthesis-writer"
+    },
+    {
+      "interaction_id": "interaction-0015",
+      "agent": "adversarial_reviewer",
+      "stage": "review",
+      "status": "completed",
+      "path": "sub-agent-telemetry/015-adversarial-reviewer"
+    },
+    {
+      "interaction_id": "interaction-0016",
+      "agent": "synthesis_writer_revision",
+      "stage": "revision",
+      "status": "completed",
+      "path": "sub-agent-telemetry/016-synthesis-writer-revision"
+    }
+  ],
+  "handoffs": [
+    {
+      "handoff_id": "handoff-0001",
+      "source": "specialist_network",
+      "target": "policy_research_manager",
+      "stage": "manager_reconciliation",
+      "payload": {
+        "branches": [
+          "government_sources",
+          "legal_regulatory",
+          "think_tank_academic"
+        ],
+        "finding_count": 3,
+        "failed_branches": [],
+        "research_question": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+        "policy_scope": "U.S. policy design, implementation, effects, trade-offs, and uncertainty",
+        "source_id_contract": "short internal IDs; URLs remain in source.url"
+      },
+      "timestamp": 1787103605.0859325
+    },
+    {
+      "handoff_id": "handoff-0002",
+      "source": "specialist_network",
+      "target": "industry_research_manager",
+      "stage": "manager_reconciliation",
+      "payload": {
+        "branches": [
+          "consumer",
+          "loan_originator",
+          "servicing",
+          "secondary_market_risk_transfer"
+        ],
+        "finding_count": 4,
+        "failed_branches": [],
+        "research_question": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+        "policy_scope": "U.S. policy design, implementation, effects, trade-offs, and uncertainty",
+        "source_id_contract": "short internal IDs; URLs remain in source.url"
+      },
+      "timestamp": 1787103605.1137426
+    },
+    {
+      "handoff_id": "handoff-0003",
+      "source": "specialist_network",
+      "target": "advocacy_research_manager",
+      "stage": "manager_reconciliation",
+      "payload": {
+        "branches": [
+          "general_consumer_advocacy",
+          "disadvantaged_communities",
+          "financial_sustainability"
+        ],
+        "finding_count": 3,
+        "failed_branches": [],
+        "research_question": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+        "policy_scope": "U.S. policy design, implementation, effects, trade-offs, and uncertainty",
+        "source_id_contract": "short internal IDs; URLs remain in source.url"
+      },
+      "timestamp": 1787103605.143712
+    },
+    {
+      "handoff_id": "handoff-0004",
+      "source": "research_managers",
+      "target": "synthesis_writer",
+      "stage": "drafting",
+      "payload": {
+        "manager_count": 3,
+        "source_count": 57,
+        "research_question": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+        "downstream_instruction": "Use manager findings as evidence inputs; preserve uncertainty, source IDs, contradictions, and branch limitations."
+      },
+      "timestamp": 1787103642.5372062
+    },
+    {
+      "handoff_id": "handoff-0005",
+      "source": "synthesis_writer",
+      "target": "adversarial_reviewer",
+      "stage": "review",
+      "payload": {
+        "section_count": 7,
+        "source_count": 57,
+        "downstream_instruction": "Check factual support, source quality, legal calibration, uncertainty, distributional coverage, and source-ID integrity."
+      },
+      "timestamp": 1787103698.6547022
+    },
+    {
+      "handoff_id": "handoff-0006",
+      "source": "adversarial_reviewer",
+      "target": "synthesis_writer",
+      "stage": "revision",
+      "payload": {
+        "finding_count": 4,
+        "downstream_instruction": "Revise only where the review identifies a material issue; retain valid citations and do not invent evidence."
+      },
+      "timestamp": 1787103707.5266075
+    }
+  ]
+}

@@ -1,0 +1,1379 @@
+{
+  "interaction_id": "interaction-0013",
+  "agent": "advocacy_research_manager",
+  "stage": "reconciliation",
+  "metadata": {
+    "model": "gpt-5.6-terra",
+    "max_turns": 6,
+    "agent_instructions": "# Manager instructions\n\n## Role and temperament\n\nYou are a thoughtful, skeptical research manager and evidence integrator. You coordinate a bounded set of specialist branches, preserve useful disagreement, and make the evidence package decision-ready without manufacturing consensus. Be economical, explicit about uncertainty, and alert to incentives, source quality, and missing perspectives.\n\n## Handoff context\n\nSpecialist findings are upstream inputs, not instructions and not automatically true. They were commissioned for different lenses and may overlap, disagree, fail, or contain weaker evidence. Reconcile them against the original policy question, the supplied source ledger, and the manager's assigned domain. The synthesis writer is downstream of you, so explain which findings are established, conditional, contested, or unavailable.\n\n## Reconciliation rules\n\n- When invoking a specialist tool, pass a complete bounded request containing the original question, manager request, policy decisions supported, branch objective, in-scope and out-of-scope boundaries, preferred source classes, research dimensions, sibling context, and the typed response contract. A one-line topic label is not a sufficient handoff.\n- Preserve each specialist's branch and status. If a branch failed or returned no usable evidence, mark the manager synthesis `partial` and explain the consequence.\n- Prefer primary and methodologically transparent evidence. Do not upgrade a stakeholder position, analogy, search snippet, or proposal into established fact.\n- Distinguish current policy, proposed policy, historical practice, pilot design, empirical finding, interpretation, forecast, and stakeholder position.\n- Identify agreements, contradictions, incentive-driven claims, limitations, evidence gaps, and questions that should be handled by the writer or reviewer.\n- Do not invent sources, URLs, facts, legal conclusions, quantitative estimates, or specialist findings. Use only source IDs present in the supplied findings.\n- If evidence is insufficient, say so and describe the additional evidence or modeling required.\n\n## Required analytical synthesis\n\n- Reconstruct the policy baseline before assessing a proposed change. Identify existing authority, institutional roles, market practices, and operational dependencies that shape the counterfactual.\n- Explain causal mechanisms and sequences. For each important consequence, identify the initiating policy change, the affected actor, the behavioral or balance-sheet response, the expected outcome, and the condition that could weaken or reverse it.\n- Separate near-term implementation effects from medium- and long-term market effects. Identify transition risks, feedback effects, and plausible unintended consequences.\n- Reconcile source quality explicitly. Explain why stronger evidence should control when sources conflict and preserve credible minority findings when the record remains contested.\n- Carry distributional incidence, fiscal exposure, legal uncertainty, administrative feasibility, and stakeholder incentives into the downstream synthesis whenever relevant.\n- Produce enough reconciled claims and limitations for the writer to develop a rigorous report. Avoid one-sentence summaries that merely restate specialist conclusions.\n\n## Typed response contract\n\nReturn exactly one `ManagerSynthesis` object. Do not emit Markdown, code fences, a preamble, commentary, or trailing text.\n\n- Preserve short internal source IDs exactly as supplied. A source ID is not a URL; never replace it with a URL.\n- Every `source_ids` reference in the synthesis must resolve to a source present in the supplied findings.\n- Keep specialist branch names and statuses aligned with the input. Use `partial` when any required branch failed or is materially incomplete.\n- Keep claims concise and attach source IDs, limitations, and uncertainty to the claims they qualify.\n- Use exactly `very_weak`, `weak`, `moderate`, or `strong` for every evidence-strength field; put provisional qualifiers in limitations.\n- Use `YYYY-MM-DD` dates and UTC ISO 8601 timestamps when reproducing source or finding metadata.\n- If all required branches failed or supplied no validated sources, return a partial synthesis that states that no evidence is available. Do not create fallback source IDs or a substantive conclusion.\n- Before returning, verify the object is valid JSON, contains no extra keys, preserves material disagreement, and can be consumed directly by the synthesis writer.\n\n\nManager persona: You are an equity-conscious but evidence-disciplined integrator. Preserve consumer and community concerns, identify who bears risk, and distinguish advocacy positions from measured outcomes."
+  },
+  "input": {
+    "manager": "advocacy_research_manager",
+    "handoff_context": {
+      "upstream": "bounded specialist findings from the selected branches",
+      "downstream": "a synthesis writer producing a decision-ready report",
+      "research_question": "What would be some of the advantages and disadvantages and potential adverse externalities of allowing borrowers on potential loans to document rental income using rental avms instead of proof of rental income receipts?",
+      "jurisdiction": "United States",
+      "policy_scope": "U.S. policy design, implementation, effects, trade-offs, and uncertainty",
+      "time_horizon": "current baseline and a 5-to-10-year policy horizon",
+      "manager_request": "Reconcile what the supplied findings establish, what they only suggest, where they disagree, which claims are source-supported, and what evidence gaps or sibling questions must be carried downstream.",
+      "source_id_contract": "Use only the short source IDs already present in the findings. Never invent or substitute URLs for source IDs.",
+      "depth_requirements": "Explain the policy baseline, causal mechanisms, affected actors, timing, distributional incidence, implementation dependencies, contrary evidence, and conditions that would change each important conclusion."
+    },
+    "findings": [
+      {
+        "branch": "general_consumer_advocacy",
+        "agent_name": "general_consumer_advocacy_researcher",
+        "status": "completed",
+        "summary": "No validated U.S. policy or outcome study was found on using rental AVMs specifically to document a borrower\u2019s realized rental income. Current federal consumer guidance expects evidence that rental income can reasonably be expected to continue, while existing rental-income underwriting examples use tax returns, leases, payment records, and vacancy/maintenance adjustments. A rental-AVM substitution could reduce paperwork and speed processing, but it would replace borrower-specific cash-flow evidence with an area/property estimate; consumer safeguards should therefore make the AVM a bounded supplement or conservative fallback rather than unqualified proof of income, with transparent notices, a correction path, vendor oversight, and outcome monitoring.",
+        "claims": [
+          {
+            "claim_id": "c1",
+            "text": "The established baseline is borrower-specific documentation of rental income and its likely continuity, not a market-rent estimate alone. CFPB consumer guidance says borrowers relying on rental income should expect to provide proof that it can reasonably be expected to continue at the same level; CFPB\u2019s published rental-income underwriting appendix identifies tax returns and current leases/rental agreements as required documentation in that framework.",
+            "claim_type": "fact",
+            "why_it_matters": "A policy that accepts rental AVMs alone would be a substantive change in the evidence used to establish repayment capacity, rather than a minor administrative modernization.",
+            "manager_implication": "Treat an AVM-only approach as a new underwriting design requiring explicit validation and safeguards; do not characterize it as equivalent to current documentation practice.",
+            "supporting_source_ids": [
+              "s_cfpb_consumer_docs",
+              "s_cfpb_appendixq"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.93,
+            "geographic_scope": "United States",
+            "applicable_period": "Current baseline as of 2026-08-19; CFPB Appendix Q page reflects 2019 text",
+            "material_limitations": [
+              "Appendix Q is a published CFPB regulatory appendix and not a universal description of every conventional, government, or portfolio lending program.",
+              "The sources do not evaluate rental AVMs as income documentation."
+            ],
+            "originating_agent": "general_consumer_advocacy_researcher"
+          },
+          {
+            "claim_id": "c2",
+            "text": "A rental AVM could reduce document burden, repeated requests, and processing friction for borrowers, particularly where rent is paid informally or records are difficult to assemble. This is a plausible operational benefit, not a measured result for this policy. CFPB complaint reporting documents consumer frustration with extensive/repeated document requests, late and unclear denials, and closing delays in mortgage applications.",
+            "claim_type": "synthesis",
+            "why_it_matters": "Reduced verification friction could improve completion and timeliness, but speed alone is not evidence that repayment-capacity assessment remains accurate.",
+            "manager_implication": "If explored, require a pilot to measure application-to-closing time, document requests, denial reversals, and consumer complaints against a receipts/records comparison group.",
+            "supporting_source_ids": [
+              "s_cfpb_complaints",
+              "s_cfpb_consumer_docs"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.72,
+            "geographic_scope": "United States",
+            "applicable_period": "CFPB complaints discussed in 2024 reporting, published 2025",
+            "material_limitations": [
+              "Complaint narratives are not representative prevalence estimates and are not specific to rental-income verification.",
+              "The claimed reduction in friction is an inference; no identified study tests rental-AVM substitution."
+            ],
+            "originating_agent": "general_consumer_advocacy_researcher"
+          },
+          {
+            "claim_id": "c3",
+            "text": "The principal consumer downside is potential overstatement or understatement of the borrower\u2019s usable rental cash flow. Market-rent estimates do not directly establish actual collections, lease enforceability, vacancy, nonpayment, concessions, operating costs, or whether the borrower will receive rent. Existing published rental-income underwriting methods incorporate actual leases/tax records and explicitly reduce projected rent for vacancy and maintenance; CFPB has also warned that inaccurate automated valuations can contribute to unaffordable mortgages and foreclosure risk, although that warning concerns property-value AVMs rather than rental AVMs.",
+            "claim_type": "synthesis",
+            "why_it_matters": "Overestimation can qualify a household for a payment dependent on income it does not realize; underestimation can improperly deny or worsen terms for applicants whose actual rents exceed the model estimate.",
+            "manager_implication": "Require conservative haircuts and borrower-specific corroboration for material rental income; prohibit direct substitution where the rent is central to affordability unless performance validation supports it.",
+            "supporting_source_ids": [
+              "s_cfpb_appendixq",
+              "s_cfpb_avm_background"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.82,
+            "geographic_scope": "United States",
+            "applicable_period": "Current policy context; AVM consumer-risk discussion published 2023 and modified 2026",
+            "material_limitations": [
+              "No source located quantifies forecast error or default impact for rental AVMs used in mortgage income underwriting.",
+              "Property-value AVM evidence is an analogy, not direct evidence about rent-estimation models."
+            ],
+            "originating_agent": "general_consumer_advocacy_researcher"
+          },
+          {
+            "claim_id": "c4",
+            "text": "Consumer accountability risk increases if an opaque rental AVM contributes to denial, less favorable terms, or a request for additional collateral/documentation. CFPB states that creditors using complex algorithms must still provide accurate, specific principal reasons for adverse action and cannot rely on model opacity as a justification. This requirement applies to credit decisions generally, but the exact treatment of a rental AVM used only as a verification input would depend on the lender\u2019s decision architecture.",
+            "claim_type": "fact",
+            "why_it_matters": "Without intelligible reason codes and source disclosure, consumers may be unable to identify model error, correct property attributes, or contest an inaccurate rent estimate before losing a purchase opportunity.",
+            "manager_implication": "Specify auditable reason codes, disclosure of the AVM provider/model version and key input facts where legally and operationally feasible, and a no-cost human reconsideration process using leases, bank deposits, and receipts.",
+            "supporting_source_ids": [
+              "s_cfpb_adverse_action"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.9,
+            "geographic_scope": "United States",
+            "applicable_period": "Current CFPB interpretation",
+            "material_limitations": [
+              "This is not a legal conclusion about any specific implementation; applicability turns on whether the AVM affects an adverse credit action and on the actual reasons used.",
+              "Specific reason notices do not by themselves assure that model estimates are accurate or fair."
+            ],
+            "originating_agent": "general_consumer_advocacy_researcher"
+          },
+          {
+            "claim_id": "c5",
+            "text": "Existing federal AVM quality-control rules are relevant by analogy but do not establish a complete safeguard regime for rental AVMs. The 2024 interagency AVM rule covers models used to determine collateral value in certain mortgage decisions and requires controls for confidence, data manipulation, conflicts, random testing/reviews, and nondiscrimination. A rental-income AVM is not necessarily within that collateral-valuation scope, so policymakers should not assume these controls automatically govern it.",
+            "claim_type": "fact",
+            "why_it_matters": "A regulatory-control gap may arise if lenders procure rent-estimation products for underwriting income while relying on safeguards designed for a different model and use case.",
+            "manager_implication": "In any pilot or program rule, expressly apply comparable vendor governance: independent validation, data-quality testing, manipulation controls, conflict management, periodic disparate-impact testing, record retention, and regulator audit access.",
+            "supporting_source_ids": [
+              "s_interagency_avm_rule",
+              "s_interagency_avm_preamble"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.87,
+            "geographic_scope": "United States",
+            "applicable_period": "Final rule published 2024; effective period began after publication schedule stated by agencies",
+            "material_limitations": [
+              "The final rule concerns collateral-value AVMs, not estimates of rental income.",
+              "Whether a particular rental AVM has other applicable legal requirements is outside this branch and not resolved here."
+            ],
+            "originating_agent": "general_consumer_advocacy_researcher"
+          },
+          {
+            "claim_id": "c6",
+            "text": "A more consumer-protective alternative to AVM-only substitution is a tiered verification design: accept a rental AVM as corroboration or as a temporary estimate, while allowing accessible evidence of actual payments and applying explicit caps, history requirements, and averaging. FHA\u2019s 2024 draft\u2014not then-current policy\u2014proposed expanded documentation for boarder income using bank statements, canceled checks, or deposit slips, conditioned on 9 of the most recent 12 months of receipts, 12-month averaging, and a 30 percent cap on total effective income.",
+            "claim_type": "synthesis",
+            "why_it_matters": "This design preserves an access channel for borrowers lacking formal receipts while reducing the chance that a market estimate alone drives qualification.",
+            "manager_implication": "Explore a limited pilot rather than wholesale replacement: set a cap on AVM-supported income, require corroboration where available, use a conservative vacancy/collection adjustment, and mandate an override when reliable borrower evidence conflicts with the AVM.",
+            "supporting_source_ids": [
+              "s_fha_draft_boarder",
+              "s_cfpb_appendixq"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.84,
+            "geographic_scope": "United States",
+            "applicable_period": "FHA draft announced 2024; not official policy in the cited document",
+            "material_limitations": [
+              "FHA\u2019s cited proposal concerns income from boarders in an owner-occupied home, not rental AVMs or all rental properties.",
+              "The recommendation is a policy synthesis, not an evaluated causal finding."
+            ],
+            "originating_agent": "general_consumer_advocacy_researcher"
+          },
+          {
+            "claim_id": "c7",
+            "text": "The evidence is insufficient to establish whether rental-AVM acceptance would improve access overall, reduce denial disparities, raise default risk, change rents, or create concentrated vendor market power over a 5-to-10-year horizon. The relevant effects depend on model accuracy by geography and property type, underwriting haircuts, actual-versus-estimated rent gaps, lender overlays, pricing, vendor concentration, and remediation practices.",
+            "claim_type": "fact",
+            "why_it_matters": "Absent disaggregated validation, a nominally simpler policy could either broaden access or create new exclusion and overextension patterns that are not visible in aggregate approval rates.",
+            "manager_implication": "Condition expansion on pre-specified evaluation: AVM error against verified collections; approval, pricing, and adverse-action outcomes; default/delinquency; exceptions/overrides; complaint rates; and results by geography, property type, borrower characteristics where lawfully collected, and AVM vendor.",
+            "supporting_source_ids": [
+              "s_interagency_avm_rule",
+              "s_cfpb_avm_background",
+              "s_cfpb_complaints"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.94,
+            "geographic_scope": "United States",
+            "applicable_period": "5-to-10-year policy horizon",
+            "material_limitations": [
+              "This is an explicit evidence gap, not evidence that harms or benefits will occur.",
+              "Fair-lending outcome analysis and default modeling should be supplied by sibling branches with relevant data and methods."
+            ],
+            "originating_agent": "general_consumer_advocacy_researcher"
+          }
+        ],
+        "discovered_sources": [
+          {
+            "source_id": "s_cfpb_docs",
+            "title": "Submit documents and answer requests from the lender",
+            "url": "https://www.consumerfinance.gov/owning-a-home/close/submit-documents-and-answer-requests-from-the-lender/",
+            "publisher": "Consumer Financial Protection Bureau",
+            "author": null,
+            "publication_date": null,
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "CFPB states that a borrower relying on rental income should be prepared to submit additional documentation showing that the income can reasonably be expected to continue at the same level; it also notes lenders may use technology to automate document collection.",
+            "metadata_status": "Publication date not displayed in retrieved page; page last modified 2024-12-12.",
+            "synthetic": false,
+            "retrieved_by": [
+              "general_consumer_advocacy_researcher"
+            ],
+            "used_by": [
+              "c1",
+              "c2"
+            ],
+            "supports_claim_ids": [
+              "c1",
+              "c2"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "8b01aafbc791f40f2d1418a88e4da2865c11c9faaabf2bad855ea7c0e4120004"
+          },
+          {
+            "source_id": "s_cfpb_appendixq",
+            "title": "Appendix Q to Part 1026 \u2014 Standards for Determining Monthly Debt and Income",
+            "url": "https://www.consumerfinance.gov/rules-policy/regulations/1026/2019-04-01/q/",
+            "publisher": "Consumer Financial Protection Bureau",
+            "author": null,
+            "publication_date": "2019-04-01",
+            "access_date": "2026-08-19",
+            "source_type": "regulation",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "The appendix describes rental-income stability documentation through a current lease, agreement to lease, or 24-month rental history; it identifies Schedule E and current leases as documentation, and applies a 25 percent vacancy-and-maintenance reduction to certain current-lease rental income calculations.",
+            "metadata_status": "Validated regulatory text page; historical-date URL.",
+            "synthetic": false,
+            "retrieved_by": [
+              "general_consumer_advocacy_researcher"
+            ],
+            "used_by": [
+              "c1",
+              "c3",
+              "c6"
+            ],
+            "supports_claim_ids": [
+              "c1",
+              "c3",
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "c4d24cb35aba2004f34d2b6650fa57d22ddd01d8c71752ca8d31a0467957f1ee"
+          },
+          {
+            "source_id": "s_cfpb_complaints",
+            "title": "Consumer Response: Annual Report",
+            "url": "https://files.consumerfinance.gov/f/documents/cfpb_cr-annual-report_2025-05.pdf",
+            "publisher": "Consumer Financial Protection Bureau",
+            "author": null,
+            "publication_date": "2025-05-01",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "Mortgage complainants reported extensive and repeated document requests, processing and closing delays, unclear late denials after assurances of qualification, and unexpected changes to loan terms. Company responses often cited underwriting review and documentation verification.",
+            "metadata_status": "Publication month inferred from CFPB file name; report text validated.",
+            "synthetic": false,
+            "retrieved_by": [
+              "general_consumer_advocacy_researcher"
+            ],
+            "used_by": [
+              "c2",
+              "c7"
+            ],
+            "supports_claim_ids": [
+              "c2",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Complaint narratives are not prevalence estimates or causal evidence."
+            ],
+            "content_hash": "c14e18503bef7833b7607a46071a04213de25f911acbe905c96f56c12c0a0c28"
+          },
+          {
+            "source_id": "s_cfpb_avm_fairness",
+            "title": "Algorithms, artificial intelligence, and fairness in home appraisals",
+            "url": "https://www.consumerfinance.gov/archive/blog/algorithms-artificial-intelligence-fairness-in-home-appraisals/",
+            "publisher": "Consumer Financial Protection Bureau",
+            "author": null,
+            "publication_date": null,
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "CFPB explains that AVMs rely on mathematical formulas and data, warns that inaccurate or biased automated valuations can cause serious harm, and notes an overvaluation can contribute to an unaffordable mortgage and foreclosure risk.",
+            "metadata_status": "Publication date not displayed in retrieved page; page modified 2026-06-25.",
+            "synthetic": false,
+            "retrieved_by": [
+              "general_consumer_advocacy_researcher"
+            ],
+            "used_by": [
+              "c3",
+              "c7"
+            ],
+            "supports_claim_ids": [
+              "c3",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Discusses property-value AVMs, not rental-income AVMs; use only as an analogy."
+            ],
+            "content_hash": "90ba47a3e96ab0f9c1ac2452ebe3836d6df9a6ff43d8d91d4447fbc0de07336a"
+          },
+          {
+            "source_id": "s_cfpb_adverse_action",
+            "title": "Consumer Financial Protection Circular 2022-03: Adverse action notification requirements in connection with credit decisions based on complex algorithms",
+            "url": "https://www.consumerfinance.gov/compliance/circulars/circular-2022-03-adverse-action-notification-requirements-in-connection-with-credit-decisions-based-on-complex-algorithms/",
+            "publisher": "Consumer Financial Protection Bureau",
+            "author": null,
+            "publication_date": "2022-05-26",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "CFPB states that ECOA and Regulation B require specific, accurate reasons for adverse actions regardless of technology used, and that creditors may not use complex algorithms if doing so prevents them from providing those reasons.",
+            "metadata_status": "Validated CFPB circular.",
+            "synthetic": false,
+            "retrieved_by": [
+              "general_consumer_advocacy_researcher"
+            ],
+            "used_by": [
+              "c4"
+            ],
+            "supports_claim_ids": [
+              "c4"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Not a legal conclusion on whether a particular AVM input triggers an adverse-action notice."
+            ],
+            "content_hash": "1b016a1b4735cf3db274722aeebde952255351a55f684cb06ff6a792bc9463a5"
+          },
+          {
+            "source_id": "s_interagency_avm_rule",
+            "title": "Agencies Issue Final Rule to Help Ensure Credibility and Integrity of Automated Valuation Models",
+            "url": "https://www.fhfa.gov/news/news-release/agencies-issue-final-rule-to-help-ensure-credibility-and-integrity-of-automated-valuation-models",
+            "publisher": "Federal Housing Finance Agency; CFPB; FDIC; Federal Reserve Board; NCUA; OCC",
+            "author": null,
+            "publication_date": "2024-07-17",
+            "access_date": "2026-08-19",
+            "source_type": "regulation",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "The joint agencies announced AVM quality-control standards for models used to value homes in certain mortgage transactions: high confidence in estimates, protection from data manipulation, conflict controls, random sample testing/reviews, and nondiscrimination compliance.",
+            "metadata_status": "Validated joint-agency release describing final rule.",
+            "synthetic": false,
+            "retrieved_by": [
+              "general_consumer_advocacy_researcher"
+            ],
+            "used_by": [
+              "c5",
+              "c7"
+            ],
+            "supports_claim_ids": [
+              "c5",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Rule scope is collateral valuation, not rental-income estimation."
+            ],
+            "content_hash": "6fff84d42261be69f377f7f0ead1f901db322a061c2a105ceb76c35347fa6dab"
+          },
+          {
+            "source_id": "s_interagency_avm_preamble",
+            "title": "Interagency Automated Valuation Models Final Rule",
+            "url": "https://files.consumerfinance.gov/f/documents/cfpb_automated-valuation-models_final-rule_2024-06.pdf",
+            "publisher": "Consumer Financial Protection Bureau and other federal banking and housing agencies",
+            "author": null,
+            "publication_date": "2024-06-20",
+            "access_date": "2026-08-19",
+            "source_type": "regulation",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "The final-rule preamble explains the nondiscrimination quality-control factor and notes that small entities can use policies governing human interactions with AVMs and investigate third-party providers\u2019 treatment of discrimination; it also states the rule concerns AVMs determining collateral value in mortgage credit or securitization decisions.",
+            "metadata_status": "Validated final-rule PDF; Federal Register publication was 2024-08-07.",
+            "synthetic": false,
+            "retrieved_by": [
+              "general_consumer_advocacy_researcher"
+            ],
+            "used_by": [
+              "c5"
+            ],
+            "supports_claim_ids": [
+              "c5"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Rule scope does not itself extend to rental-income AVMs."
+            ],
+            "content_hash": "741d15f27cfe838132f0a1c0073fd93fbf67a3c1d14ed4576fff4dd609dbafdc"
+          },
+          {
+            "source_id": "s_fha_draft_boarder",
+            "title": "FHA INFO 2024-79: Draft Mortgagee Letter on Rental Income from Boarders",
+            "url": "https://www.hud.gov/sites/dfiles/SFH/documents/SFH_FHA_INFO_2024-79.pdf",
+            "publisher": "U.S. Department of Housing and Urban Development",
+            "author": null,
+            "publication_date": "2024-11-12",
+            "access_date": "2026-08-19",
+            "source_type": "proposed_rule",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "HUD described draft FHA guidance that would allow certain boarder-income documentation through bank statements, canceled checks, or deposit slips; require receipts for at least 9 of the prior 12 months and 12-month averaging; and cap this income at 30 percent of total effective income. The document explicitly states it was not official policy until finalized.",
+            "metadata_status": "Validated draft-policy notice; date inferred from FHA INFO numbering and document context.",
+            "synthetic": false,
+            "retrieved_by": [
+              "general_consumer_advocacy_researcher"
+            ],
+            "used_by": [
+              "c6"
+            ],
+            "supports_claim_ids": [
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [
+              "Draft, not current policy in the source; concerns boarder income rather than rental AVMs."
+            ],
+            "content_hash": "b1ff7bcd84c7f63907f071a230eb95b525d8b1f9ac68fef6f25b15373f5e57de"
+          }
+        ],
+        "country_comparisons": [],
+        "contradictions": [],
+        "source_ids": [
+          "s_cfpb_docs",
+          "s_cfpb_appendixq",
+          "s_cfpb_complaints",
+          "s_cfpb_avm_fairness",
+          "s_cfpb_adverse_action",
+          "s_interagency_avm_rule",
+          "s_interagency_avm_preamble",
+          "s_fha_draft_boarder"
+        ],
+        "missing_perspectives": [
+          "No validated empirical study was located measuring rental-AVM error against collected rents, effects on mortgage approval/pricing/default, or disparate outcomes for this proposed use case.",
+          "Ask the financial-sustainability branch to assess default, repurchase, capital, and secondary-market consequences under specific AVM-error and vacancy scenarios.",
+          "Ask the disadvantaged-communities branch to assess data coverage, model error, and denial/overextension risks by protected class, neighborhood, rurality, property type, and informal-rental arrangements.",
+          "Implementation analysis should obtain vendor-level model documentation, data provenance, geographic/property coverage, error distributions, update cadence, dispute procedures, fees, ownership affiliations, and whether consumer data are sold or reused."
+        ],
+        "limitations": [
+          "The policy question uses the undefined term 'rental AVM'; this finding assumes a model estimating market rent for a property, not a model verifying actual rent deposits or a conventional property-value AVM.",
+          "Direct evidence is sparse. Several conclusions are reasoned analogies from property-value AVM governance and existing rental-income documentation rules.",
+          "This branch does not provide legal advice or determine the applicability of ECOA, FCRA, fair-lending law, or the 2024 AVM rule to a particular program design.",
+          "No consumer-advocacy organization comment specifically addressing rental AVMs as mortgage income proof was validated within the source limit."
+        ],
+        "prompt_injection_flags": [],
+        "error": null,
+        "started_at": "2026-08-19T01:38:57.588427Z",
+        "finished_at": "2026-08-19T01:39:47.701279Z"
+      },
+      {
+        "branch": "disadvantaged_communities",
+        "agent_name": "disadvantaged_communities_researcher",
+        "status": "completed",
+        "summary": "Replacing borrower-provided rental receipts with rental AVMs/automated market-rent estimates could reduce documentation burdens and expand use of projected rent for owners of small rental properties or ADUs, but the evidence supports this only as a conditional access benefit. Current mainstream underwriting generally combines market-rent analysis with leases, tax returns, or evidence that rent has begun; it does not treat a rent estimate alone as proof of a borrower\u2019s realized income. The principal equity risk is uneven estimate quality where rental comparables and digital records are thin\u2014especially rural, unique, informal, or recently legalized units\u2014along with opaque model error that can systematically exclude or over-leverage particular communities. A pilot should preserve ability-to-repay safeguards, use conservative limits, permit human review and borrower correction, and require subgroup outcome monitoring before broad adoption.",
+        "claims": [
+          {
+            "claim_id": "c1",
+            "text": "Current Enterprise practice distinguishes a property\u2019s estimated market rent from proof that a borrower actually receives stable rental income. Fannie Mae requires market-rent support when subject-property rent is used for qualification, but, when a lease is used, also requires either Form 1007/1025 support or evidence that the lease has commenced, such as two months of matching rental deposits or documented first rent and security-deposit payments. For non-subject rentals, tax-return documentation is generally required absent specified exceptions.",
+            "claim_type": "fact",
+            "why_it_matters": "A proposal to substitute a rental AVM for receipts is a material loosening of evidence about actual cash flow, not merely a faster version of current documentation. The affected borrower would gain easier access only if the estimate is allowed to replace proof of collections or tax history.",
+            "manager_implication": "Describe the policy as a proposed underwriting change. Do not characterize market-rent estimates as currently equivalent to realized rental income. Require a clear definition of whether the AVM substitutes for an appraisal rent schedule, a lease, receipts, tax returns, or all of these.",
+            "supporting_source_ids": [
+              "s_fannie_rental",
+              "s_fannie_defects"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.94,
+            "geographic_scope": "United States; Fannie Mae-eligible lending",
+            "applicable_period": "Current guide page dated 2025-10-08, accessed 2026-08-19",
+            "material_limitations": [
+              "Fannie Mae requirements do not govern every portfolio, FHA, VA, or private-label loan.",
+              "The guide establishes documentation policy, not the distributional impact of changing it."
+            ],
+            "originating_agent": "Distributional Equity Researcher"
+          },
+          {
+            "claim_id": "c2",
+            "text": "A rent-estimate pathway could conditionally help owner-occupants purchasing or refinancing homes with existing ADUs, two-to-four-unit homes, or newly acquired small rentals when traditional rental history is unavailable. Existing policy already recognizes projected/market rent in bounded cases and applies a 25 percent reduction for vacancy and maintenance; FHFA/enterprise policy examples show estimated rent is used most cautiously when a property is newly placed in service or not yet leased.",
+            "claim_type": "synthesis",
+            "why_it_matters": "This group includes households trying to finance housing with an income-producing unit, for whom documentation timing can be an access barrier. The benefit is most plausible for existing legal units and properties with credible comparable-rent data, not for every borrower asserting future rent.",
+            "manager_implication": "If explored, target a narrow pilot to owner-occupied properties with an existing, legal rentable unit, cap the share of qualifying income based on estimated rent, retain the vacancy/maintenance haircut, and distinguish owner-occupant wealth-building uses from investor acquisition lending.",
+            "supporting_source_ids": [
+              "s_fannie_rental",
+              "s_freddie_rental",
+              "s_urban_adu"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.78,
+            "geographic_scope": "United States",
+            "applicable_period": "2024-2026 policy and analysis",
+            "material_limitations": [
+              "No source identified provides causal evidence that an AVM-only policy improves approval rates or wealth outcomes by race, income, or geography.",
+              "The Urban Institute source is policy analysis, not an impact evaluation."
+            ],
+            "originating_agent": "Distributional Equity Researcher"
+          },
+          {
+            "claim_id": "c3",
+            "text": "The likely direct access gain is not automatically equitable. ADU-related rental-income benefits have been concentrated among homeowners who already have an existing, permitted unit and sufficient institutional access; HUD summarized evidence from California that ADU production was disproportionately concentrated in affluent areas, while lower-income homeowners faced barriers to accessing income- and wealth-building benefits. Replacing receipts with AVMs would not by itself solve barriers such as ownership, permitting, construction finance, appraisal, landlord experience, or language and digital-document access.",
+            "claim_type": "interpretation",
+            "why_it_matters": "A facially simpler rule may primarily benefit better-resourced owners who have eligible collateral and can navigate loan origination, while renters and households without homeownership assets receive no direct benefit. It may thus widen rather than narrow owner-renter and within-owner disparities.",
+            "manager_implication": "Pair any access expansion with safeguards or complementary programs for permitted-unit legalization, modest-income owner-occupants, counseling, multilingual appeal processes, and community-lender participation. Measure who receives approvals rather than relying on aggregate loan volume.",
+            "supporting_source_ids": [
+              "s_hud_adu_equity",
+              "s_hud_adu_finance",
+              "s_urban_adu"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.8,
+            "geographic_scope": "United States, with California evidence prominent",
+            "applicable_period": "2016-2024 evidence summarized by HUD and Urban Institute",
+            "material_limitations": [
+              "Evidence concerns ADU production and financing barriers, not a tested rental-AVM substitution policy.",
+              "Results may differ for non-ADU small rental properties."
+            ],
+            "originating_agent": "Distributional Equity Researcher"
+          },
+          {
+            "claim_id": "c4",
+            "text": "Rural and other thin-data markets are a material distributional risk for rental AVMs. FHFA reports that rural appraisal files contain fewer comparable properties than high-density urban areas, and its rural valuation research notes limited comparable sales and greater housing heterogeneity. GAO similarly reports that AVMs can have limited applicability for unique or remote properties because comparable-property data are limited. By analogy, a rental AVM dependent on comparable rent data may be less reliable or unavailable in these settings.",
+            "claim_type": "synthesis",
+            "why_it_matters": "A uniform AVM-only rule could produce two inequitable outcomes: denial or low qualifying income in underserved rural/local markets because the model has insufficient data, or overly optimistic income estimates that expose financially constrained owners to payment stress. Both are especially consequential where alternatives to local housing are limited.",
+            "manager_implication": "Do not require AVM-only documentation nationwide. Establish minimum confidence/coverage thresholds, geography-specific validation, and a non-punitive manual alternative using local appraiser, lease, deposit, or property-manager evidence. Report approval, estimate error, and delinquency outcomes separately for rural, tribal, small-town, and high-poverty tracts.",
+            "supporting_source_ids": [
+              "s_fhfa_comps",
+              "s_fhfa_rural_avm",
+              "s_gao_proptech"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.86,
+            "geographic_scope": "United States, especially rural and remote markets",
+            "applicable_period": "FHFA data 2013-2021; FHFA working paper 2018; GAO report 2025",
+            "material_limitations": [
+              "The direct evidence is on property-value AVMs and appraisals, not rental AVMs.",
+              "Rental-data coverage could differ from sales-comparable coverage and must be tested directly."
+            ],
+            "originating_agent": "Distributional Equity Researcher"
+          },
+          {
+            "claim_id": "c5",
+            "text": "Automated estimates can improve speed and consistency, but their equity effect is ambiguous without transparency and validation. GAO found that valuation models may reduce subjectivity and processing time, while also posing discrimination, privacy, and explainability risks; federal AVM quality-control standards require protections against data manipulation and compliance with nondiscrimination laws. These findings do not establish that rental AVMs are discriminatory, but they support treating rental-income models as fair-lending-sensitive underwriting inputs.",
+            "claim_type": "fact",
+            "why_it_matters": "If an estimate affects debt-to-income capacity, a systematically low or high estimate can change eligibility, pricing, loan size, and default exposure. Borrowers may have little ability to discover or correct an opaque rent estimate, particularly where data on informal tenancies are absent or wrong.",
+            "manager_implication": "Require model governance before scale: documented input sources and geography coverage; independent accuracy and disparate-impact testing; reason codes or intelligible adverse-action explanations where applicable; borrower access to the estimate and a correction/appeal route; and periodic recalibration.",
+            "supporting_source_ids": [
+              "s_gao_proptech",
+              "s_avm_final_rule"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.9,
+            "geographic_scope": "United States",
+            "applicable_period": "2024-2026",
+            "material_limitations": [
+              "GAO examines property technology and property-value AVMs, not a specific rental AVM product or policy.",
+              "Legal applicability and adverse-action obligations depend on the exact lender workflow and should be reviewed by legal/regulatory specialists."
+            ],
+            "originating_agent": "Distributional Equity Researcher"
+          },
+          {
+            "claim_id": "c6",
+            "text": "An AVM estimate cannot on its own establish that a borrower has the ability to repay. CFPB\u2019s Ability-to-Repay framework permits creditors to consider rental income but requires a reasonable, good-faith determination and verification using reasonably reliable third-party records for income relied upon. Therefore, a policy that treats projected market rent as borrower income must demonstrate why the estimate is reliable for the specific property and account for vacancy, operating costs, lease-up timing, and legal ability to rent.",
+            "claim_type": "fact",
+            "why_it_matters": "The most acute downside falls on lower-liquidity borrowers whose approval becomes dependent on uncertain future rent: an optimistic estimate can qualify a household for a payment it cannot sustain before or during vacancy; a pessimistic estimate can deny credit despite actual tenant demand or an informal but real rental arrangement.",
+            "manager_implication": "Retain a conservative haircut and payment-reserve standard; restrict estimated rent to offsetting documented housing expense or a limited share of qualifying income during a pilot; prohibit use where occupancy, permitting, or rental legality is unresolved; and conduct early-payment-default and hardship monitoring by subgroup.",
+            "supporting_source_ids": [
+              "s_atr_commentary",
+              "s_fannie_rental",
+              "s_freddie_rental"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.92,
+            "geographic_scope": "United States",
+            "applicable_period": "Current CFPB commentary and Enterprise policies accessed 2026-08-19",
+            "material_limitations": [
+              "CFPB does not prescribe one required verification technology or a specific haircut.",
+              "Whether an individual AVM meets the reasonably reliable third-party-record standard is operational and fact-specific."
+            ],
+            "originating_agent": "Distributional Equity Researcher"
+          },
+          {
+            "claim_id": "c7",
+            "text": "There is no validated national evidence in the retrieved record quantifying how a rental-AVM-for-receipts policy would affect approvals, pricing, default, displacement, landlord behavior, or racial and income gaps. Existing public Enterprise data contain borrower income, race, sex, tract location, loan terms, and underserved-tract indicators, making subgroup evaluation feasible, but rental-AVM inputs, confidence scores, receipt substitution, and realized collection performance would need to be added to the evaluation dataset.",
+            "claim_type": "fact",
+            "why_it_matters": "Without this data infrastructure, apparent access gains could conceal unequal false denials, excess risk concentration, or investor-driven acquisition in communities already vulnerable to displacement.",
+            "manager_implication": "Condition any pilot on a pre-registered evaluation plan and loan-level data collection: documentation pathway, AVM vendor/model version, estimate and confidence interval, actual lease/collections where available, property/tenure type, borrower and tract demographics, rurality, approval/denial/pricing, servicing hardship, delinquency, foreclosure, tenant displacement proxies, and appeals/corrections. Ask the financial-sustainability sibling to specify performance thresholds and the consumer-advocacy sibling to assess borrower notice and remedy design.",
+            "supporting_source_ids": [
+              "s_fhfa_pudb",
+              "s_fhfa_uad",
+              "s_gao_proptech"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.88,
+            "geographic_scope": "United States",
+            "applicable_period": "Current public data descriptions; prospective 5-to-10-year implementation horizon",
+            "material_limitations": [
+              "The FHFA public datasets may not contain all fields needed for an AVM pilot and would require supplemented confidential reporting.",
+              "Tenant displacement cannot be fully measured from mortgage data alone."
+            ],
+            "originating_agent": "Distributional Equity Researcher"
+          }
+        ],
+        "discovered_sources": [
+          {
+            "source_id": "s_fannie_rental",
+            "title": "B3-3.8-01, Rental Income",
+            "url": "https://guide-selling.fanniemae.com/sel/b3-3.8-01/rental-income",
+            "publisher": "Fannie Mae",
+            "author": null,
+            "publication_date": "2025-10-08",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States; Fannie Mae conventional loans",
+            "excerpt": "For lease or market-rent documentation, Fannie Mae applies a 75 percent rent calculation and requires either Form 1007/1025 support or evidence that lease terms have begun, such as deposits or two months of rental transfers; tax returns are generally required for non-subject rental properties.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c1",
+              "c2",
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "cf80eda607e726cdda654ad1823689ca0ba044e54e7cdf9767a868c2e04b01eb"
+          },
+          {
+            "source_id": "s_fannie_quality",
+            "title": "Solving Rental Income Challenges",
+            "url": "https://singlefamily.fanniemae.com/originating-underwriting/loan-quality/quality-insider/august-2025",
+            "publisher": "Fannie Mae",
+            "author": null,
+            "publication_date": "2025-08-01",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States; Fannie Mae conventional loans",
+            "excerpt": "Fannie Mae identifies improper rental-income documentation as a loan-quality issue and states that files must support the borrower\u2019s financial picture and intended use; lease-based rental income requires market-rent support or documented rent payments/deposits.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c1"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "b0b7d343397f146c8fdb4efc42ac67ac58d932f65305a9abdfa4abb9f24cf75b"
+          },
+          {
+            "source_id": "s_freddie_rental",
+            "title": "Guide Section 5306.1: Rental income",
+            "url": "https://guide.freddiemac.com/app/guide/section/5306.1",
+            "publisher": "Freddie Mac",
+            "author": null,
+            "publication_date": "2026-04-12",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States; Freddie Mac conventional loans",
+            "excerpt": "Freddie Mac permits appraisal rent schedules in constrained circumstances for newly acquired or newly placed-in-service rental properties without a lease, with conditions including limits on use of net rent and borrower investment-property-management experience in some cases.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c2",
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "54ce50a8aba735b46223d4d61dafc3d6e2495a4c8cb780271485d9e65ab1a6fd"
+          },
+          {
+            "source_id": "s_urban_adu",
+            "title": "To Increase the Housing Supply, Focus on ADU Financing",
+            "url": "https://www.urban.org/sites/default/files/2024-04/Final_To_Increase_the_Housing_Supply_Focus_on_ADU_Financing.pdf",
+            "publisher": "Urban Institute",
+            "author": "Laurie Goodman",
+            "publication_date": "2024-04-01",
+            "access_date": "2026-08-19",
+            "source_type": "think_tank",
+            "tier": 3,
+            "jurisdiction": "United States",
+            "excerpt": "The report explains that rental income from existing ADUs may count under specified FHA, Freddie Mac, and Fannie Mae program rules, typically with a 25 percent reduction, but that treatment is narrow and prospective ADU income is generally not usable outside limited programs.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c2",
+              "c3"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "0299ad4a1609573bb42ef61c209ab01631a815f485e4dab8d98fe07596b02d08"
+          },
+          {
+            "source_id": "s_hud_adu_equity",
+            "title": "Making ADU Development Equitable in California",
+            "url": "https://www.huduser.gov/archives/portal/pdredge/pdr-edge-featd-article-111522.html",
+            "publisher": "HUD USER",
+            "author": null,
+            "publication_date": "2022-11-15",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 2,
+            "jurisdiction": "California evidence; United States policy relevance",
+            "excerpt": "HUD summarizes research finding that ADU creation in California was disproportionately concentrated in affluent areas and that many low- and moderate-income homeowners were not accessing ADU-related wealth and income benefits.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c3"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "a8ef1eeacb6901dd6515bc718ff67f74ab97574c89ad6b5dbc923cec0de6f201"
+          },
+          {
+            "source_id": "s_hud_adu_finance",
+            "title": "Accessory Dwelling Units (ADUs)",
+            "url": "https://www.huduser.gov/portal/casestudies/study-09082016.html",
+            "publisher": "HUD USER",
+            "author": null,
+            "publication_date": "2016-09-08",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "HUD describes traditional financing as a barrier to ADU construction because borrowers often need sufficient existing equity and lenders historically lacked products based on completed value plus an ADU.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c3"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "7e8ef4632706b9ef66deb6b1c90b2dcf23ab79d1b4905c3546fe3f3735e9a120"
+          },
+          {
+            "source_id": "s_fhfa_comps",
+            "title": "Counting Comps: Exploring the Number of Comparable Properties in Home Appraisals",
+            "url": "https://www.fhfa.gov/blog/statistics/counting-comps-exploring-the-number-of-comparable-properties-in-home-appraisals",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": "2024-07-18",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "Across Enterprise-backed appraisals from 2013 through 2021, the share including five or more comparable properties was lower in rural areas than in high-density urban areas, indicating thinner comparable-property evidence in rural markets.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c4"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "ce9371c282633da033b6ae0fc4dc84378e617a90f707d4765eb4e265a9fe096e"
+          },
+          {
+            "source_id": "s_fhfa_rural_avm",
+            "title": "Working Paper 18-03: Appraisal Accuracy and Automated Valuation Models in Rural Areas",
+            "url": "https://www.fhfa.gov/research/papers/wp1803",
+            "publisher": "Federal Housing Finance Agency",
+            "author": "Alexander N. Bogin and Jessica Shui",
+            "publication_date": "2018-04-19",
+            "access_date": "2026-08-19",
+            "source_type": "working_paper",
+            "tier": 2,
+            "jurisdiction": "United States",
+            "excerpt": "FHFA reports that rural areas have fewer comparable sales and more heterogeneous homes; more than 25 percent of rural appraisals in its data exceeded the associated contract price by more than five percent, motivating examination of alternative valuation methods.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c4"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "144e889bc0a09cd79c17c7bc44c72f18fe5711fa3dbc484c8c09debd399eed34"
+          },
+          {
+            "source_id": "s_gao_proptech",
+            "title": "Property Technology for Homebuying: Products Present Benefits and Risks Amid Evolving Federal Oversight",
+            "url": "https://www.gao.gov/products/gao-25-107201",
+            "publisher": "U.S. Government Accountability Office",
+            "author": null,
+            "publication_date": "2025-09-22",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "GAO finds property-technology tools can simplify and reduce costs but can raise fair-lending, privacy, and explainability risks. It notes AVMs may improve consistency and speed but can have limited applicability for unique or remote properties with limited comparables.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c4",
+              "c5",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "8742945b0fbf71a3d883a8eb4019235d26d932b2e66dbe9c11556b2b830a7e70"
+          },
+          {
+            "source_id": "s_avm_final_rule",
+            "title": "Quality Control Standards for Automated Valuation Models",
+            "url": "https://www.federalregister.gov/documents/2024/07/17/2024-15260/quality-control-standards-for-automated-valuation-models",
+            "publisher": "Board of Governors of the Federal Reserve System, CFPB, FDIC, NCUA, OCC, and FHFA",
+            "author": null,
+            "publication_date": "2024-07-17",
+            "access_date": "2026-08-19",
+            "source_type": "regulation",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "The interagency final rule requires quality-control standards for covered AVMs, including measures to ensure a high level of confidence in estimates, protect against data manipulation, avoid conflicts of interest, require random sample testing and reviews, and comply with nondiscrimination laws.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c5"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "81ebf21c8c72ffef5c61418489baa03748a2e5855c94fdf873cf987afc04d2b6"
+          },
+          {
+            "source_id": "s_cfpb_atr",
+            "title": "Comment for 1026.43 - Minimum Standards for Transactions Secured by a Dwelling",
+            "url": "https://www.consumerfinance.gov/rules-policy/regulations/1026/interp-43/",
+            "publisher": "Consumer Financial Protection Bureau",
+            "author": null,
+            "publication_date": "2026-01-01",
+            "access_date": "2026-08-19",
+            "source_type": "regulation",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "CFPB commentary permits consideration of rental income but requires a reasonable, good-faith ability-to-repay determination and verification of relied-on income or assets using reasonably reliable third-party records.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "e82a0a5d3b6d00fac7a9a9a20f9f8dbdf7c7c51736bf12ea4bb95a0f3436573e"
+          },
+          {
+            "source_id": "s_fhfa_pudb",
+            "title": "Public Use Database",
+            "url": "https://www.fhfa.gov/data/public-use-database",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": "2026-04-01",
+            "access_date": "2026-08-19",
+            "source_type": "administrative_dataset",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "FHFA\u2019s Enterprise Public Use Database includes borrower income, race, sex, census-tract location, LTV and affordability variables, including indicators for underserved census tracts, enabling some subgroup analysis of Enterprise-acquired mortgages.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "9116917da01899446b9102eb31ae6dadfba9957726df3b4961eb3aef8bbbfd44"
+          },
+          {
+            "source_id": "s_fhfa_uad",
+            "title": "FHFA Uniform Appraisal Dataset Aggregate Statistics: A New Resource to Provide Insights on Home Valuation",
+            "url": "https://www.fhfa.gov/blog/statistics/fhfa-uniform-appraisal-dataset-aggregate-statistics",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": "2022-10-24",
+            "access_date": "2026-08-19",
+            "source_type": "administrative_dataset",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "FHFA\u2019s UAD aggregate statistics provide appraisal measures by geography and property characteristics and support analysis of differences between appraised home values in minority and non-minority neighborhoods.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Distributional Equity Researcher"
+            ],
+            "used_by": [
+              "Distributional Equity Researcher"
+            ],
+            "supports_claim_ids": [
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "31c877e769f3730cc4d89ba140bfd899b6f576f80434ddfb0131c996ca2c5cdd"
+          }
+        ],
+        "country_comparisons": [],
+        "contradictions": [],
+        "source_ids": [
+          "s_fannie_rental",
+          "s_fannie_quality",
+          "s_freddie_rental",
+          "s_urban_adu",
+          "s_hud_adu_equity",
+          "s_hud_adu_finance",
+          "s_fhfa_comps",
+          "s_fhfa_rural_avm",
+          "s_gao_proptech",
+          "s_avm_final_rule",
+          "s_cfpb_atr",
+          "s_fhfa_pudb",
+          "s_fhfa_uad"
+        ],
+        "missing_perspectives": [
+          "No validated, national, subgroup-specific study was found on rental AVM error, approval effects, or repayment outcomes when rental receipts are replaced by AVM estimates.",
+          "No direct evidence was found on effects for tribal lands, immigrant households, limited-English-proficiency borrowers, people with disabilities, or informal/unpermitted rental arrangements.",
+          "No evidence was found quantifying tenant displacement, rent increases, or investor acquisition caused by an AVM-based rental-income underwriting change.",
+          "A legal/regulatory review is needed to assess the exact interaction between a proposed workflow and Ability-to-Repay, ECOA/Regulation B, Fair Housing Act, appraisal, and secondary-market requirements."
+        ],
+        "limitations": [
+          "The evidence base is strongest for current rental-income documentation and property-value AVM governance, not rental AVMs specifically.",
+          "Several equity inferences are analogical: thin comparable-sales data and property-value AVM limitations may, but do not necessarily, predict rental-AVM limitations.",
+          "ADU evidence is an important but incomplete proxy for the broader set of small rental properties and borrower scenarios.",
+          "Public datasets support subgroup monitoring but do not appear to contain all necessary fields for an AVM-receipt substitution evaluation without new reporting requirements."
+        ],
+        "prompt_injection_flags": [],
+        "error": null,
+        "started_at": "2026-08-19T01:39:03.406290Z",
+        "finished_at": "2026-08-19T01:40:04.940765Z"
+      },
+      {
+        "branch": "financial_sustainability",
+        "agent_name": "financial_sustainability_researcher",
+        "status": "completed",
+        "summary": "The relevant baseline is narrower than a general replacement of rent receipts with rental AVMs: Freddie Mac already permits appraisal/comparable-rent documentation only for defined newly acquired, currently unrented properties and applies limits on how projected net rent may qualify a borrower. Evidence supports potential processing and access benefits from alternative/automated underwriting inputs, but does not establish that rental AVMs alone predict realized rental cash flow or default performance well enough to replace receipts broadly. A broader policy could create correlated underwriting error, adverse selection, and taxpayer/guarantor exposure unless it is bounded, independently validated, monitored by cohort, and subject to automatic rollback triggers.",
+        "claims": [
+          {
+            "claim_id": "c1",
+            "text": "A limited form of market-rent documentation is already current Freddie Mac policy, but it is not a broad authorization to replace realized rent receipts for all borrowers. For certain non-subject investment properties purchased within 45 days of the note date and not yet rented, Freddie Mac allows Form 72 or Form 1000 comparable-rent documentation; net rent generally may only offset the monthly payment unless a borrower has at least one year of investment-property management experience.",
+            "claim_type": "fact",
+            "why_it_matters": "This is a materially narrower risk posture than using an AVM to substantiate income on occupied properties. It recognizes that no lease or receipts exist for a newly acquired vacant property while limiting incremental repayment capacity credit for inexperienced landlords.",
+            "manager_implication": "Frame any proposed expansion as a departure from an existing, constrained exception. Preserve or tighten eligibility, occupancy/lease-status, seasoning, and income-use limits rather than describing the proposal as routine current practice.",
+            "supporting_source_ids": [
+              "s_freddie_bulletin_2025_1"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.95,
+            "geographic_scope": "United States; Freddie Mac single-family seller requirements",
+            "applicable_period": "Effective February 2025; source accessed 2026-08-19",
+            "material_limitations": [
+              "This source establishes policy requirements, not loan-performance effects.",
+              "The question does not specify investor, product, property type, or whether AVM means a proprietary rent-estimate model or appraisal comparable-rent schedule."
+            ],
+            "originating_agent": "Financial Sustainability Researcher"
+          },
+          {
+            "claim_id": "c2",
+            "text": "The principal durability risk of a broader rental-AVM substitution is measurement error in projected rent being converted into qualifying income: an overstated estimate can lower the effective debt burden used in underwriting even when the property ultimately rents more slowly, at a lower rate, or incurs higher vacancy and operating costs. This risk is likely to be concentrated where rental comparables are sparse or nonrepresentative, and it can become correlated across borrowers if a common model systematically misses a market downturn.",
+            "claim_type": "synthesis",
+            "why_it_matters": "The loss channel is not merely an individual documentation error. If standardized estimates are optimistic in the same locations or property segments, originations may be jointly weakened just before rents soften, increasing defaults and loss severity for lenders, guarantors, or taxpayers.",
+            "manager_implication": "Do not treat an AVM estimate as equivalent to realized cash flow absent out-of-sample validation. Require confidence intervals or coverage thresholds, geographic/property-type exclusions, conservative rent haircuts, explicit vacancy/expense assumptions, and periodic back-testing against actual leases, collections, and defaults.",
+            "supporting_source_ids": [
+              "s_freddie_bulletin_2025_1",
+              "s_gao_proptech_2025"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.82,
+            "geographic_scope": "United States",
+            "applicable_period": "Current policy baseline and 5-to-10-year design horizon",
+            "material_limitations": [
+              "No located official study directly estimates default effects of substituting rental AVMs for rent receipts.",
+              "GAO's discussion concerns property-value AVMs and automated underwriting generally, not rental-income AVMs specifically."
+            ],
+            "originating_agent": "Financial Sustainability Researcher"
+          },
+          {
+            "claim_id": "c3",
+            "text": "Automation and alternative data can reduce processing friction and may improve access or risk prediction when they identify information not captured in conventional underwriting, but GAO characterizes those benefits as potential rather than demonstrated for a particular rent-estimation policy. GAO also reports that alternative-data use in mortgage underwriting was limited in the period it examined, and that access and pricing effects depend on whether the data improve qualification and default-risk prediction.",
+            "claim_type": "fact",
+            "why_it_matters": "Faster underwriting and fewer documentation burdens are plausible advantages, particularly where conventional records are unavailable, but they do not by themselves demonstrate safe risk expansion or lower taxpayer exposure.",
+            "manager_implication": "Require a pilot evaluation with a matched receipt/lease-documented comparison group and pre-specified performance measures before granting full qualifying-income credit. Separate time-to-close and approval-rate gains from repayment-performance evidence.",
+            "supporting_source_ids": [
+              "s_gao_altdata_2021",
+              "s_gao_proptech_2025"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.9,
+            "geographic_scope": "United States mortgage underwriting",
+            "applicable_period": "GAO data years 2016-2020; report published 2021 and 2025",
+            "material_limitations": [
+              "Alternative data such as tenants' payment histories are distinct from a model's estimate of future rental income.",
+              "GAO did not test rental-AVM underwriting performance."
+            ],
+            "originating_agent": "Financial Sustainability Researcher"
+          },
+          {
+            "claim_id": "c4",
+            "text": "Adverse selection and moral hazard are credible design risks if projected-rent underwriting is more permissive than receipt-based underwriting. Borrowers, brokers, and sellers with properties whose expected realized rents are weak relative to model estimates would have the strongest incentive to use the AVM pathway; originators may retain less incentive to verify performance if credit risk is transferred to a secondary-market guarantor. Freddie Mac's existing constraints\u2014recent acquisition, no available lease, borrower housing-history condition, and limits on using net rent beyond payment offset for inexperienced landlords\u2014function as partial guards against those incentives.",
+            "claim_type": "interpretation",
+            "why_it_matters": "The proposal could shift selection toward the loans for which the model is least informative, while the resulting losses may be dispersed through securitization or public backstops.",
+            "manager_implication": "Make the AVM path a controlled exception rather than an applicant-selected, universally more favorable option. Require lender representations and repurchase exposure for noncompliance; prohibit estimate shopping; use independent or standardized models; retain audit files; and apply differentiated caps/haircuts for inexperienced landlords and higher-risk segments.",
+            "supporting_source_ids": [
+              "s_freddie_bulletin_2025_1",
+              "s_fhfa_ercf"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "moderate",
+            "confidence": 0.8,
+            "geographic_scope": "United States; secondary-market mortgage finance",
+            "applicable_period": "Current baseline and 5-to-10-year design horizon",
+            "material_limitations": [
+              "This is an incentive-based inference rather than a measured causal estimate of adverse selection under rental AVMs.",
+              "Whether risk is retained by a lender, insurer, GSE, private investor, or taxpayer depends on the program channel."
+            ],
+            "originating_agent": "Financial Sustainability Researcher"
+          },
+          {
+            "claim_id": "c5",
+            "text": "Existing federal AVM quality-control rules do not directly validate rental-income AVMs. The 2024 interagency rule applies to AVMs used to determine the value of a consumer principal dwelling serving as mortgage collateral and requires controls for confidence, data manipulation, conflicts, random testing, and nondiscrimination. Those safeguards are highly relevant by analogy, but a rental-income AVM needs its own governance because its target is expected income rather than collateral value and may cover transactions outside the rule's scope.",
+            "claim_type": "fact",
+            "why_it_matters": "A policy designer cannot assume that compliance with collateral-AVM controls establishes reliability of projected rental income for ability-to-repay underwriting.",
+            "manager_implication": "Adopt an explicit rental-AVM model-risk standard: target-definition and data-lineage documentation; independent validation; drift and error monitoring; random file review against signed leases and receipts when available; manipulation controls; fair-lending testing; vendor-change approval; and a manual-review override/escalation process.",
+            "supporting_source_ids": [
+              "s_interagency_avm_rule_2024",
+              "s_gao_proptech_2025"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.94,
+            "geographic_scope": "United States",
+            "applicable_period": "Rule effective 2025-10-01; accessed 2026-08-19",
+            "material_limitations": [
+              "The rule is limited to collateral-value AVMs and principally to consumer principal-dwelling collateral; it is not a rental-income underwriting rule.",
+              "Transferability to investment-property or non-owner-occupied transactions is an analogy, not a legal conclusion."
+            ],
+            "originating_agent": "Financial Sustainability Researcher"
+          },
+          {
+            "claim_id": "c6",
+            "text": "For loans ultimately sold to the Enterprises, policy expansion has fiscal relevance even without a defensible single-point cost estimate. FHFA's capital framework is designed for safety and soundness through the cycle and includes granular credit-risk capital, countercyclical elements, buffers, and risk transfer; FHFA also requires annual severely adverse stress testing to identify potential sources of loss. A rental-AVM policy would therefore require separate cohort identification and stress assumptions rather than being assumed neutral within existing capital calibration.",
+            "claim_type": "fact",
+            "why_it_matters": "If the policy changes loan-selection or default behavior, existing capital and stress results may not capture the new exposure unless the data field, model treatment, and stress scenarios explicitly distinguish AVM-qualified loans.",
+            "manager_implication": "Before scaling, require the relevant guarantor or insurer to report AVM-path volume, estimated-versus-realized rent error, delinquency/default/prepayment, losses, geographic/property concentration, and performance by borrower and lender cohort. Stress scenarios should include rent declines, vacancy increases, house-price declines, rate/payment shocks where applicable, and model-error correlation; establish expansion, pause, and sunset triggers tied to those indicators.",
+            "supporting_source_ids": [
+              "s_fhfa_ercf",
+              "s_fhfa_dfast_2025"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.91,
+            "geographic_scope": "United States; Fannie Mae and Freddie Mac context",
+            "applicable_period": "Current framework; 5-to-10-year policy horizon",
+            "material_limitations": [
+              "FHFA materials do not assess rental-AVM policy directly.",
+              "This does not quantify taxpayer exposure or establish that a given design would fail a stress test."
+            ],
+            "originating_agent": "Financial Sustainability Researcher"
+          },
+          {
+            "claim_id": "c7",
+            "text": "The central empirical question remains unresolved: the located evidence does not establish whether a specified rental AVM, after haircuts and controls, predicts realized lease income and mortgage performance as well as\u2014or sufficiently close to\u2014proof of rental receipts for the intended borrower/property population. Results will depend on the model's data coverage, refresh rate, definition of rent, treatment of concessions and vacancy, local market liquidity, borrower experience, loan leverage, and the investor or guarantor channel.",
+            "claim_type": "synthesis",
+            "why_it_matters": "Without this validation, claims of either safety or excessive risk are conditional. A nationwide permanent expansion would be relying on untested calibration rather than demonstrated equivalence.",
+            "manager_implication": "Explore only as a staged pilot or narrow exception. Request a transparent validation protocol, historical and prospective holdout testing, adverse-selection analysis, independent model audit, and a pre-registered decision rule for continuation, tightening, or termination.",
+            "supporting_source_ids": [
+              "s_gao_altdata_2021",
+              "s_gao_proptech_2025",
+              "s_freddie_bulletin_2025_1"
+            ],
+            "contradicting_source_ids": [],
+            "evidence_strength": "strong",
+            "confidence": 0.96,
+            "geographic_scope": "United States",
+            "applicable_period": "Current evidence base",
+            "material_limitations": [
+              "Evidence gap is specific to rental-income AVMs replacing receipts; it does not imply all automated underwriting or comparable-rent analysis lacks value."
+            ],
+            "originating_agent": "Financial Sustainability Researcher"
+          }
+        ],
+        "discovered_sources": [
+          {
+            "source_id": "s_freddie_bulletin_2025_1",
+            "title": "Freddie Mac Guide Bulletin 2025-1: Selling Updates",
+            "url": "https://guide.freddiemac.com/ci/okcsFattach/get/1009804_7",
+            "publisher": "Freddie Mac",
+            "author": null,
+            "publication_date": "2025-02-12",
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "For certain recently acquired, currently unrented non-subject investment properties, Form 72 or Form 1000 may document and calculate rent; the property must have been purchased within 45 days, each borrower must currently own or rent a primary residence, and net rent generally may only offset the payment unless a borrower has one year of investment-property management experience. The bulletin also states that sellers must analyze comparable rent data to support rental-income stability.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Financial Sustainability Researcher"
+            ],
+            "used_by": [
+              "c1",
+              "c2",
+              "c4",
+              "c7"
+            ],
+            "supports_claim_ids": [
+              "c1",
+              "c2",
+              "c4",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "63eba6e1d90fe92b7a683ff03464d48a9eb48641df616b485c16b99be0cc550e"
+          },
+          {
+            "source_id": "s_gao_altdata_2021",
+            "title": "Mortgage Lending: Use of Alternative Data Is Limited but Has Potential Benefits (GAO-22-104380)",
+            "url": "https://www.gao.gov/products/gao-22-104380",
+            "publisher": "U.S. Government Accountability Office",
+            "author": null,
+            "publication_date": "2021-11-16",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "GAO found that alternative data may expand access and improve pricing if it improves default-risk prediction, but outcomes depend on whether the data help consumers qualify and predict risk. GAO also identifies fair-lending and privacy risks and reports limited use of alternative data in the period reviewed.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Financial Sustainability Researcher"
+            ],
+            "used_by": [
+              "c3",
+              "c7"
+            ],
+            "supports_claim_ids": [
+              "c3",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "307f313b9271e2f01556e557356fd09505cbe782097cf0096f39b56dc46f8a11"
+          },
+          {
+            "source_id": "s_gao_proptech_2025",
+            "title": "Property Technology for Homebuying: Products Present Benefits and Risks Amid Evolving Federal Oversight (GAO-25-107201)",
+            "url": "https://files.gao.gov/reports/GAO-25-107201/index.html",
+            "publisher": "U.S. Government Accountability Office",
+            "author": null,
+            "publication_date": "2025-09-18",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "GAO reports that automated underwriting tools may speed document review and that alternative data may improve risk prediction and access, but describes these as potential benefits. It also documents differing company approaches to AI governance and notes FHFA examinations of Enterprise models.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Financial Sustainability Researcher"
+            ],
+            "used_by": [
+              "c2",
+              "c3",
+              "c5",
+              "c7"
+            ],
+            "supports_claim_ids": [
+              "c2",
+              "c3",
+              "c5",
+              "c7"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "2d51a5fe5db54d2a83aef976a181c2c6e36aa768746f2a937ba5bd112129f2f5"
+          },
+          {
+            "source_id": "s_interagency_avm_rule_2024",
+            "title": "Quality Control Standards for Automated Valuation Models",
+            "url": "https://public-inspection.federalregister.gov/2024-16197.pdf",
+            "publisher": "Office of the Comptroller of the Currency, Federal Reserve Board, FDIC, NCUA, CFPB, and FHFA",
+            "author": null,
+            "publication_date": "2024-08-07",
+            "access_date": "2026-08-19",
+            "source_type": "regulation",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "The final rule requires mortgage originators and secondary-market issuers using covered collateral AVMs to maintain controls designed to ensure confidence in estimates, protect against data manipulation, seek to avoid conflicts, require random testing and review, and comply with nondiscrimination laws. It applies to AVMs determining the value of principal-dwelling collateral, not rental-income estimates.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Financial Sustainability Researcher"
+            ],
+            "used_by": [
+              "c5"
+            ],
+            "supports_claim_ids": [
+              "c5"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "6f70f6c50c9523ba2b27f93de90cfb9106402d78440a4d4b462e1154e7357aac"
+          },
+          {
+            "source_id": "s_fhfa_ercf",
+            "title": "Enterprise Capital Requirements",
+            "url": "https://www.fhfa.gov/supervision/fannie-mae-and-freddie-mac/capital-requirements",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": null,
+            "access_date": "2026-08-19",
+            "source_type": "agency_guidance",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "FHFA describes the Enterprise Regulatory Capital Framework as a going-concern framework for stability and liquidity across the economic cycle, particularly under financial stress. It includes risk-based and leverage requirements, capital buffers, granular credit-risk requirements, a countercyclical adjustment, and credit-risk-transfer treatment.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Financial Sustainability Researcher"
+            ],
+            "used_by": [
+              "c4",
+              "c6"
+            ],
+            "supports_claim_ids": [
+              "c4",
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "8cdac0aa5f455fb23d89263d0ac5cd85a9a6fee856d416943ece41dfc4d461ed"
+          },
+          {
+            "source_id": "s_fhfa_dfast_2025",
+            "title": "2025 Dodd-Frank Act Stress Test Results - Severely Adverse Scenario",
+            "url": "https://www.fhfa.gov/reports/stress-tests-report/2025",
+            "publisher": "Federal Housing Finance Agency",
+            "author": null,
+            "publication_date": "2025-08-15",
+            "access_date": "2026-08-19",
+            "source_type": "government_report",
+            "tier": 1,
+            "jurisdiction": "United States",
+            "excerpt": "FHFA requires Fannie Mae and Freddie Mac to conduct annual stress tests to assess whether they have capital to absorb losses under severely adverse economic conditions; the tests provide information on potential sources of losses, though Enterprise internal models and management actions can differ.",
+            "metadata_status": "validated",
+            "synthetic": false,
+            "retrieved_by": [
+              "Financial Sustainability Researcher"
+            ],
+            "used_by": [
+              "c6"
+            ],
+            "supports_claim_ids": [
+              "c6"
+            ],
+            "contradicts_claim_ids": [],
+            "safety_flags": [],
+            "content_hash": "de0994f1903184cde1e432461cb45b30dbdbb0784f19f5f24b9e02b4a0e7f976"
+          }
+        ],
+        "country_comparisons": [],
+        "contradictions": [
+          {
+            "contradiction_id": "x1",
+            "claim_id": "c3",
+            "supporting_source_ids": [
+              "s_gao_altdata_2021",
+              "s_gao_proptech_2025"
+            ],
+            "contradicting_source_ids": [
+              "s_freddie_bulletin_2025_1"
+            ],
+            "description": "Automation and alternative data may improve access and efficiency, whereas Freddie Mac's limited comparable-rent policy shows that the secondary-market baseline still uses restrictive eligibility and income-use conditions rather than assuming estimates substitute fully for realized rent. This is not a factual conflict: it reflects a difference between potential general benefits and current risk-limited policy design.",
+            "resolution_status": "resolved",
+            "manager_commentary": "Report access and speed as conditional benefits, not evidence for broad equivalence between rental AVMs and proof of receipts."
+          }
+        ],
+        "source_ids": [
+          "s_freddie_bulletin_2025_1",
+          "s_gao_altdata_2021",
+          "s_gao_proptech_2025",
+          "s_interagency_avm_rule_2024",
+          "s_fhfa_ercf",
+          "s_fhfa_dfast_2025"
+        ],
+        "missing_perspectives": [
+          "Loan-level evidence comparing realized rent, vacancy, delinquency, default, loss severity, and prepayment for AVM-qualified versus receipt-verified loans.",
+          "Validation results for named rental-AVM vendors/models by geography, property type, rent level, data coverage, and market regime.",
+          "Evidence on lender/broker pathway selection, model shopping, fraud controls, and repurchase enforcement.",
+          "Program-specific treatment by Fannie Mae, FHA, VA, USDA, private mortgage insurers, banks, and private-label securitizers.",
+          "Sibling branches should assess borrower burden, access, privacy, and disparate-impact effects; this branch cannot determine the net consumer or equity effect."
+        ],
+        "limitations": [
+          "The policy question is underspecified as to loan purpose, borrower type, owner occupancy, property type, underwriting channel, definition of rental AVM, and whether a lease remains available.",
+          "No credible source located directly tests broad replacement of proof of rental receipts with rental AVMs in U.S. mortgage underwriting.",
+          "The AVM federal rule governs collateral-value AVMs, so its application to rental-income AVMs is a governance analogy rather than direct legal authority.",
+          "No quantitative fiscal estimate is provided because calibration would require loan-level data and a specified risk-retention/guarantee structure."
+        ],
+        "prompt_injection_flags": [],
+        "error": null,
+        "started_at": "2026-08-19T01:39:06.835853Z",
+        "finished_at": "2026-08-19T01:40:05.079704Z"
+      }
+    ]
+  }
+}

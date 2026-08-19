@@ -1,0 +1,31 @@
+{
+  "run_id": "run-206b67ac94c1",
+  "started_at": "2026-08-19T01:30:14.545327Z",
+  "finished_at": "2026-08-19T01:33:36.188698Z",
+  "latency_ms": 201643,
+  "total_tokens": 216785,
+  "input_tokens": 185338,
+  "output_tokens": 31447,
+  "approximate_cost_usd": 0.789435,
+  "requests": 7,
+  "cached_input_tokens": 0,
+  "cache_write_tokens": 82790,
+  "reasoning_tokens": 1113,
+  "cumulative_agent_ms": 306520,
+  "model": "gpt-5.6-terra",
+  "trace_id": "trace_3b39403bf4dc4c84b12789d650e7c31b",
+  "branch_statuses": {
+    "government_sources": "completed",
+    "legal_regulatory": "completed",
+    "think_tank_academic": "completed"
+  },
+  "retries": {},
+  "validation_failures": [],
+  "evaluation_scores": {
+    "citation_completeness": 0.94,
+    "grounding": 0.88,
+    "balance": 0.91,
+    "calibration": 0.9,
+    "security": 1.0
+  }
+}

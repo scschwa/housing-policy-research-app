@@ -1,0 +1,38 @@
+{
+  "run_id": "run-206b67ac94c1",
+  "enabled": true,
+  "include_content": true,
+  "max_chars_per_value": 30000,
+  "interaction_count": 7,
+  "completed_count": 7,
+  "failed_count": 0,
+  "running_count": 0,
+  "handoff_count": 4,
+  "agents": [
+    "adversarial_reviewer",
+    "government_sources_researcher",
+    "legal_regulatory_researcher",
+    "policy_research_manager",
+    "synthesis_writer",
+    "synthesis_writer_revision",
+    "think_tank_academic_researcher"
+  ],
+  "stages": [
+    "draft",
+    "reconciliation",
+    "research",
+    "review",
+    "revision"
+  ],
+  "elapsed_ms": 201656,
+  "usage": {
+    "requests": 7,
+    "input_tokens": 185338,
+    "cached_input_tokens": 0,
+    "cache_write_tokens": 82790,
+    "output_tokens": 31447,
+    "reasoning_tokens": 1113,
+    "total_tokens": 216785
+  },
+  "failed_interactions": []
+}

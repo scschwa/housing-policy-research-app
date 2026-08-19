@@ -1,0 +1,135 @@
+[
+  {
+    "timestamp": "2026-08-19T01:30:14.545327+00:00",
+    "event": "run_started",
+    "provider": "web"
+  },
+  {
+    "timestamp": "2026-08-19T01:30:14.549372+00:00",
+    "event": "intake_validated",
+    "mode": "fast"
+  },
+  {
+    "timestamp": "2026-08-19T01:30:14.549372+00:00",
+    "event": "plan_created",
+    "branches": [
+      "government_sources",
+      "legal_regulatory",
+      "think_tank_academic"
+    ]
+  },
+  {
+    "timestamp": "2026-08-19T01:30:14.550377+00:00",
+    "event": "research_started",
+    "assignments": 3
+  },
+  {
+    "timestamp": "2026-08-19T01:30:14.550882+00:00",
+    "event": "branch_started",
+    "branch": "government_sources"
+  },
+  {
+    "timestamp": "2026-08-19T01:30:14.787176+00:00",
+    "event": "branch_started",
+    "branch": "legal_regulatory"
+  },
+  {
+    "timestamp": "2026-08-19T01:30:14.792729+00:00",
+    "event": "branch_started",
+    "branch": "think_tank_academic"
+  },
+  {
+    "timestamp": "2026-08-19T01:31:04.647361+00:00",
+    "event": "branch_finished",
+    "branch": "think_tank_academic",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:31:09.896503+00:00",
+    "event": "branch_finished",
+    "branch": "government_sources",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:31:18.361744+00:00",
+    "event": "branch_finished",
+    "branch": "legal_regulatory",
+    "status": "completed",
+    "attempts": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:31:18.363257+00:00",
+    "event": "branches_validated",
+    "errors": 0,
+    "warnings": 1,
+    "source_count": 23
+  },
+  {
+    "timestamp": "2026-08-19T01:31:18.363257+00:00",
+    "event": "manager_started",
+    "manager": "policy_research_manager",
+    "branches": [
+      "government_sources",
+      "legal_regulatory",
+      "think_tank_academic"
+    ]
+  },
+  {
+    "timestamp": "2026-08-19T01:31:51.098865+00:00",
+    "event": "manager_finished",
+    "manager": "policy_research_manager",
+    "status": "completed"
+  },
+  {
+    "timestamp": "2026-08-19T01:31:51.102063+00:00",
+    "event": "managers_reconciled",
+    "count": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:31:51.105580+00:00",
+    "event": "draft_started"
+  },
+  {
+    "timestamp": "2026-08-19T01:32:49.693766+00:00",
+    "event": "draft_completed",
+    "sections": 7
+  },
+  {
+    "timestamp": "2026-08-19T01:32:49.696913+00:00",
+    "event": "pre_review_validation",
+    "errors": 0,
+    "warnings": 2
+  },
+  {
+    "timestamp": "2026-08-19T01:32:49.699154+00:00",
+    "event": "review_started"
+  },
+  {
+    "timestamp": "2026-08-19T01:33:01.566894+00:00",
+    "event": "review_completed",
+    "recommendation": "revise",
+    "findings": 4
+  },
+  {
+    "timestamp": "2026-08-19T01:33:01.570468+00:00",
+    "event": "revision_started"
+  },
+  {
+    "timestamp": "2026-08-19T01:33:36.188190+00:00",
+    "event": "bounded_revision",
+    "revision_count": 1
+  },
+  {
+    "timestamp": "2026-08-19T01:33:36.188698+00:00",
+    "event": "final_validation",
+    "errors": 0,
+    "warnings": 2
+  },
+  {
+    "timestamp": "2026-08-19T01:33:36.199573+00:00",
+    "event": "artifacts_persisted",
+    "path": "artifacts\\run-206b67ac94c1"
+  }
+]

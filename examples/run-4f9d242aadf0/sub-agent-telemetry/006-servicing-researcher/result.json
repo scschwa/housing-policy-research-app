@@ -1,0 +1,471 @@
+{
+  "interaction_id": "interaction-0006",
+  "agent": "servicing_researcher",
+  "stage": "research",
+  "status": "completed",
+  "started_at": 1787103494.837147,
+  "finished_at": 1787103547.7139056,
+  "duration_ms": 52876,
+  "final_output": {
+    "branch": "servicing",
+    "agent_name": "Servicing and Operations Researcher",
+    "status": "completed",
+    "summary": "For conventional mortgage servicing, rental AVMs used at origination would not by themselves determine delinquent-borrower treatment, but they would create a persistent data-governance issue: servicers must distinguish an estimated market-rent input from verified borrower cash flow when evaluating hardship, payment capacity, and loss mitigation. The operational upside is less borrower-document friction at origination and a retained, structured valuation artifact that can transfer with the servicing file. The principal downside is that a market-rent estimate may be stale, inaccurate, geographically thin, or conceptually different from actual rent received; if reused without clear provenance and revalidation it can generate disputed denials, incorrect workout decisions, and unfair or opaque communications. Existing federal mortgage-servicing rules are written for mortgage loans and do not automatically establish a servicing regime for chattel loans; any policy extending this approach to chattel credit needs explicit coverage, record-transfer, dispute, default, and state-law repossession design.",
+    "claims": [
+      {
+        "claim_id": "c1",
+        "text": "An origination policy permitting rental AVMs instead of rent receipts should require the servicing record to label the input as an estimated market-rent value\u2014not verified rent collected\u2014and preserve model/vendor, property identifier, valuation date, confidence/coverage fields, exceptions, and any borrower-provided evidence. This is necessary because loss-mitigation evaluation can require corrected information about an identified income source, and servicers must promptly request it when needed.",
+        "claim_type": "synthesis",
+        "why_it_matters": "Without a durable distinction between estimated and realized income, a transferee servicer or loss-mitigation team may treat a qualifying proxy as current cash-flow evidence, producing avoidable rework, delays, or inaccurate affordability determinations.",
+        "manager_implication": "Condition exploration on a minimum AVM data schema, immutable provenance, retention through servicing transfers, and a rule that current loss-mitigation income is revalidated using borrower-specific evidence where investor/program criteria require it.",
+        "supporting_source_ids": [
+          "s_cfpb_1024_41",
+          "s_freddie_rent_guidance"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.9,
+        "geographic_scope": "United States; mortgage-servicing regulation and GSE conventional-loan guidance",
+        "applicable_period": "Current as accessed 2026-08-19",
+        "material_limitations": [
+          "The cited servicing rule governs covered mortgage servicing, not all consumer-purpose chattel lending.",
+          "Freddie Mac guidance addresses underwriting documentation and market-rent analysis, not a generic rental-AVM program or downstream servicing protocol."
+        ],
+        "originating_agent": "servicing"
+      },
+      {
+        "claim_id": "c2",
+        "text": "The direct operational benefit of allowing a market-rent estimate when receipts or a lease are unavailable is reduced document collection friction; current Freddie Mac guidance itself permits calculation from gross monthly market rent on the comparable-rent form when a lease is unavailable, subject to a 25% adjustment for vacancy, operating and maintenance costs, and unexpected expenses.",
+        "claim_type": "fact",
+        "why_it_matters": "This supports the narrow proposition that market-rent evidence can substitute for a missing lease in at least one established conventional underwriting framework, which could reduce application abandonment and manual follow-up.",
+        "manager_implication": "Treat this as support for a constrained, documented alternative\u2014not evidence that an AVM should replace all borrower-specific rental-income evidence. Ask the loan-originator branch whether the proposed AVM has comparable controls, coverage, and conservatism.",
+        "supporting_source_ids": [
+          "s_freddie_rent_guidance"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "moderate",
+        "confidence": 0.83,
+        "geographic_scope": "United States; Freddie Mac conventional mortgages",
+        "applicable_period": "Freddie Mac section published 2026",
+        "material_limitations": [
+          "The source describes Form 72/Form 1000 comparable-rent analysis, not an automated rental valuation model.",
+          "The 25% adjustment does not validate that a particular borrower actually receives rent or will continue to receive it."
+        ],
+        "originating_agent": "servicing"
+      },
+      {
+        "claim_id": "c3",
+        "text": "A rental-AVM policy can create downstream loss-mitigation risk if a historic market-rent estimate is treated as actual disposable income. Regulation X permits servicers to set information requirements but requires reasonable diligence and prompt requests for information needed to complete an application; it specifically contemplates requests for corrected documents regarding an income source and written notices when an application becomes complete.",
+        "claim_type": "fact",
+        "why_it_matters": "Borrower hardship and property-level cash flow can change after origination. An AVM-based qualifying record may therefore be insufficient for modifications, repayment plans, or other affordability-sensitive decisions even if it was allowed at origination.",
+        "manager_implication": "Do not mandate automatic reuse of the origination AVM in default. Require a hierarchy: verified current receipts/leases or bank evidence where available; refreshed market-rent estimate only as a clearly identified supplemental or fallback input under owner/investor rules; manual escalation for material discrepancies.",
+        "supporting_source_ids": [
+          "s_cfpb_1024_41"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.91,
+        "geographic_scope": "United States; covered mortgage servicing",
+        "applicable_period": "Current as accessed 2026-08-19",
+        "material_limitations": [
+          "Regulation X does not prescribe whether an AVM is acceptable income evidence; owner/assignee requirements control available loss-mitigation options and their eligibility criteria."
+        ],
+        "originating_agent": "servicing"
+      },
+      {
+        "claim_id": "c4",
+        "text": "If loans using rental AVMs are sold or servicing is transferred, usable transfer data must include all information relevant to a pending loss-mitigation application, not merely a final qualifying-income field. Regulation X requires continuity-of-contact personnel to retrieve written information supplied to the current or prior servicer and provide it to evaluators; its interpretations require a transferee servicer reviewing an incomplete application to inspect transferred documents for information needed to complete it.",
+        "claim_type": "fact",
+        "why_it_matters": "A loan file that contains only an opaque AVM output impairs verification, dispute resolution, and timely loss-mitigation processing after transfer; it also makes it hard to explain why the original proxy was accepted or later disregarded.",
+        "manager_implication": "Specify transfer-file fields, document images/source data where permitted, vendor/model version, valuation timestamp, decision rule, exception codes, and a pending-dispute flag. Require pre-transfer reconciliation and post-transfer sampling for AVM-derived rental-income records.",
+        "supporting_source_ids": [
+          "s_cfpb_1024_40",
+          "s_cfpb_1024_41",
+          "s_cfpb_1024_33"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.9,
+        "geographic_scope": "United States; covered mortgage servicing transfers",
+        "applicable_period": "Current as accessed 2026-08-19",
+        "material_limitations": [
+          "Transfer protections cited apply to mortgage loan servicing; a chattel-loan policy would require separate contractual, statutory, or regulatory transfer standards."
+        ],
+        "originating_agent": "servicing"
+      },
+      {
+        "claim_id": "c5",
+        "text": "Using opaque or complex rental-AVM outputs in credit decisions requires an explainability and adverse-action control. CFPB states that creditors using complex algorithms, including AI or machine learning, must provide specific principal reasons for adverse action and cannot rely on a model whose operation prevents accurate reasons from being given.",
+        "claim_type": "fact",
+        "why_it_matters": "A borrower denied, priced worse, or offered less credit because the AVM estimated insufficient rent needs a reason that identifies the actual factor, rather than a generic statement that an internal model failed.",
+        "manager_implication": "Require reason-code mapping tested against model features, consumer-facing disclosure of the estimate and valuation date when it materially affects the decision, a correction/reconsideration route, and audit logs sufficient to reconstruct the decision at origination and in disputes.",
+        "supporting_source_ids": [
+          "s_cfpb_adverse_action"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "strong",
+        "confidence": 0.92,
+        "geographic_scope": "United States",
+        "applicable_period": "Current CFPB interpretation as accessed 2026-08-19",
+        "material_limitations": [
+          "Whether a particular AVM vendor or use case is a complex algorithm is fact-specific.",
+          "This source concerns adverse action in credit decisions, not every servicing communication."
+        ],
+        "originating_agent": "servicing"
+      },
+      {
+        "claim_id": "c6",
+        "text": "The adverse externality most relevant to operations is error propagation: inaccurate, duplicated, opaque, or poorly matched rental-related data can be difficult for consumers to correct and can affect housing or credit outcomes. In July 2026, the FTC announced a settlement resolving allegations that a tenant-screening provider failed to maintain accuracy procedures, mishandled disputes, and failed to disclose data sources; the allegations included duplicate records and misleading dispute outcomes.",
+        "claim_type": "fact",
+        "why_it_matters": "Although tenant-screening reports are not rental AVMs, the documented failure mode is operationally analogous: third-party housing data can be wrong, hard to trace, and persist after a correction unless source, matching, dispute, and downstream-update controls are designed in advance.",
+        "manager_implication": "Require vendor due diligence, input-quality testing, property/entity-match controls, consumer access to the factor or underlying source category, dispute SLAs, correction propagation to servicers/investors/CRAs where applicable, and periodic disparate-error monitoring. Present this as an analogy, not direct evidence that rental AVMs have caused the same harms.",
+        "supporting_source_ids": [
+          "s_ftc_rentgrow"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "moderate",
+        "confidence": 0.78,
+        "geographic_scope": "United States",
+        "applicable_period": "FTC announcement dated 2026-07",
+        "material_limitations": [
+          "The FTC matter involved tenant-screening consumer reports and allegations resolved by settlement, not underwriting rental AVMs.",
+          "It does not measure the error rate or bias of rental AVMs."
+        ],
+        "originating_agent": "servicing"
+      },
+      {
+        "claim_id": "c7",
+        "text": "Mortgage servicing transfer and loss-mitigation rules should not be assumed to govern chattel loans. CFPB\u2019s mortgage-servicing resource identifies Regulations X and Z mortgage-servicing provisions, while the cited transfer rule is expressly framed around mortgage-loan servicing. A policy involving personal-property collateral therefore needs an explicit operational regime for account transfers, payment posting, hardship review, notices, disputes, lien/title records, and repossession timing under applicable state law.",
+        "claim_type": "interpretation",
+        "why_it_matters": "Absent explicit policy coverage, implementation may produce uneven protections and fragmented servicing processes across states and platforms, especially where collateral is titled personal property rather than real property.",
+        "manager_implication": "Ask legal/regulatory and secondary-market branches to map product coverage and investor requirements. Before piloting chattel applications, obtain a 50-state operations matrix covering title/lien perfection, cure/right-to-cure notices, repossession, disposition, deficiency, bankruptcy handling, and servicing-transfer data obligations.",
+        "supporting_source_ids": [
+          "s_cfpb_servicing_overview",
+          "s_cfpb_1024_33"
+        ],
+        "contradicting_source_ids": [],
+        "evidence_strength": "moderate",
+        "confidence": 0.86,
+        "geographic_scope": "United States",
+        "applicable_period": "Current as accessed 2026-08-19",
+        "material_limitations": [
+          "This is a statutory-scope and implementation inference, not a 50-state legal conclusion.",
+          "No state-law survey was completed within this servicing assignment."
+        ],
+        "originating_agent": "servicing"
+      }
+    ],
+    "discovered_sources": [
+      {
+        "source_id": "s_cfpb_1024_41",
+        "title": "12 CFR \u00a7 1024.41 Loss mitigation procedures",
+        "url": "https://www.consumerfinance.gov/rules-policy/regulations/1024/41/",
+        "publisher": "Consumer Financial Protection Bureau",
+        "access_date": "2026-08-19",
+        "source_type": "regulation",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "A complete loss-mitigation application contains the information the servicer requires; servicers must exercise reasonable diligence, promptly request needed information or corrected documents, and review transferred records for information needed to complete an application.",
+        "metadata_status": "Current interactive regulation accessed; publication date not displayed",
+        "synthetic": false,
+        "retrieved_by": [
+          "servicing"
+        ],
+        "used_by": [
+          "servicing"
+        ],
+        "supports_claim_ids": [
+          "c1",
+          "c3",
+          "c4"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_cfpb_1024_40",
+        "title": "12 CFR \u00a7 1024.40 Continuity of contact",
+        "url": "https://www.consumerfinance.gov/rules-policy/regulations/1024/40/",
+        "publisher": "Consumer Financial Protection Bureau",
+        "access_date": "2026-08-19",
+        "source_type": "regulation",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "Assigned personnel for delinquent borrowers must provide accurate loss-mitigation information, retrieve complete payment history and written information provided to current or prior servicers, and provide that information to evaluators.",
+        "metadata_status": "Current interactive regulation accessed; publication date not displayed",
+        "synthetic": false,
+        "retrieved_by": [
+          "servicing"
+        ],
+        "used_by": [
+          "servicing"
+        ],
+        "supports_claim_ids": [
+          "c4"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_cfpb_1024_33",
+        "title": "12 CFR \u00a7 1024.33 Mortgage servicing transfers",
+        "url": "https://www.consumerfinance.gov/rules-policy/regulations/1024/33/",
+        "publisher": "Consumer Financial Protection Bureau",
+        "access_date": "2026-08-19",
+        "source_type": "regulation",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "Transferor and transferee servicers generally must provide transfer notices; payments mistakenly received by the transferor during the 60-day period receive protections, and the rule is framed as mortgage-loan servicing.",
+        "metadata_status": "Current interactive regulation accessed; publication date not displayed",
+        "synthetic": false,
+        "retrieved_by": [
+          "servicing"
+        ],
+        "used_by": [
+          "servicing"
+        ],
+        "supports_claim_ids": [
+          "c4",
+          "c7"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_cfpb_servicing_overview",
+        "title": "Rules on mortgage servicing",
+        "url": "https://www.consumerfinance.gov/compliance/compliance-resources/mortgage-resources/mortserv/",
+        "publisher": "Consumer Financial Protection Bureau",
+        "publication_date": "2026-06-01",
+        "access_date": "2026-08-19",
+        "source_type": "agency_guidance",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "CFPB identifies mortgage-servicing requirements under Regulations X and Z, including error resolution, information requests, policies and procedures, early intervention, loss mitigation, payment processing, and periodic statements.",
+        "metadata_status": "Page last modified date displayed",
+        "synthetic": false,
+        "retrieved_by": [
+          "servicing"
+        ],
+        "used_by": [
+          "servicing"
+        ],
+        "supports_claim_ids": [
+          "c7"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": []
+      },
+      {
+        "source_id": "s_freddie_rent_guidance",
+        "title": "Freddie Mac Single-Family Guide Section 5306.1",
+        "url": "https://guide.freddiemac.com/app/servicing/section/5306.1",
+        "publisher": "Freddie Mac",
+        "publication_date": "2026-04-01",
+        "access_date": "2026-08-19",
+        "source_type": "agency_guidance",
+        "tier": 2,
+        "jurisdiction": "United States",
+        "excerpt": "Comparable-rent analysis must address rental-market viability and whether market rents support lease income. When a lease is unavailable, guidance allows use of 75% of gross monthly market rent from the applicable comparable-rent form; the adjustment addresses vacancy, operating and maintenance costs, and unexpected expenses.",
+        "metadata_status": "Search-indexed text; full dynamic guide page did not render in retrieval",
+        "synthetic": false,
+        "retrieved_by": [
+          "servicing"
+        ],
+        "used_by": [
+          "servicing"
+        ],
+        "supports_claim_ids": [
+          "c1",
+          "c2"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": [
+          "Dynamic page content could not be independently line-verified; rely only on excerpted guide content."
+        ]
+      },
+      {
+        "source_id": "s_cfpb_adverse_action",
+        "title": "Consumer Financial Protection Circular 2022-03: Adverse action notification requirements in connection with credit decisions based on complex algorithms",
+        "url": "https://www.consumerfinance.gov/compliance/circulars/circular-2022-03-adverse-action-notification-requirements-in-connection-with-credit-decisions-based-on-complex-algorithms/",
+        "publisher": "Consumer Financial Protection Bureau",
+        "publication_date": "2024-08-19",
+        "access_date": "2026-08-19",
+        "source_type": "agency_guidance",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "Creditors using complex algorithms, including AI or machine learning, must still provide a notice disclosing specific principal reasons for adverse action; technology cannot excuse inability to identify accurate reasons.",
+        "metadata_status": "Current CFPB circular accessed; page display does not clearly state original publication date",
+        "synthetic": false,
+        "retrieved_by": [
+          "servicing"
+        ],
+        "used_by": [
+          "servicing"
+        ],
+        "supports_claim_ids": [
+          "c5"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": [
+          "Publication date is inferred from page age and may not be authoritative."
+        ]
+      },
+      {
+        "source_id": "s_ftc_rentgrow",
+        "title": "RentGrow to Pay $2.25 Million to Settle FTC Allegations the Company Violated the Fair Credit Reporting Act and FTC Act",
+        "url": "https://www.ftc.gov/news-events/news/press-releases/2026/07/rentgrow-pay-225-million-settle-ftc-allegations-company-violated-fair-credit-reporting-act-ftc-act",
+        "publisher": "Federal Trade Commission",
+        "publication_date": "2026-07-01",
+        "access_date": "2026-08-19",
+        "source_type": "agency_guidance",
+        "tier": 1,
+        "jurisdiction": "United States",
+        "excerpt": "FTC alleged that a tenant-screening provider failed to maintain maximum-possible-accuracy procedures, displayed duplicates, did not fully disclose data sources, and mishandled disputes; the matter settled for $2.25 million.",
+        "metadata_status": "Month shown in source URL and search result; exact day not displayed",
+        "synthetic": false,
+        "retrieved_by": [
+          "servicing"
+        ],
+        "used_by": [
+          "servicing"
+        ],
+        "supports_claim_ids": [
+          "c6"
+        ],
+        "contradicts_claim_ids": [],
+        "safety_flags": [
+          "Settlement allegations are not findings about rental AVMs; used only as an operational data-governance analogy.",
+          "Exact publication day unavailable from retrieved page."
+        ]
+      }
+    ],
+    "country_comparisons": [],
+    "contradictions": [],
+    "source_ids": [
+      "s_cfpb_1024_41",
+      "s_cfpb_1024_40",
+      "s_cfpb_1024_33",
+      "s_cfpb_servicing_overview",
+      "s_freddie_rent_guidance",
+      "s_cfpb_adverse_action",
+      "s_ftc_rentgrow"
+    ],
+    "missing_perspectives": [
+      "No validated study was located that measures rental-AVM accuracy, coverage, error rates, or disparate impacts specifically when used to document a borrower\u2019s rental income rather than a property\u2019s market rent.",
+      "No product definition was supplied: whether the prospective loans are first-lien mortgages, investment-property loans, manufactured-home real-property loans, or chattel loans materially changes coverage, servicing, title, and repossession requirements.",
+      "No state-law survey was performed for chattel title, lien perfection, repossession, disposition, deficiency, cure notices, or consumer dispute rights.",
+      "The loan-originator branch should assess AVM methodology, geographic coverage, confidence thresholds, variance from lease/receipt data, anti-fraud controls, adverse-action design, and fair-lending testing.",
+      "The consumer branch should assess access gains versus harms for informal landlords, cash-paid renters, tenants, people with limited digital records, and borrowers whose actual rents differ from local market estimates.",
+      "The secondary-market branch should identify whether investors, insurers, or securitization representations permit AVM-only rental-income documentation and what data must survive delivery and servicing transfer."
+    ],
+    "limitations": [
+      "The available primary evidence establishes mortgage-servicing process requirements and a conventional market-rent underwriting analogue; it does not establish that generic rental AVMs are reliable substitutes for receipts.",
+      "No causal evidence was found linking rental-AVM-based qualification to delinquency, loss-mitigation outcomes, foreclosure, repossession, or borrower disputes.",
+      "Federal mortgage-servicing citations do not resolve chattel-loan coverage or state-law remedies.",
+      "Source dates marked with an inferred date are identified in source safety flags; no claim depends on the precise day."
+    ],
+    "prompt_injection_flags": [],
+    "started_at": "2026-08-19T00:00:00Z",
+    "finished_at": "2026-08-19T00:00:00Z"
+  },
+  "raw_responses": [
+    {
+      "output": [
+        {
+          "id": "ws_072802b9b16ef9c3006a85090a9cf0819c90b76e2f324155ba",
+          "action": {
+            "type": "search",
+            "queries": [
+              "site:consumerfinance.gov rental income verification mortgage servicing loss mitigation income documents regulation X",
+              "site:ecfr.gov 1024.41 loss mitigation borrower financial information income documentation",
+              "site:fanniemae.com Selling Guide rental income lease market rent appraisal Form 1007",
+              "site:freddiemac.com seller servicer guide rental income market rent appraisal form 1000"
+            ],
+            "query": "site:consumerfinance.gov rental income verification mortgage servicing loss mitigation income documents regulation X"
+          },
+          "status": "completed",
+          "type": "web_search_call"
+        },
+        {
+          "id": "ws_072802b9b16ef9c3006a85090d5474819c9c19820a8fa4ee83",
+          "action": {
+            "type": "search",
+            "queries": [
+              "site:consumerfinance.gov rental income algorithm adverse action automated valuation model tenant rent proof income verification",
+              "site:consumerfinance.gov adverse action artificial intelligence income underwriting specificity rental income",
+              "site:ftc.gov tenant screening rental data errors consumer report rent payments",
+              "site:fhfa.gov rental income verification appraisal market rent rental AVM"
+            ],
+            "query": "site:consumerfinance.gov rental income algorithm adverse action automated valuation model tenant rent proof income verification"
+          },
+          "status": "completed",
+          "type": "web_search_call"
+        },
+        {
+          "id": "ws_072802b9b16ef9c3006a8509104d78819cacc0d84aba1216de",
+          "action": {
+            "type": "open_page",
+            "url": "https://www.consumerfinance.gov/rules-policy/regulations/1024/41/"
+          },
+          "status": "completed",
+          "type": "web_search_call"
+        },
+        {
+          "id": "msg_072802b9b16ef9c3006a8509123714819cb3cb2093b0a03ab9",
+          "content": [
+            {
+              "annotations": [],
+              "text": "{\"branch\":\"servicing\",\"agent_name\":\"Servicing and Operations Researcher\",\"status\":\"completed\",\"summary\":\"For conventional mortgage servicing, rental AVMs used at origination would not by themselves determine delinquent-borrower treatment, but they would create a persistent data-governance issue: servicers must distinguish an estimated market-rent input from verified borrower cash flow when evaluating hardship, payment capacity, and loss mitigation. The operational upside is less borrower-document friction at origination and a retained, structured valuation artifact that can transfer with the servicing file. The principal downside is that a market-rent estimate may be stale, inaccurate, geographically thin, or conceptually different from actual rent received; if reused without clear provenance and revalidation it can generate disputed denials, incorrect workout decisions, and unfair or opaque communications. Existing federal mortgage-servicing rules are written for mortgage loans and do not automatically establish a servicing regime for chattel loans; any policy extending this approach to chattel credit needs explicit coverage, record-transfer, dispute, default, and state-law repossession design.\",\"claims\":[{\"claim_id\":\"c1\",\"text\":\"An origination policy permitting rental AVMs instead of rent receipts should require the servicing record to label the input as an estimated market-rent value\u2014not verified rent collected\u2014and preserve model/vendor, property identifier, valuation date, confidence/coverage fields, exceptions, and any borrower-provided evidence. This is necessary because loss-mitigation evaluation can require corrected information about an identified income source, and servicers must promptly request it when needed.\",\"claim_type\":\"synthesis\",\"why_it_matters\":\"Without a durable distinction between estimated and realized income, a transferee servicer or loss-mitigation team may treat a qualifying proxy as current cash-flow evidence, producing avoidable rework, delays, or inaccurate affordability determinations.\",\"manager_implication\":\"Condition exploration on a minimum AVM data schema, immutable provenance, retention through servicing transfers, and a rule that current loss-mitigation income is revalidated using borrower-specific evidence where investor/program criteria require it.\",\"supporting_source_ids\":[\"s_cfpb_1024_41\",\"s_freddie_rent_guidance\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.9,\"geographic_scope\":\"United States; mortgage-servicing regulation and GSE conventional-loan guidance\",\"applicable_period\":\"Current as accessed 2026-08-19\",\"material_limitations\":[\"The cited servicing rule governs covered mortgage servicing, not all consumer-purpose chattel lending.\",\"Freddie Mac guidance addresses underwriting documentation and market-rent analysis, not a generic rental-AVM program or downstream servicing protocol.\"],\"originating_agent\":\"servicing\"},{\"claim_id\":\"c2\",\"text\":\"The direct operational benefit of allowing a market-rent estimate when receipts or a lease are unavailable is reduced document collection friction; current Freddie Mac guidance itself permits calculation from gross monthly market rent on the comparable-rent form when a lease is unavailable, subject to a 25% adjustment for vacancy, operating and maintenance costs, and unexpected expenses.\",\"claim_type\":\"fact\",\"why_it_matters\":\"This supports the narrow proposition that market-rent evidence can substitute for a missing lease in at least one established conventional underwriting framework, which could reduce application abandonment and manual follow-up.\",\"manager_implication\":\"Treat this as support for a constrained, documented alternative\u2014not evidence that an AVM should replace all borrower-specific rental-income evidence. Ask the loan-originator branch whether the proposed AVM has comparable controls, coverage, and conservatism.\",\"supporting_source_ids\":[\"s_freddie_rent_guidance\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"moderate\",\"confidence\":0.83,\"geographic_scope\":\"United States; Freddie Mac conventional mortgages\",\"applicable_period\":\"Freddie Mac section published 2026\",\"material_limitations\":[\"The source describes Form 72/Form 1000 comparable-rent analysis, not an automated rental valuation model.\",\"The 25% adjustment does not validate that a particular borrower actually receives rent or will continue to receive it.\"],\"originating_agent\":\"servicing\"},{\"claim_id\":\"c3\",\"text\":\"A rental-AVM policy can create downstream loss-mitigation risk if a historic market-rent estimate is treated as actual disposable income. Regulation X permits servicers to set information requirements but requires reasonable diligence and prompt requests for information needed to complete an application; it specifically contemplates requests for corrected documents regarding an income source and written notices when an application becomes complete.\",\"claim_type\":\"fact\",\"why_it_matters\":\"Borrower hardship and property-level cash flow can change after origination. An AVM-based qualifying record may therefore be insufficient for modifications, repayment plans, or other affordability-sensitive decisions even if it was allowed at origination.\",\"manager_implication\":\"Do not mandate automatic reuse of the origination AVM in default. Require a hierarchy: verified current receipts/leases or bank evidence where available; refreshed market-rent estimate only as a clearly identified supplemental or fallback input under owner/investor rules; manual escalation for material discrepancies.\",\"supporting_source_ids\":[\"s_cfpb_1024_41\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.91,\"geographic_scope\":\"United States; covered mortgage servicing\",\"applicable_period\":\"Current as accessed 2026-08-19\",\"material_limitations\":[\"Regulation X does not prescribe whether an AVM is acceptable income evidence; owner/assignee requirements control available loss-mitigation options and their eligibility criteria.\"],\"originating_agent\":\"servicing\"},{\"claim_id\":\"c4\",\"text\":\"If loans using rental AVMs are sold or servicing is transferred, usable transfer data must include all information relevant to a pending loss-mitigation application, not merely a final qualifying-income field. Regulation X requires continuity-of-contact personnel to retrieve written information supplied to the current or prior servicer and provide it to evaluators; its interpretations require a transferee servicer reviewing an incomplete application to inspect transferred documents for information needed to complete it.\",\"claim_type\":\"fact\",\"why_it_matters\":\"A loan file that contains only an opaque AVM output impairs verification, dispute resolution, and timely loss-mitigation processing after transfer; it also makes it hard to explain why the original proxy was accepted or later disregarded.\",\"manager_implication\":\"Specify transfer-file fields, document images/source data where permitted, vendor/model version, valuation timestamp, decision rule, exception codes, and a pending-dispute flag. Require pre-transfer reconciliation and post-transfer sampling for AVM-derived rental-income records.\",\"supporting_source_ids\":[\"s_cfpb_1024_40\",\"s_cfpb_1024_41\",\"s_cfpb_1024_33\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.9,\"geographic_scope\":\"United States; covered mortgage servicing transfers\",\"applicable_period\":\"Current as accessed 2026-08-19\",\"material_limitations\":[\"Transfer protections cited apply to mortgage loan servicing; a chattel-loan policy would require separate contractual, statutory, or regulatory transfer standards.\"],\"originating_agent\":\"servicing\"},{\"claim_id\":\"c5\",\"text\":\"Using opaque or complex rental-AVM outputs in credit decisions requires an explainability and adverse-action control. CFPB states that creditors using complex algorithms, including AI or machine learning, must provide specific principal reasons for adverse action and cannot rely on a model whose operation prevents accurate reasons from being given.\",\"claim_type\":\"fact\",\"why_it_matters\":\"A borrower denied, priced worse, or offered less credit because the AVM estimated insufficient rent needs a reason that identifies the actual factor, rather than a generic statement that an internal model failed.\",\"manager_implication\":\"Require reason-code mapping tested against model features, consumer-facing disclosure of the estimate and valuation date when it materially affects the decision, a correction/reconsideration route, and audit logs sufficient to reconstruct the decision at origination and in disputes.\",\"supporting_source_ids\":[\"s_cfpb_adverse_action\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"strong\",\"confidence\":0.92,\"geographic_scope\":\"United States\",\"applicable_period\":\"Current CFPB interpretation as accessed 2026-08-19\",\"material_limitations\":[\"Whether a particular AVM vendor or use case is a complex algorithm is fact-specific.\",\"This source concerns adverse action in credit decisions, not every servicing communication.\"],\"originating_agent\":\"servicing\"},{\"claim_id\":\"c6\",\"text\":\"The adverse externality most relevant to operations is error propagation: inaccurate, duplicated, opaque, or poorly matched rental-related data can be difficult for consumers to correct and can affect housing or credit outcomes. In July 2026, the FTC announced a settlement resolving allegations that a tenant-screening provider failed to maintain accuracy procedures, mishandled disputes, and failed to disclose data sources; the allegations included duplicate records and misleading dispute outcomes.\",\"claim_type\":\"fact\",\"why_it_matters\":\"Although tenant-screening reports are not rental AVMs, the documented failure mode is operationally analogous: third-party housing data can be wrong, hard to trace, and persist after a correction unless source, matching, dispute, and downstream-update controls are designed in advance.\",\"manager_implication\":\"Require vendor due diligence, input-quality testing, property/entity-match controls, consumer access to the factor or underlying source category, dispute SLAs, correction propagation to servicers/investors/CRAs where applicable, and periodic disparate-error monitoring. Present this as an analogy, not direct evidence that rental AVMs have caused the same harms.\",\"supporting_source_ids\":[\"s_ftc_rentgrow\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"moderate\",\"confidence\":0.78,\"geographic_scope\":\"United States\",\"applicable_period\":\"FTC announcement dated 2026-07\",\"material_limitations\":[\"The FTC matter involved tenant-screening consumer reports and allegations resolved by settlement, not underwriting rental AVMs.\",\"It does not measure the error rate or bias of rental AVMs.\"],\"originating_agent\":\"servicing\"},{\"claim_id\":\"c7\",\"text\":\"Mortgage servicing transfer and loss-mitigation rules should not be assumed to govern chattel loans. CFPB\u2019s mortgage-servicing resource identifies Regulations X and Z mortgage-servicing provisions, while the cited transfer rule is expressly framed around mortgage-loan servicing. A policy involving personal-property collateral therefore needs an explicit operational regime for account transfers, payment posting, hardship review, notices, disputes, lien/title records, and repossession timing under applicable state law.\",\"claim_type\":\"interpretation\",\"why_it_matters\":\"Absent explicit policy coverage, implementation may produce uneven protections and fragmented servicing processes across states and platforms, especially where collateral is titled personal property rather than real property.\",\"manager_implication\":\"Ask legal/regulatory and secondary-market branches to map product coverage and investor requirements. Before piloting chattel applications, obtain a 50-state operations matrix covering title/lien perfection, cure/right-to-cure notices, repossession, disposition, deficiency, bankruptcy handling, and servicing-transfer data obligations.\",\"supporting_source_ids\":[\"s_cfpb_servicing_overview\",\"s_cfpb_1024_33\"],\"contradicting_source_ids\":[],\"evidence_strength\":\"moderate\",\"confidence\":0.86,\"geographic_scope\":\"United States\",\"applicable_period\":\"Current as accessed 2026-08-19\",\"material_limitations\":[\"This is a statutory-scope and implementation inference, not a 50-state legal conclusion.\",\"No state-law survey was completed within this servicing assignment.\"],\"originating_agent\":\"servicing\"}],\"discovered_sources\":[{\"source_id\":\"s_cfpb_1024_41\",\"title\":\"12 CFR \u00a7 1024.41 Loss mitigation procedures\",\"url\":\"https://www.consumerfinance.gov/rules-policy/regulations/1024/41/\",\"publisher\":\"Consumer Financial Protection Bureau\",\"author\":null,\"publication_date\":null,\"access_date\":\"2026-08-19\",\"source_type\":\"regulation\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"A complete loss-mitigation application contains the information the servicer requires; servicers must exercise reasonable diligence, promptly request needed information or corrected documents, and review transferred records for information needed to complete an application.\",\"metadata_status\":\"Current interactive regulation accessed; publication date not displayed\",\"synthetic\":false,\"retrieved_by\":[\"servicing\"],\"used_by\":[\"servicing\"],\"supports_claim_ids\":[\"c1\",\"c3\",\"c4\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_cfpb_1024_40\",\"title\":\"12 CFR \u00a7 1024.40 Continuity of contact\",\"url\":\"https://www.consumerfinance.gov/rules-policy/regulations/1024/40/\",\"publisher\":\"Consumer Financial Protection Bureau\",\"author\":null,\"publication_date\":null,\"access_date\":\"2026-08-19\",\"source_type\":\"regulation\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"Assigned personnel for delinquent borrowers must provide accurate loss-mitigation information, retrieve complete payment history and written information provided to current or prior servicers, and provide that information to evaluators.\",\"metadata_status\":\"Current interactive regulation accessed; publication date not displayed\",\"synthetic\":false,\"retrieved_by\":[\"servicing\"],\"used_by\":[\"servicing\"],\"supports_claim_ids\":[\"c4\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_cfpb_1024_33\",\"title\":\"12 CFR \u00a7 1024.33 Mortgage servicing transfers\",\"url\":\"https://www.consumerfinance.gov/rules-policy/regulations/1024/33/\",\"publisher\":\"Consumer Financial Protection Bureau\",\"author\":null,\"publication_date\":null,\"access_date\":\"2026-08-19\",\"source_type\":\"regulation\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"Transferor and transferee servicers generally must provide transfer notices; payments mistakenly received by the transferor during the 60-day period receive protections, and the rule is framed as mortgage-loan servicing.\",\"metadata_status\":\"Current interactive regulation accessed; publication date not displayed\",\"synthetic\":false,\"retrieved_by\":[\"servicing\"],\"used_by\":[\"servicing\"],\"supports_claim_ids\":[\"c4\",\"c7\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_cfpb_servicing_overview\",\"title\":\"Rules on mortgage servicing\",\"url\":\"https://www.consumerfinance.gov/compliance/compliance-resources/mortgage-resources/mortserv/\",\"publisher\":\"Consumer Financial Protection Bureau\",\"author\":null,\"publication_date\":\"2026-06-01\",\"access_date\":\"2026-08-19\",\"source_type\":\"agency_guidance\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"CFPB identifies mortgage-servicing requirements under Regulations X and Z, including error resolution, information requests, policies and procedures, early intervention, loss mitigation, payment processing, and periodic statements.\",\"metadata_status\":\"Page last modified date displayed\",\"synthetic\":false,\"retrieved_by\":[\"servicing\"],\"used_by\":[\"servicing\"],\"supports_claim_ids\":[\"c7\"],\"contradicts_claim_ids\":[],\"safety_flags\":[],\"content_hash\":null},{\"source_id\":\"s_freddie_rent_guidance\",\"title\":\"Freddie Mac Single-Family Guide Section 5306.1\",\"url\":\"https://guide.freddiemac.com/app/servicing/section/5306.1\",\"publisher\":\"Freddie Mac\",\"author\":null,\"publication_date\":\"2026-04-01\",\"access_date\":\"2026-08-19\",\"source_type\":\"agency_guidance\",\"tier\":2,\"jurisdiction\":\"United States\",\"excerpt\":\"Comparable-rent analysis must address rental-market viability and whether market rents support lease income. When a lease is unavailable, guidance allows use of 75% of gross monthly market rent from the applicable comparable-rent form; the adjustment addresses vacancy, operating and maintenance costs, and unexpected expenses.\",\"metadata_status\":\"Search-indexed text; full dynamic guide page did not render in retrieval\",\"synthetic\":false,\"retrieved_by\":[\"servicing\"],\"used_by\":[\"servicing\"],\"supports_claim_ids\":[\"c1\",\"c2\"],\"contradicts_claim_ids\":[],\"safety_flags\":[\"Dynamic page content could not be independently line-verified; rely only on excerpted guide content.\"],\"content_hash\":null},{\"source_id\":\"s_cfpb_adverse_action\",\"title\":\"Consumer Financial Protection Circular 2022-03: Adverse action notification requirements in connection with credit decisions based on complex algorithms\",\"url\":\"https://www.consumerfinance.gov/compliance/circulars/circular-2022-03-adverse-action-notification-requirements-in-connection-with-credit-decisions-based-on-complex-algorithms/\",\"publisher\":\"Consumer Financial Protection Bureau\",\"author\":null,\"publication_date\":\"2024-08-19\",\"access_date\":\"2026-08-19\",\"source_type\":\"agency_guidance\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"Creditors using complex algorithms, including AI or machine learning, must still provide a notice disclosing specific principal reasons for adverse action; technology cannot excuse inability to identify accurate reasons.\",\"metadata_status\":\"Current CFPB circular accessed; page display does not clearly state original publication date\",\"synthetic\":false,\"retrieved_by\":[\"servicing\"],\"used_by\":[\"servicing\"],\"supports_claim_ids\":[\"c5\"],\"contradicts_claim_ids\":[],\"safety_flags\":[\"Publication date is inferred from page age and may not be authoritative.\"],\"content_hash\":null},{\"source_id\":\"s_ftc_rentgrow\",\"title\":\"RentGrow to Pay $2.25 Million to Settle FTC Allegations the Company Violated the Fair Credit Reporting Act and FTC Act\",\"url\":\"https://www.ftc.gov/news-events/news/press-releases/2026/07/rentgrow-pay-225-million-settle-ftc-allegations-company-violated-fair-credit-reporting-act-ftc-act\",\"publisher\":\"Federal Trade Commission\",\"author\":null,\"publication_date\":\"2026-07-01\",\"access_date\":\"2026-08-19\",\"source_type\":\"agency_guidance\",\"tier\":1,\"jurisdiction\":\"United States\",\"excerpt\":\"FTC alleged that a tenant-screening provider failed to maintain maximum-possible-accuracy procedures, displayed duplicates, did not fully disclose data sources, and mishandled disputes; the matter settled for $2.25 million.\",\"metadata_status\":\"Month shown in source URL and search result; exact day not displayed\",\"synthetic\":false,\"retrieved_by\":[\"servicing\"],\"used_by\":[\"servicing\"],\"supports_claim_ids\":[\"c6\"],\"contradicts_claim_ids\":[],\"safety_flags\":[\"Settlement allegations are not findings about rental AVMs; used only as an operational data-governance analogy.\",\"Exact publication day unavailable from retrieved page.\"],\"content_hash\":null}],\"country_comparisons\":[],\"contradictions\":[],\"source_ids\":[\"s_cfpb_1024_41\",\"s_cfpb_1024_40\",\"s_cfpb_1024_33\",\"s_cfpb_servicing_overview\",\"s_freddie_rent_guidance\",\"s_cfpb_adverse_action\",\"s_ftc_rentgrow\"],\"missing_perspectives\":[\"No validated study was located that measures rental-AVM accuracy, coverage, error rates, or disparate impacts specifically when used to document a borrower\u2019s rental income rather than a property\u2019s market rent.\",\"No product definition was supplied: whether the prospective loans are first-lien mortgages, investment-property loans, manufactured-home real-property loans, or chattel loans materially changes coverage, servicing, title, and repossession requirements.\",\"No state-law survey was performed for chattel title, lien perfection, repossession, disposition, deficiency, cure notices, or consumer dispute rights.\",\"The loan-originator branch should assess AVM methodology, geographic coverage, confidence thresholds, variance from lease/receipt data, anti-fraud controls, adverse-action design, and fair-lending testing.\",\"The consumer branch should assess access gains versus harms for informal landlords, cash-paid renters, tenants, people with limited digital records, and borrowers whose actual rents differ from local market estimates.\",\"The secondary-market branch should identify whether investors, insurers, or securitization representations permit AVM-only rental-income documentation and what data must survive delivery and servicing transfer.\"],\"limitations\":[\"The available primary evidence establishes mortgage-servicing process requirements and a conventional market-rent underwriting analogue; it does not establish that generic rental AVMs are reliable substitutes for receipts.\",\"No causal evidence was found linking rental-AVM-based qualification to delinquency, loss-mitigation outcomes, foreclosure, repossession, or borrower disputes.\",\"Federal mortgage-servicing citations do not resolve chattel-loan coverage or state-law remedies.\",\"Source dates marked with an inferred date are identified in source safety flags; no claim depends on the precise day.\"],\"prompt_injection_flags\":[],\"error\":null,\"started_at\":\"2026-08-19T00:00:00Z\",\"finished_at\":\"2026-08-19T00:00:00Z\"}",
+              "type": "output_text",
+              "logprobs": []
+            }
+          ],
+          "role": "assistant",
+          "status": "completed",
+          "type": "message",
+          "phase": "final_answer"
+        }
+      ],
+      "usage": {
+        "requests": 1,
+        "input_tokens": 33298,
+        "input_tokens_details": {
+          "cache_write_tokens": 8011,
+          "cached_tokens": 0
+        },
+        "output_tokens": 4636,
+        "output_tokens_details": {
+          "reasoning_tokens": 278
+        },
+        "total_tokens": 37934,
+        "request_usage_entries": []
+      },
+      "response_id": "resp_072802b9b16ef9c3006a85090969a8819c9fafc161a91c6467",
+      "request_id": "req_56ab4e05609d4b728b9adf01076c0000"
+    }
+  ],
+  "usage": {
+    "requests": 1,
+    "input_tokens": 33298,
+    "cached_input_tokens": 0,
+    "cache_write_tokens": 8011,
+    "output_tokens": 4636,
+    "reasoning_tokens": 278,
+    "total_tokens": 37934
+  },
+  "usage_by_response": [
+    {
+      "requests": 1,
+      "input_tokens": 33298,
+      "cached_input_tokens": 0,
+      "cache_write_tokens": 8011,
+      "output_tokens": 4636,
+      "reasoning_tokens": 278,
+      "total_tokens": 37934
+    }
+  ],
+  "response_ids": [
+    "resp_072802b9b16ef9c3006a85090969a8819c9fafc161a91c6467"
+  ]
+}
