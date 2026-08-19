@@ -42,7 +42,7 @@ During `ask` and `demo --live`, the CLI prints bounded progress for intake, plan
 2. Navigate to the repository:
 
    ```powershell
-   cd C:\Users\svenftw\OneDrive\housing-policy-research-app
+   cd <project path>\housing-policy-research-app
    ```
 
 3. Create the virtual environment and install the application if this is the first run:
