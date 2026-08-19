@@ -1,7 +1,7 @@
 ---
 title: "Engineering a Traceable Multi-Agent Research System"
-subtitle: "OpenAI Agents SDK, governed orchestration, and Promptfoo evaluation"
-author: "Housing Policy Research Network"
+subtitle: "Leveraging OpenAI Agents SDK for defined orchestration and Promptfoo for evaluation in Python"
+author: "Personal Demo prepared by Stephen Schwartz w/ Codex Assistance (5.6-Luna)"
 date: last-modified
 format:
   revealjs:
@@ -24,19 +24,19 @@ format:
     embed-resources: true
     section-divs: false
     html-math-method: plain
-    footer: "Housing Policy Research Network | Technical walkthrough"
+    footer: "Stephen Schwartz | Technical Walkthrough Example"
 execute:
   freeze: true
 ---
 
-## The core thesis {.section-title}
+## A multi-level agent orchestration demo {.section-title}
 
-::: {.kicker}
-RELIABILITY COMES FROM THE SYSTEM AROUND THE MODEL
+::: {.slide-subtitle}
+Building a transparent and traceable system with multi-level agents
 :::
 
-::: {.big-idea}
-Treat multi-agent research like a governed analytical pipeline, not a group chat.
+::: {.slide-deckline}
+Using the Agents SDK to execute multi-agent research like a highly-governed analytical pipeline for auditability.
 :::
 
 ::: {.three-col .top-gap}
@@ -68,56 +68,7 @@ Source records, claims, artifacts, audit history, and eval results remain inspec
 
 ---
 
-## A familiar modeling metaphor
-
-::: {.two-col .wide-left}
-::: {.panel .no-pad}
-```{mermaid}
-flowchart TB
-    Q["Policy question"] --> X["Feature construction<br/>research plan"]
-    X --> E1["Expert model<br/>government"]
-    X --> E2["Expert model<br/>legal"]
-    X --> E3["Expert model<br/>academic"]
-    E1 --> M["Meta-estimator<br/>manager synthesis"]
-    E2 --> M
-    E3 --> M
-    M --> D["Draft report"]
-    D --> V["Diagnostics +<br/>constrained re-work"]
-    V --> O["Released output<br/>plus audit trail"]
-```
-:::
-
-::: {.stack}
-::: {.callout-blue}
-<div class="panel-title">Mixture of experts</div>
-
-Branches specialize by evidence domain. Managers reconcile authority, disagreement, and uncertainty.
-:::
-
-::: {.callout-gray}
-<div class="panel-title">No silent imputation</div>
-
-A failed branch becomes explicit missingness with a typed status and limitation. It does not disappear.
-:::
-
-::: {.callout-gray}
-<div class="panel-title">Diagnostics before release</div>
-
-Validation and adversarial review inspect the report after generation, when defects can be localized.
-:::
-:::
-:::
-
-::: {.notes}
-[Sources]
-- `docs/architecture.md`
-- `src/housing_policy_agents/agents/managers.py`
-- `src/housing_policy_agents/workflows/research_workflow.py`
-:::
-
----
-
-## End-to-end architecture
+## Illustrative multi-agent threading example
 
 ::: {.architecture-map}
 <div class="arch-label">CONTROLLED RESEARCH</div>
@@ -144,6 +95,55 @@ Validation and adversarial review inspect the report after generation, when defe
 - `src/housing_policy_agents/workflows/research_workflow.py`
 - `docs/architecture.md`
 - `docs/agent-contracts.md`
+:::
+
+---
+
+## A familiar modeling metaphor
+
+::: {.two-col .wide-left}
+::: {.panel .no-pad}
+```{mermaid}
+flowchart TB
+    Q["Policy question"] --> X["Feature construction<br/>research plan"]
+    X --> E1["Expert model<br/>government"]
+    X --> E2["Expert model<br/>legal"]
+    X --> E3["Expert model<br/>academic"]
+    E1 --> M["Meta-estimator<br/>manager synthesis"]
+    E2 --> M
+    E3 --> M
+    M --> D["Draft report"]
+    D --> V["Diagnostics +<br/>constrained re-work"]
+    V --> O["Released output<br/>plus audit trail"]
+```
+:::
+
+::: {.stack}
+::: {.callout-gray}
+<div class="panel-title">Mixture of experts</div>
+
+Branches specialize by evidence domain. Managers reconcile authority, disagreement, and uncertainty.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">No silent imputation</div>
+
+A failed branch becomes explicit missingness with a typed status and limitation. It does not disappear.
+:::
+
+::: {.callout-gray}
+<div class="panel-title">Diagnostics before release</div>
+
+Validation and adversarial review inspect the report after generation, when defects can be localized.
+:::
+:::
+:::
+
+::: {.notes}
+[Sources]
+- `docs/architecture.md`
+- `src/housing_policy_agents/agents/managers.py`
+- `src/housing_policy_agents/workflows/research_workflow.py`
 :::
 
 ---
@@ -220,7 +220,7 @@ flowchart LR
 ```
 
 ::: {.caption-bar}
-Each edge is a typed handoff. Each node has a role definition, scope boundary, source preference, and response contract.
+A handoff is the structured package passed from one agent to the next. An edge is the arrow that shows this transfer. Every package follows a defined format, and every agent has a named role, scope, source preference, and response rule.
 :::
 
 ::: {.notes}
@@ -233,7 +233,7 @@ Each edge is a typed handoff. Each node has a role definition, scope boundary, s
 
 ---
 
-## Typed contracts are the measurement model
+## Typed contracts enable completion measurement objectively
 
 ::: {.two-col .wide-right}
 ::: {.stack}
@@ -334,7 +334,7 @@ result = await Runner.run(
 
 ---
 
-## Concurrency without losing failure semantics
+## Allows for concurrent processing without losing track of workers
 
 ::: {.two-col .wide-left}
 ::: {.panel .no-pad}
@@ -359,22 +359,22 @@ sequenceDiagram
 :::
 
 ::: {.stack}
-::: {.callout-blue}
-<div class="panel-title">Bounded parallelism</div>
+::: {.callout-gray}
+<div class="panel-title">Controlled parallel work</div>
 
-An `asyncio.Semaphore` controls API pressure. `asyncio.gather` preserves branch-level results.
+Only a set number of specialists run at once. When one finishes, the next waiting branch starts.
 :::
 
 ::: {.callout-gray}
-<div class="panel-title">Failure as data</div>
+<div class="panel-title">Recorded failure</div>
 
-Exceptions are converted to typed failed findings after retries. Managers see the missing branch and its reason.
+If a branch still fails after retry, the workflow records the reason so managers can account for the missing research.
 :::
 
 ::: {.callout-gray}
-<div class="panel-title">Partial, never fabricated</div>
+<div class="panel-title">Incomplete beats invented</div>
 
-If no usable evidence reaches a manager, the fallback is partial coverage, not invented synthesis.
+If the evidence is too thin, the manager reports incomplete coverage instead of filling gaps with invented claims.
 :::
 :::
 :::
@@ -388,7 +388,7 @@ If no usable evidence reaches a manager, the fallback is partial coverage, not i
 
 ---
 
-## Worked example: one rental-AVM question becomes a 16-call workflow
+## An example using a rental-AVM question
 
 ::: {.case-question}
 “What are the advantages, disadvantages, and adverse externalities of allowing borrowers to document rental income using rental AVMs instead of proof of rental-income receipts?”
@@ -398,16 +398,12 @@ If no usable evidence reaches a manager, the fallback is partial coverage, not i
 <span>Brief + plan</span><i></i><span>10 specialists</span><i></i><span>3 managers</span><i></i><span>Writer</span><i></i><span>Reviewer</span><i></i><span>Writer revision</span>
 :::
 
-::: {.case-stats}
+::: {.case-stats .expanded}
 <div><b>16</b><span>model calls</span></div>
 <div><b>55</b><span>sources in ledger</span></div>
 <div><b>6</b><span>recorded handoffs</span></div>
 <div><b>232 s</b><span>wall-clock time</span></div>
 <div><b>$2.01</b><span>estimated token cost</span></div>
-:::
-
-::: {.persona-strip}
-<b>Control-plane role</b> Deterministic workflow coordinator. It owns state, routing, parallel execution, and release gates; it does not make policy claims.
 :::
 
 ::: {.notes}
@@ -420,7 +416,7 @@ If no usable evidence reaches a manager, the fallback is partial coverage, not i
 
 ---
 
-## The initial plan is deterministic in this implementation
+## The initial plan is deterministic in this implementation (example con't)
 
 ::: {.two-col .wide-left}
 ::: {.panel .no-pad}
@@ -448,12 +444,8 @@ Branch objective, manager destination, scope boundaries, preferred sources, requ
 :::
 :::
 
-::: {.principle}
-No planning-agent model call occurred in this run. Python called `build_brief()` and `build_plan()` directly, which makes initial routing reproducible and testable.
-:::
-
 ::: {.persona-strip}
-<b>Planner behavior</b> A deterministic router, not an LLM persona. Its “instructions” are code-level branch-selection rules and Pydantic contracts.
+<b>Planner behavior</b> Python applies fixed routing rules. This keeps the same question on the same research path, makes branch selection easy to test, and avoids spending a model call on a decision the application can define directly.
 :::
 
 ::: {.notes}
@@ -466,10 +458,10 @@ No planning-agent model call occurred in this run. Python called `build_brief()`
 
 ---
 
-## Ten specialist personas turn one question into distinct evidence lenses
+## The ten specialist personas turn one question into distinct research perspectives (example con't)
 
 ::: {.specialist-intro}
-<b>Shared specialist persona:</b> careful, curious, skeptical evidence accountant. State what evidence establishes, suggests, and cannot answer; never act as advocate, lawyer, or general explainer.
+<b>Shared specialist persona:</b> careful, curious, skeptical evidence researcher. State what evidence establishes, suggests, and cannot answer; never act as advocate, lawyer, or general explainer.
 :::
 
 ::: {.portfolio-grid}
@@ -505,14 +497,14 @@ No planning-agent model call occurred in this run. Python called `build_brief()`
 
 ---
 
-## A specialist handoff is a bounded research contract
+## Example agent persona for 'Government Sources Research' (example con't)
 
 ::: {.two-col .wide-right}
 ::: {.persona-card}
 <div class="persona-label">AGENT PERSONA</div>
 <div class="persona-name">Government Sources Researcher</div>
 
-Skeptical public-sector evidence accountant. Prefer statutes, regulations, agency documents, official evaluations, and administrative data. Separate current policy from proposals and inference.
+Skeptical public-sector evidence researcher. Prefer statutes, regulations, agency documents, official evaluations, and administrative data. Separate current policy from proposals and inference.
 
 <div class="persona-rule">Out of scope: general industry commentary unless an official record summarizes it.</div>
 :::
@@ -540,7 +532,7 @@ The sub-agent receives enough downstream context to be useful, but no authority 
 
 ---
 
-## The specialist returns typed evidence, not a free-form memo
+## What does the specialist agent return (example con't)
 
 ::: {.two-col .wide-left}
 ::: {.panel}
@@ -582,7 +574,7 @@ Report claim-level evidence, contrary evidence, uncertainty, and limitations for
 
 ---
 
-## Three managers reconcile evidence without false consensus
+## Three manager agents reconcile provided evidence (example con't)
 
 ::: {.manager-grid}
 ::: {.manager-column .accent-top}
@@ -622,7 +614,7 @@ All three managers agreed on a bounded use case and the absence of direct outcom
 
 ---
 
-## The writer composes from manager packages, not raw search output
+## The writer composes from the manager packages (example con't)
 
 ::: {.two-col}
 ::: {.persona-card}
@@ -655,7 +647,7 @@ Lucid, disciplined policy writer. Turn reconciled evidence into a decision-ready
 
 ---
 
-## Reviewer flags defects; writer owns the revision
+## The reviewer flags defects for revision (example con't)
 
 ::: {.review-loop}
 ::: {.persona-card .reviewer-card}
@@ -678,7 +670,7 @@ Inspect grounding, citations, legal calibration, causal claims, missing countera
 :::
 
 ::: {.score-row}
-<span><b>0.84</b> grounding</span><span><b>0.93</b> balance</span><span><b>0.88</b> calibration</span><span><b>1.00</b> security</span><span><b>1</b> revision</span>
+<span><b>0.84</b><strong>Grounding</strong><small>claims supported</small></span><span><b>0.93</b><strong>Balance</strong><small>competing views represented</small></span><span><b>0.88</b><strong>Calibration</strong><small>confidence matches evidence</small></span><span><b>1.00</b><strong>Security</strong><small>untrusted instructions resisted</small></span><span><b>1</b><strong>Revision</strong><small>revision round</small></span>
 :::
 
 ::: {.notes}
@@ -693,7 +685,7 @@ Inspect grounding, citations, legal calibration, causal claims, missing countera
 
 ---
 
-## Six recorded handoffs make the whole run replayable
+## All six handoffs are recorded and evidence is traceable (example con't)
 
 ::: {.handoff-ledger}
 <div><b>1</b><span>Specialists → Policy manager</span><small>3 findings, no failed branches</small></div>
@@ -728,7 +720,7 @@ Deterministic validation found 0 errors. Adversarial review still required one e
 
 ---
 
-## The source ledger is chain of custody
+## How are metadata organized into a source ledger
 
 ::: {.four-grid}
 ::: {.panel .mini}
@@ -769,7 +761,7 @@ Think of the ledger as data lineage for qualitative evidence: every released cla
 
 ---
 
-## Validation and re-work are residual diagnostics
+## Validation and re-work are transparent in run and end product
 
 ::: {.two-col}
 ::: {.panel .no-pad}
@@ -785,7 +777,7 @@ flowchart TB
 ```
 :::
 
-::: {.stack}
+::: {.stack .validation-stack}
 ::: {.callout-blue}
 <div class="panel-title">Constrained repair</div>
 
@@ -803,6 +795,12 @@ The audit records what failed, what was withheld, the attempted revision, and th
 
 Unresolved unsupported content remains withheld while valid report sections can still be released.
 :::
+
+::: {.callout-gray}
+<div class="panel-title">Periodic check</div>
+
+System diagnostics could periodically summarize recent revision trends and identify instructions that may need updating.
+:::
 :::
 :::
 
@@ -816,7 +814,7 @@ Unresolved unsupported content remains withheld while valid report sections can 
 
 ---
 
-## Adversarial review is the challenger model
+## Mitigating hallucinations using adversarial review
 
 ::: {.two-col}
 ::: {.panel .accent-top}
@@ -851,7 +849,7 @@ Separation of roles matters: generation optimizes coherence; challenge optimizes
 
 ---
 
-## Traceability has three independent layers
+## Different artifacts for different purposes
 
 ::: {.three-col}
 ::: {.panel .trace-card .accent-top}
@@ -896,7 +894,7 @@ Plan, evidence ledger, report versions, audit, events, metrics, and usage summar
 
 ---
 
-## The artifact directory is a computational lab notebook
+## Artifact output example illustration
 
 ::: {.two-col .wide-left}
 ::: {.panel .artifact-tree}
@@ -945,7 +943,7 @@ The plan explains intent. The ledger explains evidence. The transcript explains 
 
 ---
 
-## Usage telemetry turns cost into a model diagnostic
+## Keeping track of cost and efficiency
 
 ::: {.two-col}
 ::: {.panel}
@@ -963,12 +961,14 @@ The plan explains intent. The ledger explains evidence. The transcript explains 
 
 <div class="cost-formula">C<sub>est</sub> = (t<sub>in</sub>r<sub>in</sub> + t<sub>cache</sub>r<sub>cache</sub> + t<sub>out</sub>r<sub>out</sub>) / 10<sup>6</sup></div>
 
-The estimate is useful for branch and architecture comparisons. It is explicitly labeled as an estimate, not an invoice.
+<div class="cost-terms"><span><b>t</b> = token count</span><span><b>r</b> = published rate per million tokens</span><span><b>in / cache / out</b> = uncached input, cached input, and output</span></div>
+
+The equation multiplies recorded token usage by published rates. This is an estimate based on published costs, not actually exposing platform.openai.com billing data.
 :::
 :::
 
 ::: {.warning-strip}
-Hosted tool charges, service-tier adjustments, taxes, credits, and later pricing changes are outside this estimate.
+<b>Why doesn't the app have real pricing from the API calls?</b> <b>Short answer:</b> A response returns token usage, not the final account-level dollar charge. Reconciled spend belongs in OpenAI's organization Costs API or billing dashboard, so the app uses a versioned pricing table and labels the result as an estimate.
 :::
 
 ::: {.notes}
@@ -976,12 +976,13 @@ Hosted tool charges, service-tier adjustments, taxes, credits, and later pricing
 - `src/housing_policy_agents/telemetry/usage.py`
 - `src/housing_policy_agents/telemetry/pricing.py`
 - `docs/model-pricing.md`
-- OpenAI API pricing: https://openai.com/api/pricing/
+- OpenAI API pricing: https://platform.openai.com/pricing
+- OpenAI organization usage and costs: https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/usage
 :::
 
 ---
 
-## Promptfoo is a test runner outside the research workflow
+## How is Promptfoo used vs. regular runs?
 
 ::: {.eval-lanes}
 ::: {.eval-lane .accent-top}
@@ -1015,35 +1016,35 @@ Promptfoo compares and regression-tests the architecture. Python and the Agents 
 
 ---
 
-## Four Promptfoo terms, using this application
+## Four specific terms used in Promptfoo structure
 
 ::: {.four-grid .term-grid}
 ::: {.panel .mini .accent-top}
 <div class="term-number">01</div>
 <div class="panel-title">Prompt</div>
 
-The task template held constant across tests, such as the research request instructions.
+The task template kept the same across tests. <b>Example:</b> send the same research-request wording to every provider.
 :::
 
 ::: {.panel .mini}
 <div class="term-number">02</div>
 <div class="panel-title">Provider</div>
 
-An adapter that runs one candidate system, such as the full hierarchy or shallow baseline.
+An adapter that runs one candidate system. <b>Example:</b> compare the full agent hierarchy with a shallow baseline.
 :::
 
 ::: {.panel .mini}
 <div class="term-number">03</div>
 <div class="panel-title">Test case</div>
 
-One scenario and its input variables, such as a legal-policy question or injection attempt.
+One scenario plus its input values. <b>Example:</b> run a mortgage-portability question or a prompt-injection case.
 :::
 
 ::: {.panel .mini}
 <div class="term-number">04</div>
 <div class="panel-title">Assertion</div>
 
-A rule that scores the result, such as “all cited source IDs must resolve.”
+A rule that scores the result. <b>Example:</b> verify every cited source ID exists in the source ledger.
 :::
 :::
 
@@ -1061,7 +1062,7 @@ A rule that scores the result, such as “all cited source IDs must resolve.”
 
 ---
 
-## Offline evaluation creates 52 comparable test cells
+## Promptfoo is configured for 52 comparable test cells using offline evaluation
 
 ::: {.eval-steps}
 ::: {.eval-step .accent-top}
@@ -1096,7 +1097,7 @@ The offline provider uses fixtures, so this run is deterministic and makes no li
 
 ---
 
-## The Python provider is an adapter around ResearchWorkflow
+## As example, the Python provider is an adapter around ResearchWorkflow
 
 ::: {.two-col .code-slide}
 ::: {.panel}
@@ -1192,7 +1193,7 @@ The current matrix runs <b>26 cases x 8 variants = 208 cells</b>, including addi
 
 ---
 
-## What Promptfoo checks today, and what it does not
+## What Promptfoo's implementation here is checking
 
 ::: {.two-col .boundary-grid}
 ::: {.panel .accent-top}
@@ -1209,7 +1210,8 @@ The current matrix runs <b>26 cases x 8 variants = 208 cells</b>, including addi
 ::: {.panel}
 <div class="boundary-label future">Not currently wired into Promptfoo</div>
 
-- SDK trajectory or OTLP span assertions
+- SDK trajectory assertions: verify which agents, tools, and handoffs ran, and in what order
+- OTLP span assertions: inspect exported OpenTelemetry records for timing, tool calls, and errors
 - Accurate application token and cost reporting
 - Every metric listed in `thresholds.yaml`
 - Human grading of policy rigor or factual sufficiency
@@ -1227,202 +1229,4 @@ Promptfoo catches repeatable structural regressions. The application’s own art
 - `evals/thresholds.yaml`
 - `evals/providers/hierarchical_provider.py`
 - `src/housing_policy_agents/telemetry/usage.py`
-:::
-
----
-
-## Choose the command that answers your question
-
-::: {.timeline}
-::: {.timeline-step .accent-top}
-<span>01</span>
-
-<div class="panel-title">Verify code and fixtures</div>
-```powershell
-python -m pytest
-npm run eval:offline
-```
-Use this first for deterministic regression testing.
-:::
-
-::: {.timeline-step}
-<span>02</span>
-
-<div class="panel-title">Compare mechanisms</div>
-```powershell
-npm run eval:ablation
-```
-Use this to estimate which architectural components improve measured quality.
-:::
-
-::: {.timeline-step}
-<span>03</span>
-
-<div class="panel-title">Generate real research</div>
-```powershell
-python -m housing_policy_agents.cli ask `
-  "<question>" --provider web --fast
-```
-Use this for a live report and complete artifact directory.
-:::
-
-::: {.timeline-step}
-<span>04</span>
-
-<div class="panel-title">Evaluate live behavior</div>
-```powershell
-npm run eval:live
-```
-Use selectively because model and retrieval variance add cost and noise.
-:::
-:::
-
-::: {.notes}
-[Sources]
-- `README.md`
-- `package.json`
-- `evals/README.md`
-- `src/housing_policy_agents/cli.py`
-:::
-
----
-
-## A practical build sequence
-
-::: {.four-grid}
-::: {.panel .mini .accent-top}
-<div class="panel-title">1 | Contract first</div>
-
-Define typed inputs, outputs, statuses, IDs, and failure representations before writing prompts.
-:::
-
-::: {.panel .mini}
-<div class="panel-title">2 | Control plane</div>
-
-Implement workflow state, concurrency, retries, event recording, and deterministic release rules in code.
-:::
-
-::: {.panel .mini}
-<div class="panel-title">3 | Bounded agents</div>
-
-Give each role a narrow objective, tools, source hierarchy, scope exclusions, and structured output type.
-:::
-
-::: {.panel .mini}
-<div class="panel-title">4 | Trace every edge</div>
-
-Persist handoffs, results, durations, usage, source lineage, validation findings, and report revisions.
-:::
-
-::: {.panel .mini}
-<div class="panel-title">5 | Deterministic harness</div>
-
-Create offline fixtures and assertions for the workflow before spending tokens on live evaluation.
-:::
-
-::: {.panel .mini}
-<div class="panel-title">6 | Comparative evals</div>
-
-Test a shallow baseline, full system, and mechanism ablations against the same dataset.
-:::
-
-::: {.panel .mini}
-<div class="panel-title">7 | Failure drills</div>
-
-Inject parse failures, missing branches, bad citations, prompt attacks, and re-work failures.
-:::
-
-::: {.panel .mini .accent-top}
-<div class="panel-title">8 | Release policy</div>
-
-Decide what is revised, withheld, or released, then make that decision auditable.
-:::
-:::
-
-::: {.notes}
-[Sources]
-- `docs/architecture.md`
-- `docs/agent-contracts.md`
-- `docs/evaluation-design.md`
-- `docs/threat-model.md`
-- `docs/limitations.md`
-:::
-
----
-
-## Production judgment: where to be skeptical
-
-::: {.two-col}
-::: {.panel}
-<div class="panel-title">This architecture improves</div>
-
-- Separation of research responsibilities
-- Failure localization
-- Citation and source traceability
-- Reproducible evaluation
-- Cost and latency attribution
-- Selective withholding instead of all-or-nothing failure
-:::
-
-::: {.panel .accent-top}
-<div class="panel-title">It does not eliminate</div>
-
-- Retrieval gaps and stale sources
-- Model interpretation errors
-- Correlated errors across agents
-- Prompt and schema regressions
-- Evaluation blind spots
-- Need for human judgment on consequential policy conclusions
-:::
-:::
-
-::: {.principle}
-Multi-agent structure is useful only when it makes evidence, decisions, failures, and costs more legible.
-:::
-
-::: {.notes}
-[Sources]
-- `docs/limitations.md`
-- `docs/threat-model.md`
-- `docs/evaluation-design.md`
-:::
-
----
-
-## The transferable pattern {.section-title}
-
-::: {.kicker}
-MAKE STOCHASTIC SYSTEMS LEGIBLE
-:::
-
-::: {.big-idea}
-Use agents for bounded judgment. Use code for governance. Use artifacts and evals for accountability.
-:::
-
-::: {.three-col .top-gap}
-::: {.panel .center-card .accent-top}
-<div class="panel-title">Agents SDK</div>
-
-Role execution, tools, typed output, traces
-:::
-
-::: {.panel .center-card}
-<div class="panel-title">Application workflow</div>
-
-State, policy, validation, repair, release
-:::
-
-::: {.panel .center-card}
-<div class="panel-title">Promptfoo</div>
-
-Baselines, assertions, ablations, regression tests
-:::
-:::
-
-::: {.notes}
-[Sources]
-- `docs/architecture.md`
-- `docs/evaluation-design.md`
-- OpenAI Agents SDK documentation: https://openai.github.io/openai-agents-python/
-- Promptfoo documentation: https://www.promptfoo.dev/docs/
 :::
