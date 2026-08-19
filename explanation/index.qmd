@@ -68,7 +68,7 @@ Source records, claims, artifacts, audit history, and eval results remain inspec
 
 ---
 
-## Illustrative multi-agent threading example
+## Overall high-level functional workflow
 
 ::: {.architecture-map}
 <div class="arch-label">CONTROLLED RESEARCH</div>
@@ -99,7 +99,7 @@ Source records, claims, artifacts, audit history, and eval results remain inspec
 
 ---
 
-## A familiar modeling metaphor
+## Illustrative multi-agent threading example
 
 ::: {.two-col .wide-left}
 ::: {.panel .no-pad}
@@ -220,7 +220,7 @@ flowchart LR
 ```
 
 ::: {.caption-bar}
-A handoff is the structured package passed from one agent to the next. An edge is the arrow that shows this transfer. Every package follows a defined format, and every agent has a named role, scope, source preference, and response rule.
+A handoff is the structured package passed from one agent to the next. Every package follows a defined format, and every agent has a named role, scope, source preference, and response rule.
 :::
 
 ::: {.notes}
@@ -334,7 +334,7 @@ result = await Runner.run(
 
 ---
 
-## Allows for concurrent processing without losing track of workers
+## Allows for concurrent processing without losing track of workers & progress against tasks
 
 ::: {.two-col .wide-left}
 ::: {.panel .no-pad}
@@ -372,7 +372,7 @@ If a branch still fails after retry, the workflow records the reason so managers
 :::
 
 ::: {.callout-gray}
-<div class="panel-title">Incomplete beats invented</div>
+<div class="panel-title">Incomplete &gt; Invented</div>
 
 If the evidence is too thin, the manager reports incomplete coverage instead of filling gaps with invented claims.
 :::
@@ -1229,4 +1229,125 @@ Promptfoo catches repeatable structural regressions. The application’s own art
 - `evals/thresholds.yaml`
 - `evals/providers/hierarchical_provider.py`
 - `src/housing_policy_agents/telemetry/usage.py`
+:::
+
+---
+
+## What aspects of OpenAI Agent SDK did vs. did this not use?
+
+::: {.sdk-coverage-grid}
+::: {.coverage-panel .used}
+<div class="coverage-label used">Used in this build</div>
+
+- **Agent definitions:** named roles, detailed instructions, and one shared configured model
+- **Bounded execution:** `Runner.run()` with a turn limit for each agent call
+- **Agent tools:** hosted `WebSearchTool` for live specialist research
+- **Typed results:** Pydantic output contracts for specialists, managers, writer, reviewer, and re-work
+- **Observability hooks:** trace metadata plus lifecycle hooks that capture token usage and timing
+:::
+
+::: {.coverage-panel .extension}
+<div class="coverage-label future">Available, but not active in the production path</div>
+
+- **Per-agent models:** each role could use a different model, but this app applies one configured model throughout
+- **SDK-led routing:** agents-as-tools are defined, while Python currently controls stage order, parallel work, retries, and handoffs
+- **Persistent conversations:** SDK sessions, continuation IDs, and streaming are not used
+- **SDK guardrails and approvals:** deterministic application checks currently make release decisions
+- **Additional integrations:** MCP, sandbox agents, and voice or realtime workflows are outside this build
+:::
+:::
+
+::: {.notes}
+[Sources]
+- OpenAI Agents SDK overview: https://developers.openai.com/api/docs/guides/agents
+- Agent orchestration: https://developers.openai.com/api/docs/guides/agents/orchestration
+- Model selection: https://developers.openai.com/api/docs/guides/agents/models
+- `src/housing_policy_agents/agents/factory.py`
+- `src/housing_policy_agents/workflows/research_workflow.py`
+- `src/housing_policy_agents/telemetry/interactions.py`
+:::
+
+---
+
+## Reference Materials for Build
+
+::: {.reference-grid}
+::: {.reference-column}
+<div class="reference-heading">OpenAI Agents SDK</div>
+
+::: {.reference-row}
+<div class="reference-level">SOURCE</div>
+[Python Agents SDK on GitHub](https://github.com/openai/openai-agents-python)
+
+Source code, examples, releases, and issue history.
+:::
+
+::: {.reference-row}
+<div class="reference-level">STAGE 1</div>
+[Agents SDK quickstart](https://developers.openai.com/api/docs/guides/agents/quickstart)
+
+Install the SDK, define an agent, run it, and add tools.
+:::
+
+::: {.reference-row}
+<div class="reference-level">STAGE 2</div>
+[Orchestration and handoffs](https://developers.openai.com/api/docs/guides/agents/orchestration)
+
+Choose between manager-led tools and specialist handoffs.
+:::
+
+::: {.reference-row}
+<div class="reference-level">STAGE 3</div>
+[Integrations and observability](https://developers.openai.com/api/docs/guides/agents/integrations-observability)
+
+Connect tracing, MCP, and operational debugging.
+:::
+:::
+
+::: {.reference-column}
+<div class="reference-heading">Promptfoo</div>
+
+::: {.reference-row}
+<div class="reference-level">SOURCE</div>
+[Promptfoo on GitHub](https://github.com/promptfoo/promptfoo)
+
+Source code, examples, releases, and issue history.
+:::
+
+::: {.reference-row}
+<div class="reference-level">STAGE 1</div>
+[Getting started](https://www.promptfoo.dev/docs/getting-started/)
+
+Create a configuration, run an evaluation, and inspect results.
+:::
+
+::: {.reference-row}
+<div class="reference-level">STAGE 2</div>
+[Configuration guide](https://www.promptfoo.dev/docs/configuration/guide/)
+
+Define providers, prompts, tests, variables, and assertions.
+:::
+
+::: {.reference-row}
+<div class="reference-level">STAGE 3</div>
+[Python provider](https://www.promptfoo.dev/docs/providers/python/)
+
+Wrap an existing Python workflow as a repeatable evaluation target.
+:::
+:::
+:::
+
+<div class="project-link"><b>Project source:</b> <a href="https://github.com/scschwa/housing-policy-research-app">Housing Policy Research App</a></div>
+
+::: {.notes}
+[Sources]
+- https://github.com/openai/openai-agents-python
+- https://developers.openai.com/api/docs/guides/agents/quickstart
+- https://developers.openai.com/api/docs/guides/agents/orchestration
+- https://developers.openai.com/api/docs/guides/agents/integrations-observability
+- https://github.com/promptfoo/promptfoo
+- https://www.promptfoo.dev/docs/getting-started/
+- https://www.promptfoo.dev/docs/configuration/guide/
+- https://www.promptfoo.dev/docs/providers/python/
+- https://github.com/scschwa/housing-policy-research-app
 :::

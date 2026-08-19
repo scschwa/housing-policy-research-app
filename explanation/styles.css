@@ -1382,6 +1382,122 @@
   font-size: 0.72em;
 }
 
+.sdk-coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.coverage-panel {
+  min-height: 354px;
+  padding: 17px 21px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+}
+
+.coverage-panel.used {
+  border-top: 6px solid var(--blue);
+}
+
+.coverage-panel.extension {
+  border-top: 6px solid #aeb6bd;
+}
+
+.coverage-label {
+  margin-bottom: 15px;
+  font-size: 0.65em;
+  font-weight: 760;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.coverage-label.used {
+  color: #126cc7;
+}
+
+.coverage-label.future {
+  color: #68717a;
+}
+
+.coverage-panel ul {
+  margin: 0;
+  padding-left: 1em;
+}
+
+.coverage-panel li {
+  margin-bottom: 0.46em;
+  font-size: 0.63em;
+  line-height: 1.22;
+}
+
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.reference-column {
+  padding: 15px 20px 8px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-top: 6px solid var(--blue);
+}
+
+.reference-heading {
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 0.78em;
+  font-weight: 760;
+}
+
+.reference-row {
+  display: grid;
+  grid-template-columns: 98px minmax(0, 1fr);
+  column-gap: 11px;
+  padding: 8px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.reference-row .reference-level {
+  grid-row: 1 / span 2;
+}
+
+.reference-level {
+  color: #68717a;
+  font-size: 0.42em;
+  font-weight: 760;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+
+.reference-row > p {
+  margin: 0;
+  font-size: 0.58em;
+  line-height: 1.18;
+}
+
+.reference-row > p:first-of-type {
+  font-size: 0.64em;
+  font-weight: 700;
+}
+
+.reference-row a {
+  color: var(--blue);
+}
+
+.project-link {
+  margin-top: 13px;
+  color: var(--muted);
+  font-size: 0.58em;
+  line-height: 1.2;
+}
+
+.project-link a {
+  color: var(--blue);
+  font-weight: 700;
+}
+
 @media print {
   .reveal .footer,
   .reveal .slide-number {
